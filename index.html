@@ -1087,27 +1087,27 @@
       <div class="header-telemetry" onclick="toggleDrawer(true)" title="Нажмите, чтобы открыть параметры полета и топлива">
         <div class="telemetry-item">
           <span>Ветер:</span>
-          <span id="telemWind" class="telemetry-val">270° / 40</span>
+          <span id="telemWind" class="telemetry-val">—</span>
         </div>
         <span>•</span>
         <div class="telemetry-item">
           <span>δ<sub>н</sub>:</span>
-          <span id="telemNavWind" class="telemetry-val">090°</span>
+          <span id="telemNavWind" class="telemetry-val">—</span>
         </div>
         <span>•</span>
         <div class="telemetry-item">
           <span>Вылет:</span>
-          <span id="telemDep" class="telemetry-val">08:00</span>
+          <span id="telemDep" class="telemetry-val">—</span>
         </div>
         <span>•</span>
         <div class="telemetry-item">
           <span>Расход:</span>
-          <span id="telemFuel" class="telemetry-val">450 кг/ч</span>
+          <span id="telemFuel" class="telemetry-val">—</span>
         </div>
         <span>•</span>
         <div class="telemetry-item">
           <span>Q<sub>запр</sub>:</span>
-          <span id="telemTotal" class="telemetry-val success">543 кг</span>
+          <span id="telemTotal" class="telemetry-val success">0 кг</span>
         </div>
       </div>
 
@@ -1140,42 +1140,42 @@
 
     <div class="calc-group" title="Метеорологическое направление ветра (откуда)">
       <label>Ветер δ:</label>
-      <input type="text" id="quickWindDir" class="calc-input" value="270" oninput="onQuickWindChanged()">°
+      <input type="text" id="quickWindDir" class="calc-input" value="" placeholder="270" oninput="onQuickWindChanged()">°
     </div>
 
     <div class="calc-group" title="Скорость ветра на эшелоне">
       <label>U:</label>
-      <input type="text" id="quickWindSpeed" class="calc-input" value="40" oninput="onQuickWindChanged()"> км/ч
+      <input type="text" id="quickWindSpeed" class="calc-input" value="" placeholder="40" oninput="onQuickWindChanged()"> км/ч
     </div>
 
     <div class="calc-group" title="Навигационный ветер куда дует">
       <label>δ<sub>н</sub>:</label>
-      <span id="quickNavWind" style="font-family: monospace; font-weight: bold; color: #facc15;">090°</span>
+      <span id="quickNavWind" style="font-family: monospace; font-weight: bold; color: #facc15;">—</span>
     </div>
 
     <div class="calc-group" title="Время вылета (ЧЧ:ММ)">
       <label>Вылет:</label>
-      <input type="text" id="quickDepTime" class="calc-input" value="08:00" style="width: 50px;" oninput="recalculateEntireFlightPlan()">
+      <input type="text" id="quickDepTime" class="calc-input" value="" placeholder="08:00" style="width: 50px;" oninput="recalculateEntireFlightPlan()">
     </div>
 
     <div class="calc-group" title="Часовой расход топлива">
       <label>Расход/ч:</label>
-      <input type="text" id="quickFuelHour" class="calc-input" value="450" style="width: 48px;" oninput="onFuelHourInput()"> кг
+      <input type="text" id="quickFuelHour" class="calc-input" value="" placeholder="450" style="width: 48px;" oninput="onFuelHourInput()"> кг
     </div>
 
     <div class="calc-group" title="Минутный расход топлива">
       <label>/мин:</label>
-      <input type="text" id="quickFuelMin" class="calc-input" value="7.5" style="width: 44px;" oninput="onFuelMinInput()"> кг
+      <input type="text" id="quickFuelMin" class="calc-input" value="" placeholder="7.5" style="width: 44px;" oninput="onFuelMinInput()"> кг
     </div>
 
     <div class="calc-group" title="Аэронавигационный запас топлива">
       <label style="color: #fca5a5; font-weight: bold;">АНЗ:</label>
-      <input type="text" id="quickFuelAnz" class="calc-input" value="180" style="width: 48px; color: #f87171; border-color: #f87171;" oninput="onFuelAnzInput()"> кг
+      <input type="text" id="quickFuelAnz" class="calc-input" value="" placeholder="180" style="width: 48px; color: #f87171; border-color: #f87171;" oninput="onFuelAnzInput()"> кг
     </div>
 
     <div class="calc-group" title="Необходимое топливо к заправке">
       <label style="color: #86efac; font-weight: bold;">Q<sub>запр</sub>:</label>
-      <span id="quickFuelTotal" style="font-family: monospace; font-weight: bold; color: #4ade80;">543 кг</span>
+      <span id="quickFuelTotal" style="font-family: monospace; font-weight: bold; color: #4ade80;">0 кг</span>
     </div>
 
     <div style="display: inline-flex; gap: 4px; margin-left: 6px;">
@@ -1208,22 +1208,22 @@
         <div class="drawer-row">
           <label>Метеоветер δ (откуда):</label>
           <div style="display: flex; align-items: center; gap: 4px;">
-            <input type="text" id="drawerWindDir" class="calc-input" value="270" oninput="onDrawerWindChanged()"> °
+            <input type="text" id="drawerWindDir" class="calc-input" value="" placeholder="270" oninput="onDrawerWindChanged()"> °
           </div>
         </div>
         <div class="drawer-row">
           <label>Скорость ветра U:</label>
           <div style="display: flex; align-items: center; gap: 4px;">
-            <input type="text" id="drawerWindSpeed" class="calc-input" value="40" oninput="onDrawerWindChanged()"> км/ч
+            <input type="text" id="drawerWindSpeed" class="calc-input" value="" placeholder="40" oninput="onDrawerWindChanged()"> км/ч
           </div>
         </div>
         <div class="drawer-row">
           <label>Навигационный ветер δ<sub>н</sub>:</label>
-          <span id="drawerNavWind" style="font-family: monospace; font-weight: bold; color: #facc15;">090°</span>
+          <span id="drawerNavWind" style="font-family: monospace; font-weight: bold; color: #facc15;">—</span>
         </div>
         <div class="drawer-row">
           <label>Время вылета (ЧЧ:ММ):</label>
-          <input type="text" id="drawerDepTime" class="calc-input" value="08:00" style="width: 60px;" oninput="onDrawerDepTimeChanged()">
+          <input type="text" id="drawerDepTime" class="calc-input" value="" placeholder="08:00" style="width: 60px;" oninput="onDrawerDepTimeChanged()">
         </div>
       </div>
 
@@ -1233,24 +1233,24 @@
         <div class="drawer-row">
           <label>Расход в час:</label>
           <div style="display: flex; align-items: center; gap: 4px;">
-            <input type="text" id="drawerFuelHour" class="calc-input" value="450" style="width: 58px;" oninput="onDrawerFuelHourInput()"> кг/ч
+            <input type="text" id="drawerFuelHour" class="calc-input" value="" placeholder="450" style="width: 58px;" oninput="onDrawerFuelHourInput()"> кг/ч
           </div>
         </div>
         <div class="drawer-row">
           <label>Расход в минуту:</label>
           <div style="display: flex; align-items: center; gap: 4px;">
-            <input type="text" id="drawerFuelMin" class="calc-input" value="7.5" style="width: 52px;" oninput="onDrawerFuelMinInput()"> кг/мин
+            <input type="text" id="drawerFuelMin" class="calc-input" value="" placeholder="7.5" style="width: 52px;" oninput="onDrawerFuelMinInput()"> кг/мин
           </div>
         </div>
         <div class="drawer-row">
           <label style="color: #fca5a5;">Запас АНЗ:</label>
           <div style="display: flex; align-items: center; gap: 4px;">
-            <input type="text" id="drawerFuelAnz" class="calc-input" value="180" style="width: 58px; color: #f87171; border-color: #f87171;" oninput="onDrawerFuelAnzInput()"> кг
+            <input type="text" id="drawerFuelAnz" class="calc-input" value="" placeholder="180" style="width: 58px; color: #f87171; border-color: #f87171;" oninput="onDrawerFuelAnzInput()"> кг
           </div>
         </div>
         <div class="drawer-fuel-total-box">
           <span class="drawer-fuel-total-label">Заправка Q<sub>запр</sub> (рейс + АНЗ):</span>
-          <span class="drawer-fuel-total-val" id="drawerFuelTotal">543 кг</span>
+          <span class="drawer-fuel-total-val" id="drawerFuelTotal">0 кг</span>
         </div>
       </div>
 
@@ -1343,28 +1343,28 @@
             </thead>
             <tbody id="windTableBody">
               <tr>
-                <td contenteditable="true" id="wind_pt_1">ЭШЕЛОН</td>
-                <td contenteditable="true" id="wind_h_1">FL150</td>
-                <td contenteditable="true" id="wind_d_1">270</td>
-                <td contenteditable="true" id="wind_u_1">40</td>
+                <td contenteditable="true" id="wind_pt_1"></td>
+                <td contenteditable="true" id="wind_h_1"></td>
+                <td contenteditable="true" id="wind_d_1"></td>
+                <td contenteditable="true" id="wind_u_1"></td>
               </tr>
               <tr>
-                <td contenteditable="true">САСОВО</td>
-                <td contenteditable="true">1500</td>
-                <td contenteditable="true">270</td>
-                <td contenteditable="true">35</td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
               </tr>
               <tr>
-                <td contenteditable="true">ТАМБОВ</td>
-                <td contenteditable="true">4500</td>
-                <td contenteditable="true">260</td>
-                <td contenteditable="true">45</td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
               </tr>
               <tr>
                 <td style="font-weight: bold; text-align: center;">δ<sub>н</sub></td>
-                <td contenteditable="true" id="wind_h_nav">земля</td>
-                <td contenteditable="false" class="col-readonly" id="wind_d_nav" style="font-weight: bold;" title="Навигационный ветер рассчитывается автоматически: δ ± 180°">090</td>
-                <td contenteditable="true" id="wind_u_nav">18</td>
+                <td contenteditable="true" id="wind_h_nav"></td>
+                <td contenteditable="false" class="col-readonly" id="wind_d_nav" style="font-weight: bold;" title="Навигационный ветер рассчитывается автоматически: δ ± 180°"></td>
+                <td contenteditable="true" id="wind_u_nav"></td>
               </tr>
             </tbody>
           </table>
@@ -1374,47 +1374,47 @@
         <div class="doc-header-center">
           <div class="doc-main-title">
             ШТУРМАНСКИЙ БОРТОВОЙ ЖУРНАЛ № 
-            <span contenteditable="true" class="fill-line" id="fieldFlightNumber" style="min-width: 65px;">104</span>
+            <span contenteditable="true" class="fill-line" id="fieldFlightNumber" style="min-width: 65px;"></span>
           </div>
 
           <div class="header-lines">
             <div class="header-line-row">
               <div class="header-field" style="flex: 1; min-width: 170px;">
                 Командир ВС&nbsp;
-                <span contenteditable="true" class="fill-line" id="fieldKvs" style="width: 100%;">Иванов А.С.</span>
+                <span contenteditable="true" class="fill-line" id="fieldKvs" style="width: 100%;"></span>
               </div>
               <div class="header-field" style="flex: 1; min-width: 170px;">
                 2-й пилот (штурман)&nbsp;
-                <span contenteditable="true" class="fill-line" id="fieldCopilot" style="width: 100%;">Петров В.М.</span>
+                <span contenteditable="true" class="fill-line" id="fieldCopilot" style="width: 100%;"></span>
               </div>
             </div>
 
             <div class="header-line-row">
               <div class="header-field" style="flex: 1.2; min-width: 180px;">
                 Подразделение&nbsp;
-                <span contenteditable="true" class="fill-line" id="fieldUnit" style="width: 100%;">1-я АЭ СЛУ ГА</span>
+                <span contenteditable="true" class="fill-line" id="fieldUnit" style="width: 100%;"></span>
               </div>
               <div class="header-field" style="flex: 0.8; min-width: 130px;">
                 Дата&nbsp;
-                <span contenteditable="true" class="fill-line" id="fieldDate" style="width: 100%;">29.09.2026</span>
+                <span contenteditable="true" class="fill-line" id="fieldDate" style="width: 100%;"></span>
               </div>
             </div>
 
             <div class="header-line-row">
               <div class="header-field">
-                Тип ВС&nbsp;<span contenteditable="true" class="fill-line" id="fieldAcType" style="min-width: 55px;">Ан-26</span>
+                Тип ВС&nbsp;<span contenteditable="true" class="fill-line" id="fieldAcType" style="min-width: 55px;"></span>
               </div>
               <div class="header-field">
-                №&nbsp;<span contenteditable="true" class="fill-line" id="fieldAcReg" style="min-width: 48px;">26104</span>
+                №&nbsp;<span contenteditable="true" class="fill-line" id="fieldAcReg" style="min-width: 48px;"></span>
               </div>
               <div class="header-field">
-                Н эш. зад.&nbsp;<span contenteditable="true" class="fill-line" id="fieldFl" style="min-width: 50px;">FL150</span>
+                Н эш. зад.&nbsp;<span contenteditable="true" class="fill-line" id="fieldFl" style="min-width: 50px;"></span>
               </div>
               <div class="header-field">
-                Р прив. мин.&nbsp;<span contenteditable="true" class="fill-line" id="fieldQnhMin" style="min-width: 50px;">754</span>
+                Р прив. мин.&nbsp;<span contenteditable="true" class="fill-line" id="fieldQnhMin" style="min-width: 50px;"></span>
               </div>
               <div class="header-field">
-                Н без. эш.&nbsp;<span contenteditable="true" class="fill-line" id="fieldHbezEsh" style="min-width: 50px;">1800м</span>
+                Н без. эш.&nbsp;<span contenteditable="true" class="fill-line" id="fieldHbezEsh" style="min-width: 50px;"></span>
               </div>
             </div>
           </div>
@@ -1436,16 +1436,16 @@
             </thead>
             <tbody id="sunTableBody">
               <tr>
-                <td contenteditable="true">УУБГ (Сасово)</td>
-                <td contenteditable="true">05:42</td>
-                <td contenteditable="true">19:15</td>
-                <td contenteditable="true">13:33</td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
               </tr>
               <tr>
-                <td contenteditable="true">УУОТ (Тамбов)</td>
-                <td contenteditable="true">05:45</td>
-                <td contenteditable="true">19:18</td>
-                <td contenteditable="true">13:33</td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
               </tr>
               <tr>
                 <td contenteditable="true"></td>
@@ -1484,15 +1484,15 @@
             </thead>
             <tbody>
               <tr>
-                <td contenteditable="true" id="dep_delta">240°</td>
-                <td contenteditable="true" id="dep_u">4 м/с</td>
-                <td contenteditable="true" id="dep_p0">758</td>
-                <td contenteditable="true" id="dep_t">+18</td>
-                <td contenteditable="true" id="dep_sah">24%</td>
-                <td contenteditable="true" id="dep_mtow">23.8 т</td>
-                <td contenteditable="true" id="dep_votr">205</td>
-                <td contenteditable="true" id="dep_lraz">820</td>
-                <td contenteditable="true" id="dep_hbez">300</td>
+                <td contenteditable="true" id="dep_delta"></td>
+                <td contenteditable="true" id="dep_u"></td>
+                <td contenteditable="true" id="dep_p0"></td>
+                <td contenteditable="true" id="dep_t"></td>
+                <td contenteditable="true" id="dep_sah"></td>
+                <td contenteditable="true" id="dep_mtow"></td>
+                <td contenteditable="true" id="dep_votr"></td>
+                <td contenteditable="true" id="dep_lraz"></td>
+                <td contenteditable="true" id="dep_hbez"></td>
               </tr>
             </tbody>
           </table>
@@ -1513,11 +1513,11 @@
             </thead>
             <tbody>
               <tr>
-                <td contenteditable="true" id="dest_gpos">21.5 т</td>
-                <td contenteditable="true" id="dest_sah">23%</td>
-                <td contenteditable="true" id="dest_lprob">650</td>
-                <td contenteditable="true" id="dest_vpl">210</td>
-                <td contenteditable="true" id="dest_vpos">190</td>
+                <td contenteditable="true" id="dest_gpos"></td>
+                <td contenteditable="true" id="dest_sah"></td>
+                <td contenteditable="true" id="dest_lprob"></td>
+                <td contenteditable="true" id="dest_vpl"></td>
+                <td contenteditable="true" id="dest_vpos"></td>
               </tr>
             </tbody>
           </table>
@@ -1530,31 +1530,31 @@
               <tr>
                 <th colspan="2">
                   Погода за 
-                  <span contenteditable="true" class="fill-line" id="wx_hour" style="min-width: 20px; font-weight: normal;">10</span> ч. 
-                  <span contenteditable="true" class="fill-line" id="wx_min" style="min-width: 20px; font-weight: normal;">30</span> мин.
+                  <span contenteditable="true" class="fill-line" id="wx_hour" style="min-width: 20px; font-weight: normal;"></span> ч. 
+                  <span contenteditable="true" class="fill-line" id="wx_min" style="min-width: 20px; font-weight: normal;"></span> мин.
                 </th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td style="width: 50%;">МК пос <span contenteditable="true" class="fill-line" id="wx_mkpos" style="min-width: 32px;">238°</span></td>
-                <td style="width: 50%;">К сц <span contenteditable="true" class="fill-line" id="wx_ksc" style="min-width: 32px;">0.60</span></td>
+                <td style="width: 50%;">МК пос <span contenteditable="true" class="fill-line" id="wx_mkpos" style="min-width: 32px;"></span></td>
+                <td style="width: 50%;">К сц <span contenteditable="true" class="fill-line" id="wx_ksc" style="min-width: 32px;"></span></td>
               </tr>
               <tr>
-                <td>δ <span contenteditable="true" class="fill-line" id="wx_delta" style="min-width: 32px;">250°</span></td>
-                <td>ВПР <span contenteditable="true" class="fill-line" id="wx_vpr" style="min-width: 32px;">60м</span></td>
+                <td>δ <span contenteditable="true" class="fill-line" id="wx_delta" style="min-width: 32px;"></span></td>
+                <td>ВПР <span contenteditable="true" class="fill-line" id="wx_vpr" style="min-width: 32px;"></span></td>
               </tr>
               <tr>
-                <td>U <span contenteditable="true" class="fill-line" id="wx_u" style="min-width: 32px;">5 м/с</span></td>
-                <td>Вид. <span contenteditable="true" class="fill-line" id="wx_vis" style="min-width: 32px;">6000</span></td>
+                <td>U <span contenteditable="true" class="fill-line" id="wx_u" style="min-width: 32px;"></span></td>
+                <td>Вид. <span contenteditable="true" class="fill-line" id="wx_vis" style="min-width: 32px;"></span></td>
               </tr>
               <tr>
-                <td>P <span contenteditable="true" class="fill-line" id="wx_p" style="min-width: 32px;">756</span></td>
-                <td>H нижн. <span contenteditable="true" class="fill-line" id="wx_hlow" style="min-width: 32px;">240м</span></td>
+                <td>P <span contenteditable="true" class="fill-line" id="wx_p" style="min-width: 32px;"></span></td>
+                <td>H нижн. <span contenteditable="true" class="fill-line" id="wx_hlow" style="min-width: 32px;"></span></td>
               </tr>
               <tr>
-                <td>t <span contenteditable="true" class="fill-line" id="wx_t" style="min-width: 32px;">+16°</span></td>
-                <td contenteditable="true" id="wx_extra">Б/О</td>
+                <td>t <span contenteditable="true" class="fill-line" id="wx_t" style="min-width: 32px;"></span></td>
+                <td contenteditable="true" id="wx_extra"></td>
               </tr>
             </tbody>
           </table>
@@ -1592,146 +1592,19 @@
               </tr>
             </thead>
             <tbody id="routeTableBody">
-              <!-- Row 1: ВЗЛЕТ -->
-              <tr class="route-data-row">
-                <td contenteditable="true" class="col-hpriv">Круг</td>
-                <td contenteditable="true" class="col-hbez">300</td>
-                <td contenteditable="true" class="col-name">ВЗЛЕТ (ВПП 26)</td>
-                <td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ">190°</td>
-                <td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α">-2°</td>
-                <td contenteditable="true" class="col-mpu">260</td>
-                <td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС">262°</td>
-                <td contenteditable="true" class="col-vi">240</td>
-                <td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв">201</td>
-                <td contenteditable="true" class="col-s">12</td>
-                <td contenteditable="true" class="col-t">3.6</td>
-                <td contenteditable="true" class="col-qr">27</td>
-                <td contenteditable="true" class="col-qf"></td>
-                <td contenteditable="true" class="col-tr">08:04</td>
-                <td contenteditable="true" class="col-tf"></td>
-                <td contenteditable="true" class="col-hp">300</td>
-              </tr>
-              <!-- Row 2 -->
-              <tr class="route-data-row">
-                <td contenteditable="true" class="col-hpriv">FL090</td>
-                <td contenteditable="true" class="col-hbez">900</td>
-                <td contenteditable="true" class="col-name">НАБОР ЭШЕЛОНА</td>
-                <td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически">240°</td>
-                <td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически">-5°</td>
-                <td contenteditable="true" class="col-mpu">210</td>
-                <td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически">215°</td>
-                <td contenteditable="true" class="col-vi">380</td>
-                <td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически">359</td>
-                <td contenteditable="true" class="col-s">45</td>
-                <td contenteditable="true" class="col-t">7.5</td>
-                <td contenteditable="true" class="col-qr">56</td>
-                <td contenteditable="true" class="col-qf"></td>
-                <td contenteditable="true" class="col-tr">08:11</td>
-                <td contenteditable="true" class="col-tf"></td>
-                <td contenteditable="true" class="col-hp">1200</td>
-              </tr>
-              <!-- Row 3 -->
-              <tr class="route-data-row">
-                <td contenteditable="true" class="col-hpriv">FL150</td>
-                <td contenteditable="true" class="col-hbez">1500</td>
-                <td contenteditable="true" class="col-name">МОРШАНСК (ТРАССА)</td>
-                <td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически">255°</td>
-                <td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически">-5°</td>
-                <td contenteditable="true" class="col-mpu">195</td>
-                <td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически">200°</td>
-                <td contenteditable="true" class="col-vi">430</td>
-                <td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически">419</td>
-                <td contenteditable="true" class="col-s">85</td>
-                <td contenteditable="true" class="col-t">12.2</td>
-                <td contenteditable="true" class="col-qr">91</td>
-                <td contenteditable="true" class="col-qf"></td>
-                <td contenteditable="true" class="col-tr">08:23</td>
-                <td contenteditable="true" class="col-tf"></td>
-                <td contenteditable="true" class="col-hp">1800</td>
-              </tr>
-              <!-- Row 4 -->
-              <tr class="route-data-row">
-                <td contenteditable="true" class="col-hpriv">FL150</td>
-                <td contenteditable="true" class="col-hbez">1500</td>
-                <td contenteditable="true" class="col-name">ППМ ВЕРНАДОВКА</td>
-                <td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически">260°</td>
-                <td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически">-5°</td>
-                <td contenteditable="true" class="col-mpu">190</td>
-                <td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически">195°</td>
-                <td contenteditable="true" class="col-vi">430</td>
-                <td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически">423</td>
-                <td contenteditable="true" class="col-s">64</td>
-                <td contenteditable="true" class="col-t">9.1</td>
-                <td contenteditable="true" class="col-qr">68</td>
-                <td contenteditable="true" class="col-qf"></td>
-                <td contenteditable="true" class="col-tr">08:32</td>
-                <td contenteditable="true" class="col-tf"></td>
-                <td contenteditable="true" class="col-hp">1800</td>
-              </tr>
-              <!-- Row 5 -->
-              <tr class="route-data-row">
-                <td contenteditable="true" class="col-hpriv">FL090</td>
-                <td contenteditable="true" class="col-hbez">900</td>
-                <td contenteditable="true" class="col-name">НАЧАЛО СНИЖЕНИЯ</td>
-                <td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически">265°</td>
-                <td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически">-6°</td>
-                <td contenteditable="true" class="col-mpu">185</td>
-                <td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически">191°</td>
-                <td contenteditable="true" class="col-vi">400</td>
-                <td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически">396</td>
-                <td contenteditable="true" class="col-s">48</td>
-                <td contenteditable="true" class="col-t">7.3</td>
-                <td contenteditable="true" class="col-qr">55</td>
-                <td contenteditable="true" class="col-qf"></td>
-                <td contenteditable="true" class="col-tr">08:40</td>
-                <td contenteditable="true" class="col-tf"></td>
-                <td contenteditable="true" class="col-hp">1400</td>
-              </tr>
-              <!-- Row 6 -->
-              <tr class="route-data-row">
-                <td contenteditable="true" class="col-hpriv">Круг</td>
-                <td contenteditable="true" class="col-hbez">400</td>
-                <td contenteditable="true" class="col-name">ВЫХОД НА 4-й РАЗВ.</td>
-                <td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически">212°</td>
-                <td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически">-5°</td>
-                <td contenteditable="true" class="col-mpu">238</td>
-                <td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически">243°</td>
-                <td contenteditable="true" class="col-vi">270</td>
-                <td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически">236</td>
-                <td contenteditable="true" class="col-s">22</td>
-                <td contenteditable="true" class="col-t">5.6</td>
-                <td contenteditable="true" class="col-qr">42</td>
-                <td contenteditable="true" class="col-qf"></td>
-                <td contenteditable="true" class="col-tr">08:45</td>
-                <td contenteditable="true" class="col-tf"></td>
-                <td contenteditable="true" class="col-hp">600</td>
-              </tr>
-              <!-- Row 7: ПОСАДКА -->
-              <tr class="route-data-row">
-                <td contenteditable="true" class="col-hpriv">ВПП</td>
-                <td contenteditable="true" class="col-hbez">ВПР</td>
-                <td contenteditable="true" class="col-name">ПОСАДКА УУОТ</td>
-                <td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически">212°</td>
-                <td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически">-6°</td>
-                <td contenteditable="true" class="col-mpu">238</td>
-                <td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически">244°</td>
-                <td contenteditable="true" class="col-vi">190</td>
-                <td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически">156</td>
-                <td contenteditable="true" class="col-s">8</td>
-                <td contenteditable="true" class="col-t">3.1</td>
-                <td contenteditable="true" class="col-qr">23</td>
-                <td contenteditable="true" class="col-qf"></td>
-                <td contenteditable="true" class="col-tr">08:48</td>
-                <td contenteditable="true" class="col-tf"></td>
-                <td contenteditable="true" class="col-hp">0</td>
-              </tr>
-              <!-- Blank aesthetic rows -->
-              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly"></td><td contenteditable="false" class="col-us col-readonly"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
-              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly"></td><td contenteditable="false" class="col-us col-readonly"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
-              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly"></td><td contenteditable="false" class="col-us col-readonly"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
-              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly"></td><td contenteditable="false" class="col-us col-readonly"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
-              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly"></td><td contenteditable="false" class="col-us col-readonly"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
-              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly"></td><td contenteditable="false" class="col-us col-readonly"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
+              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
+              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
+              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
+              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
+              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
+              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
+              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
+              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
+              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
+              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
+              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
+              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
+              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
             </tbody>
             <!-- Summary Rows -->
             <tfoot>
@@ -1740,9 +1613,9 @@
                 <td colspan="9" style="text-align: right; padding-right: 8px; font-weight: bold;">
                   ВСЕГО по маршруту:
                 </td>
-                <td contenteditable="true" id="total_s" style="font-weight: bold;">284</td>
-                <td contenteditable="true" id="total_t" style="font-weight: bold;">48м</td>
-                <td contenteditable="true" id="total_qr" style="font-weight: bold;">363</td>
+                <td contenteditable="true" id="total_s" style="font-weight: bold;"></td>
+                <td contenteditable="true" id="total_t" style="font-weight: bold;"></td>
+                <td contenteditable="true" id="total_qr" style="font-weight: bold;"></td>
                 <td contenteditable="true" id="total_qf" style="font-weight: bold;"></td>
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
@@ -1751,14 +1624,14 @@
               <!-- Row 2: АНЗ и Заправка (Топливный расчет) -->
               <tr class="route-fuel-summary-row">
                 <td colspan="7" style="text-align: right; padding-right: 6px; font-weight: bold;">
-                  Расход: <span id="sheet_fuel_hour">450</span> кг/ч (<span id="sheet_fuel_min">7.5</span> кг/мин) &nbsp;|&nbsp; 
+                  Расход: <span id="sheet_fuel_hour">—</span> кг/ч (<span id="sheet_fuel_min">—</span> кг/мин) &nbsp;|&nbsp; 
                   <span style="color: #991b1b;">АНЗ:</span>
                 </td>
                 <td colspan="2" style="background: #fff; font-weight: bold;">
-                  <span contenteditable="true" id="sheet_fuel_anz" class="fill-line" style="min-width: 45px; color: #b91c1c;" oninput="onSheetAnzInput()">180</span> кг
+                  <span contenteditable="true" id="sheet_fuel_anz" class="fill-line" style="min-width: 45px; color: #b91c1c;" oninput="onSheetAnzInput()"></span> кг
                 </td>
                 <td colspan="7" style="text-align: left; padding-left: 8px; font-weight: bold; color: #1e3a8a;">
-                  Всего к заправке Q<sub>запр</sub>: <span id="sheet_fuel_total" style="font-weight: bold; color: #1d4ed8;">543</span> кг
+                  Всего к заправке Q<sub>запр</sub>: <span id="sheet_fuel_total" style="font-weight: bold; color: #1d4ed8;">0</span> кг
                 </td>
               </tr>
             </tfoot>
@@ -1770,7 +1643,7 @@
           <!-- Notes box -->
           <div class="notes-box">
             <div class="notes-title">Для заметок</div>
-            <div class="notes-content" contenteditable="true" id="notesArea">АТИС Сасово 126.8<br>АТИС Тамбов 127.4 (Инфо Браво QNH 1008)<br>Запасной Липецк (УУВЛ) МПУ 275 S=115км</div>
+            <div class="notes-content" contenteditable="true" id="notesArea"></div>
           </div>
 
           <!-- Landing Pattern Diagram (Коробочка / Заход) -->
@@ -1859,25 +1732,25 @@
         <div class="footer-left">
           <div class="footer-row">
             <span>Уход с ВПР на зап. аэр.&nbsp;</span>
-            <span contenteditable="true" class="fill-line" id="f_altn" style="min-width: 140px;">Липецк (УУВЛ)</span>
+            <span contenteditable="true" class="fill-line" id="f_altn" style="min-width: 140px;"></span>
             <span>&nbsp;S&nbsp;</span>
-            <span contenteditable="true" class="fill-line" id="f_altn_s" style="min-width: 45px;">115</span>
+            <span contenteditable="true" class="fill-line" id="f_altn_s" style="min-width: 45px;"></span>
             <span>&nbsp;км&nbsp;&nbsp;Q&nbsp;</span>
-            <span contenteditable="true" class="fill-line" id="f_altn_q" style="min-width: 45px;">450</span>
+            <span contenteditable="true" class="fill-line" id="f_altn_q" style="min-width: 45px;"></span>
             <span>&nbsp;кг</span>
           </div>
 
           <div class="footer-row">
             <span>Рубеж ухода (возвр.) на аэр. выл. Sр.у.&nbsp;</span>
-            <span contenteditable="true" class="fill-line" id="f_ru_s" style="min-width: 50px;">145</span>
+            <span contenteditable="true" class="fill-line" id="f_ru_s" style="min-width: 50px;"></span>
             <span>&nbsp;км&nbsp;&nbsp;Q р.у.&nbsp;</span>
-            <span contenteditable="true" class="fill-line" id="f_ru_q" style="min-width: 50px;">600</span>
+            <span contenteditable="true" class="fill-line" id="f_ru_q" style="min-width: 50px;"></span>
             <span>&nbsp;кг</span>
           </div>
 
           <div class="footer-row" style="margin-top: 4px;">
             <span>Подготовку проверил дежурный штурман&nbsp;</span>
-            <span contenteditable="true" class="fill-line" id="f_checker" style="min-width: 180px;">Сидоров К.М. (деж. штурман)</span>
+            <span contenteditable="true" class="fill-line" id="f_checker" style="min-width: 180px;"></span>
           </div>
         </div>
 
@@ -1885,33 +1758,33 @@
         <div class="footer-right">
           <div class="footer-row">
             <span>Фактическое время полета&nbsp;</span>
-            <span contenteditable="true" class="fill-line" id="f_time_h" style="min-width: 35px;">0</span>
+            <span contenteditable="true" class="fill-line" id="f_time_h" style="min-width: 35px;"></span>
             <span>&nbsp;ч.&nbsp;</span>
-            <span contenteditable="true" class="fill-line" id="f_time_m" style="min-width: 35px;">48</span>
+            <span contenteditable="true" class="fill-line" id="f_time_m" style="min-width: 35px;"></span>
             <span>&nbsp;мин.</span>
           </div>
 
           <div class="footer-row">
             <span>из них ночью&nbsp;</span>
-            <span contenteditable="true" class="fill-line" id="f_night_h" style="min-width: 35px;">0</span>
+            <span contenteditable="true" class="fill-line" id="f_night_h" style="min-width: 35px;"></span>
             <span>&nbsp;ч.&nbsp;</span>
-            <span contenteditable="true" class="fill-line" id="f_night_m" style="min-width: 35px;">0</span>
+            <span contenteditable="true" class="fill-line" id="f_night_m" style="min-width: 35px;"></span>
             <span>&nbsp;мин.</span>
           </div>
 
           <div class="footer-row" style="margin-top: 2px;">
             <span>Командир ВС&nbsp;</span>
-            <span contenteditable="true" class="fill-line" id="f_sig_kvs" style="min-width: 160px;">Иванов А.С.</span>
+            <span contenteditable="true" class="fill-line" id="f_sig_kvs" style="min-width: 160px;"></span>
           </div>
 
           <div class="footer-row">
             <span>2-й пилот (штурман)&nbsp;</span>
-            <span contenteditable="true" class="fill-line" id="f_sig_copilot" style="min-width: 160px;">Петров В.М.</span>
+            <span contenteditable="true" class="fill-line" id="f_sig_copilot" style="min-width: 160px;"></span>
           </div>
 
           <div class="footer-row">
             <span>Штурман АЭ&nbsp;</span>
-            <span contenteditable="true" class="fill-line" id="f_sig_ae" style="min-width: 160px;">Ковалев Г.В.</span>
+            <span contenteditable="true" class="fill-line" id="f_sig_ae" style="min-width: 160px;"></span>
           </div>
         </div>
       </div>
@@ -1981,7 +1854,7 @@
        JAVASCRIPT: INTERACTION, FORMULAS & STORAGE
        ========================================================= -->
   <script>
-    const STORAGE_KEY = 'avia_shbj_data_v5';
+    const STORAGE_KEY = 'avia_shbj_data_v6';
     let autoNtsEnabled = true;
     let isWidescreen = true;
     let saveTimeout = null;
@@ -2167,7 +2040,19 @@
 
     function updateNavWindDisplay() {
       const qD = document.getElementById('quickWindDir');
-      const d = parseFloat(qD ? qD.value : '270') || 0;
+      const valStr = qD ? qD.value.trim() : '';
+      if (!valStr) {
+        const navSpan = document.getElementById('quickNavWind');
+        if (navSpan) navSpan.textContent = '—';
+        const dNavSpan = document.getElementById('drawerNavWind');
+        if (dNavSpan) dNavSpan.textContent = '—';
+        const telemNav = document.getElementById('telemNavWind');
+        if (telemNav) telemNav.textContent = '—';
+        const cellNavD = document.getElementById('wind_d_nav');
+        if (cellNavD) cellNavD.innerText = '';
+        return;
+      }
+      const d = parseFloat(valStr) || 0;
       let navD = (d >= 180) ? (d - 180) : (d + 180);
       navD = Math.round((navD + 360) % 360);
       const navStr = navD.toString().padStart(3, '0') + '°';
@@ -2279,8 +2164,8 @@
       const sH = document.getElementById('sheet_fuel_hour');
       const sM = document.getElementById('sheet_fuel_min');
 
-      if (sH && qH) sH.innerText = qH.value;
-      if (sM && qM) sM.innerText = qM.value;
+      if (sH && qH) sH.innerText = qH.value.trim() || '—';
+      if (sM && qM) sM.innerText = qM.value.trim() || '—';
     }
 
     // 3. CORE NAVIGATION MATHEMATICS (THROUGH ACUTE ANGLE ALPHA)
@@ -2398,6 +2283,10 @@
       if (cellW) { cellW.contentEditable = "false"; cellW.classList.add('col-readonly'); }
 
       if (isNaN(mpu) || isNaN(vi) || vi <= 0) {
+        if (cellUv) cellUv.innerText = '';
+        if (cellUs) cellUs.innerText = '';
+        if (cellMk) cellMk.innerText = '';
+        if (cellW) cellW.innerText = '';
         return; // incomplete data
       }
 
@@ -2452,9 +2341,12 @@
     }
 
     function recalculateTimingsAndFuel() {
-      const depTimeStr = document.getElementById('quickDepTime').value || '08:00';
+      const depTimeStr = (document.getElementById('quickDepTime').value || '').trim();
+      if (!depTimeStr) {
+        return;
+      }
       let [hStr, mStr] = depTimeStr.includes(':') ? depTimeStr.split(':') : ['08', '00'];
-      let currentMinutes = (parseInt(hStr, 10) || 8) * 60 + (parseInt(mStr, 10) || 0);
+      let currentMinutes = (parseInt(hStr, 10) || 0) * 60 + (parseInt(mStr, 10) || 0);
 
       const rows = document.querySelectorAll('#routeTableBody tr.route-data-row');
       rows.forEach(tr => {
@@ -2580,9 +2472,19 @@
       const qDep = document.getElementById('quickDepTime');
       const qH = document.getElementById('quickFuelHour');
 
-      if (telemWind && qW && qU) telemWind.innerText = `${qW.value}° / ${qU.value}`;
-      if (telemDep && qDep) telemDep.innerText = qDep.value;
-      if (telemFuel && qH) telemFuel.innerText = `${qH.value} кг/ч`;
+      if (telemWind) {
+        if (qW && qU && (qW.value.trim() || qU.value.trim())) {
+          telemWind.innerText = `${qW.value || '0'}° / ${qU.value || '0'}`;
+        } else {
+          telemWind.innerText = '—';
+        }
+      }
+      if (telemDep) {
+        telemDep.innerText = (qDep && qDep.value.trim()) ? qDep.value : '—';
+      }
+      if (telemFuel) {
+        telemFuel.innerText = (qH && qH.value.trim()) ? `${qH.value} кг/ч` : '—';
+      }
     }
 
     // Toggle live NTS auto calculation
@@ -2888,6 +2790,53 @@
         windRows[3].children[3].innerText = '18';
       }
 
+      // Header fields
+      const fNum = document.getElementById('fieldFlightNumber'); if (fNum) fNum.innerText = '104';
+      const fKvs = document.getElementById('fieldKvs'); if (fKvs) fKvs.innerText = 'Иванов А.С.';
+      const fCop = document.getElementById('fieldCopilot'); if (fCop) fCop.innerText = 'Петров В.М.';
+      const fUnit = document.getElementById('fieldUnit'); if (fUnit) fUnit.innerText = '1-я АЭ СЛУ ГА';
+      const fDate = document.getElementById('fieldDate'); if (fDate) fDate.innerText = '29.09.2026';
+      const fAcType = document.getElementById('fieldAcType'); if (fAcType) fAcType.innerText = 'Ан-26';
+      const fAcReg = document.getElementById('fieldAcReg'); if (fAcReg) fAcReg.innerText = '26104';
+      const fFl = document.getElementById('fieldFl'); if (fFl) fFl.innerText = 'FL150';
+      const fQnh = document.getElementById('fieldQnhMin'); if (fQnh) fQnh.innerText = '754';
+      const fHbez = document.getElementById('fieldHbezEsh'); if (fHbez) fHbez.innerText = '1800м';
+
+      // Sun
+      const sunRows = document.querySelectorAll('#sunTableBody tr');
+      if (sunRows[0]) {
+        sunRows[0].children[0].innerText = 'УУБГ (Сасово)';
+        sunRows[0].children[1].innerText = '05:42';
+        sunRows[0].children[2].innerText = '19:15';
+        sunRows[0].children[3].innerText = '13:33';
+      }
+      if (sunRows[1]) {
+        sunRows[1].children[0].innerText = 'УУОТ (Тамбов)';
+        sunRows[1].children[1].innerText = '05:45';
+        sunRows[1].children[2].innerText = '19:18';
+        sunRows[1].children[3].innerText = '13:33';
+      }
+
+      // Departure & Destination
+      const setTxt = (id, txt) => { const el = document.getElementById(id); if (el) el.innerText = txt; };
+      setTxt('dep_delta', '240°'); setTxt('dep_u', '4 м/с'); setTxt('dep_p0', '758'); setTxt('dep_t', '+18'); setTxt('dep_sah', '24%'); setTxt('dep_mtow', '23.8 т'); setTxt('dep_votr', '205'); setTxt('dep_lraz', '820'); setTxt('dep_hbez', '300');
+      setTxt('dest_gpos', '21.5 т'); setTxt('dest_sah', '23%'); setTxt('dest_lprob', '650'); setTxt('dest_vpl', '210'); setTxt('dest_vpos', '190');
+
+      // Weather
+      setTxt('wx_hour', '10'); setTxt('wx_min', '30'); setTxt('wx_mkpos', '238°'); setTxt('wx_ksc', '0.60'); setTxt('wx_delta', '250°'); setTxt('wx_vpr', '60м'); setTxt('wx_u', '5 м/с'); setTxt('wx_vis', '6000'); setTxt('wx_p', '756'); setTxt('wx_hlow', '240м'); setTxt('wx_t', '+16°'); setTxt('wx_extra', 'Б/О');
+
+      // Notes
+      const notes = document.getElementById('notesArea');
+      if (notes) notes.innerHTML = 'АТИС Сасово 126.8<br>АТИС Тамбов 127.4 (Инфо Браво QNH 1008)<br>Запасной Липецк (УУВЛ) МПУ 275 S=115км';
+
+      // Footer
+      setTxt('f_altn', 'Липецк (УУВЛ)'); setTxt('f_altn_s', '115'); setTxt('f_altn_q', '450');
+      setTxt('f_ru_s', '145'); setTxt('f_ru_q', '600');
+      setTxt('f_checker', 'Сидоров К.М. (деж. штурман)');
+      setTxt('f_time_h', '0'); setTxt('f_time_m', '48');
+      setTxt('f_night_h', '0'); setTxt('f_night_m', '0');
+      setTxt('f_sig_kvs', 'Иванов А.С.'); setTxt('f_sig_copilot', 'Петров В.М.'); setTxt('f_sig_ae', 'Ковалев Г.В.');
+
       // Route Legs
       const sampleLegs = [
         { hPriv: 'Круг', hBez: '300', point: 'ВЗЛЕТ (ВПП 26)', mpu: 260, vi: 240, s: 12, hp: '300' },
@@ -2942,15 +2891,30 @@
       }
 
       localStorage.removeItem(STORAGE_KEY);
+
+      // Clear all inputs
+      ['quickWindDir','quickWindSpeed','quickDepTime','quickFuelHour','quickFuelMin','quickFuelAnz',
+       'drawerWindDir','drawerWindSpeed','drawerDepTime','drawerFuelHour','drawerFuelMin','drawerFuelAnz'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+
+      // Clear all contenteditable
       document.querySelectorAll('[contenteditable="true"]').forEach(el => {
         el.innerText = '';
       });
 
-      const rows = document.querySelectorAll('#routeTableBody tr.route-data-row');
-      if (rows[0] && rows[0].children[2]) rows[0].children[2].innerText = 'ВЗЛЕТ';
-      if (rows[rows.length - 1] && rows[rows.length - 1].children[2]) rows[rows.length - 1].children[2].innerText = 'ПОСАДКА';
+      // Reset route table to 13 blank rows
+      const tbody = document.getElementById('routeTableBody');
+      tbody.innerHTML = '';
+      for (let i = 0; i < 13; i++) {
+        addRouteRow();
+      }
 
-      recalculateEntireFlightPlan();
+      updateNavWindDisplay();
+      syncFuelToSheetDisplay();
+      updateCalculatedTotals();
+
       const status = document.getElementById('saveStatus');
       if (status) status.textContent = 'Бланк очищен';
     }
