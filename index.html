@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Штурманский бортовой журнал (ШБЖ) с расчетом НТС</title>
   <style>
     /* =========================================================
@@ -876,6 +879,7 @@
        MOBILE & TABLET ADAPTIVE LAYOUT (@media max-width: 900px)
        ========================================================= */
     @media (max-width: 900px) {
+      .units-master-bar { display: flex !important; top: 48px; padding: 6px 8px; }
       body {
         padding: 0 0 65px 0;
         background-color: #080d1a;
@@ -1121,6 +1125,139 @@
       gap: 7px;
     }
 
+  
+    /* Master Always-Visible Units Bar */
+    .units-master-bar {
+      width: 100%;
+      background: #0b1324;
+      border-bottom: 2px solid #0284c7;
+      padding: 7px 12px;
+      display: flex !important;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      z-index: 1090;
+      position: sticky;
+      top: 50px;
+    }
+
+    .units-bar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      max-width: 1400px;
+      width: 100%;
+    }
+
+    .units-bar-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #38bdf8;
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .units-segment {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #111a2e;
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid #1e2e4b;
+    }
+
+    .units-segment-lbl {
+      color: #94a3b8;
+      font-size: 11.5px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    /* Interactive Unit Badges at the top of the White Sheet */
+    .sheet-units-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+      padding: 6px 12px;
+      background: #f8fafc;
+      border: 1.5px dashed #0284c7;
+      border-radius: 6px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 12px;
+      flex-wrap: wrap;
+    }
+
+    .sheet-unit-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #ffffff;
+      border: 1.5px solid #0284c7;
+      color: #0369a1;
+      padding: 3px 10px;
+      border-radius: 5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      user-select: none;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .sheet-unit-badge:hover {
+      background: #0284c7;
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .sheet-unit-badge b {
+      color: #0284c7;
+      font-weight: 800;
+    }
+
+    .sheet-unit-badge:hover b {
+      color: #ffffff;
+    }
+
+    /* Header Compact Unit Toggles */
+    .header-units-quick {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hdr-unit-btn {
+      background: #131d31;
+      border: 1px solid #233552;
+      color: #94a3b8;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      white-space: nowrap;
+    }
+
+    .hdr-unit-btn:hover {
+      background: #18253e;
+      border-color: #38bdf8;
+      color: #f1f5f9;
+    }
+
+    .hdr-unit-btn strong {
+      color: #38bdf8;
+    }
+
   </style>
 </head>
 <body>
@@ -1137,6 +1274,16 @@
           <span>ШБЖ ПЛАН</span>
         </div>
         <span class="brand-badge">ГА РФ • А-4</span>
+      </div>
+
+      <!-- Header Compact Quick Unit Toggles -->
+      <div class="header-units-quick no-print" title="Нажмите для быстрого переключения единиц">
+        <button type="button" class="hdr-unit-btn" id="hdrBtnSpeed" onclick="setSpeedUnit(currentUnits.speed === 'kmh' ? 'kt' : 'kmh')" title="Переключить км/ч ⇄ узлы (kt)">
+          ⚡ Скорость: <strong id="hdrSpeedVal">км/ч</strong> ⇄
+        </button>
+        <button type="button" class="hdr-unit-btn" id="hdrBtnAlt" onclick="setAltUnit(currentUnits.alt === 'm' ? 'ft' : 'm')" title="Переключить метры ⇄ футы (ft)">
+          Высота: <strong id="hdrAltVal">м</strong> ⇄
+        </button>
       </div>
 
       <!-- Center: Live Telemetry Capsule (Desktop & Tablet) -->
@@ -1187,6 +1334,42 @@
       </div>
     </div>
   </header>
+
+  <!-- =========================================================
+       PROMINENT ALWAYS-VISIBLE MASTER UNITS BAR (ALL SCREENS)
+       ========================================================= -->
+  <div class="units-master-bar no-print" id="unitsMasterBar">
+    <div class="units-bar-inner">
+      <div class="units-bar-title" title="Выбор единиц расчета для бланка">
+        <span>🌐</span>
+        <span>ЕДИНИЦЫ:</span>
+      </div>
+
+      <div class="units-segment" title="Скорость: ветер, истинная Vи, путевая W">
+        <span class="units-segment-lbl">Скорость:</span>
+        <div class="unit-pill-group">
+          <button type="button" class="unit-pill-btn active" id="btnBarSpeedKmh" onclick="setSpeedUnit('kmh')">км/ч</button>
+          <button type="button" class="unit-pill-btn" id="btnBarSpeedKt" onclick="setSpeedUnit('kt')">узлы (kt)</button>
+        </div>
+      </div>
+
+      <div class="units-segment" title="Высота: эшелон, Hб, Hпом">
+        <span class="units-segment-lbl">Высота:</span>
+        <div class="unit-pill-group">
+          <button type="button" class="unit-pill-btn active" id="btnBarAltM" onclick="setAltUnit('m')">метры (м)</button>
+          <button type="button" class="unit-pill-btn" id="btnBarAltFt" onclick="setAltUnit('ft')">футы (ft)</button>
+        </div>
+      </div>
+
+      <div class="units-segment" title="Дистанция участков S">
+        <span class="units-segment-lbl">Дистанция:</span>
+        <div class="unit-pill-group">
+          <button type="button" class="unit-pill-btn active" id="btnBarDistKm" onclick="setDistUnit('km')">км</button>
+          <button type="button" class="unit-pill-btn" id="btnBarDistNm" onclick="setDistUnit('nm')">мили (NM)</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Collapsible Desktop Navigation & Fuel Ribbon -->
   <div class="desktop-params-ribbon no-print" id="desktopParamsRibbon">
@@ -1404,9 +1587,9 @@
   <!-- Mobile Fixed Bottom Navigation Bar -->
   <nav class="mobile-bottom-bar no-print">
     <div class="mobile-bottom-inner">
-      <button class="mobile-tab-btn" onclick="toggleDrawer(true)" title="Параметры НТС & Топливо">
-        <span style="font-size: 16px;">⚙️</span>
-        <span>Параметры</span>
+      <button class="mobile-tab-btn" onclick="toggleDrawer(true)" title="Единицы измерения и параметры" style="color: #38bdf8;">
+        <span style="font-size: 16px;">🌐</span>
+        <span>Единицы</span>
       </button>
       <button class="mobile-tab-btn" onclick="addRouteRow()" title="Добавить строку">
         <span style="font-size: 16px;">➕</span>
@@ -1432,6 +1615,25 @@
        ========================================================= -->
   <div class="sheet-outer-wrapper">
     <div class="page-sheet" id="shbjDocument">
+
+      <!-- Interactive Quick Unit Bar on Document (no-print) -->
+      <div class="sheet-units-banner no-print">
+        <span style="font-weight: 700; color: #1e3a8a; display: flex; align-items: center; gap: 5px;">
+          <span>✈️</span>
+          <span>Единицы бланка:</span>
+        </span>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <span class="sheet-unit-badge" onclick="setSpeedUnit(currentUnits.speed === 'kmh' ? 'kt' : 'kmh')" title="Нажмите, чтобы переключить: км/ч ⇄ узлы (kt)">
+            Скорость: <b id="bannerSpeedUnit">км/ч</b> (нажмите для смены ⇄)
+          </span>
+          <span class="sheet-unit-badge" onclick="setAltUnit(currentUnits.alt === 'm' ? 'ft' : 'm')" title="Нажмите, чтобы переключить: метры ⇄ футы (ft)">
+            Высота: <b id="bannerAltUnit">м</b> (сменить ⇄)
+          </span>
+          <span class="sheet-unit-badge" onclick="setDistUnit(currentUnits.dist === 'km' ? 'nm' : 'km')" title="Нажмите, чтобы переключить: км ⇄ мили (NM)">
+            Дистанция: <b id="bannerDistUnit">км</b> (сменить ⇄)
+          </span>
+        </div>
+      </div>
 
       <!-- =========================================================
            TOP SECTION: WIND TABLE, HEADER, SUN TABLE
@@ -2118,7 +2320,35 @@
       const altM = currentUnits.alt === 'm';
       const distKm = currentUnits.dist === 'km';
 
-      // Speed buttons
+      // Master Bar buttons
+      const bBSK = document.getElementById('btnBarSpeedKmh');
+      const bBST = document.getElementById('btnBarSpeedKt');
+      const bBAM = document.getElementById('btnBarAltM');
+      const bBAF = document.getElementById('btnBarAltFt');
+      const bBDK = document.getElementById('btnBarDistKm');
+      const bBDN = document.getElementById('btnBarDistNm');
+      if (bBSK) bBSK.classList.toggle('active', spKmh);
+      if (bBST) bBST.classList.toggle('active', !spKmh);
+      if (bBAM) bBAM.classList.toggle('active', altM);
+      if (bBAF) bBAF.classList.toggle('active', !altM);
+      if (bBDK) bBDK.classList.toggle('active', distKm);
+      if (bBDN) bBDN.classList.toggle('active', !distKm);
+
+      // Header Quick buttons
+      const hSV = document.getElementById('hdrSpeedVal');
+      const hAV = document.getElementById('hdrAltVal');
+      if (hSV) hSV.textContent = spKmh ? 'км/ч' : 'kt';
+      if (hAV) hAV.textContent = altM ? 'м' : 'ft';
+
+      // Sheet Banner badges
+      const bnS = document.getElementById('bannerSpeedUnit');
+      const bnA = document.getElementById('bannerAltUnit');
+      const bnD = document.getElementById('bannerDistUnit');
+      if (bnS) bnS.textContent = spKmh ? 'км/ч' : 'узлы (kt)';
+      if (bnA) bnA.textContent = altM ? 'м (метры)' : 'футы (ft)';
+      if (bnD) bnD.textContent = distKm ? 'км' : 'морские мили (NM)';
+
+      // Ribbon & Drawer buttons
       const bRSK = document.getElementById('btnRibbonSpeedKmh');
       const bRST = document.getElementById('btnRibbonSpeedKt');
       const bDSK = document.getElementById('btnDrawerSpeedKmh');
