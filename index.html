@@ -957,6 +957,7 @@
        PRINT OPTIMIZATIONS (@media print)
        ========================================================= */
     @media print {
+      .unit-sub { color: #000 !important; font-weight: normal !important; }
       @page {
         size: A4 landscape;
         margin: 5mm;
@@ -1065,6 +1066,61 @@
         print-color-adjust: exact !important;
       }
     }
+  
+    /* Segmented Unit Pill Controls (Speed in kt/kmh, Altitude in ft/m, Distance in NM/km) */
+    .unit-pill-group {
+      display: inline-flex;
+      background: #080f1d;
+      border: 1px solid #1e2e4b;
+      border-radius: 6px;
+      padding: 2px;
+      gap: 2px;
+      vertical-align: middle;
+    }
+
+    .unit-pill-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .unit-pill-btn:hover {
+      color: #f8fafc;
+      background: #17243c;
+    }
+
+    .unit-pill-btn.active {
+      background: #0284c7;
+      color: #ffffff;
+      box-shadow: 0 1px 4px rgba(2, 132, 199, 0.4);
+    }
+
+    .unit-sub {
+      display: block;
+      font-size: 8.5px;
+      font-weight: bold;
+      color: #0369a1;
+      line-height: 1;
+      margin-top: 1px;
+    }
+
+    .units-ribbon-group {
+      background: #111a2e;
+      border: 1px solid #1e2e4b;
+      padding: 3px 8px;
+      border-radius: 6px;
+      gap: 7px;
+    }
+
   </style>
 </head>
 <body>
@@ -1138,6 +1194,23 @@
       Параметры НТС &amp; топлива:
     </div>
 
+    <!-- Unit switchers in Desktop Ribbon -->
+    <div class="calc-group units-ribbon-group" title="Выбор единиц измерения (скорость, высота, дистанция)">
+      <span style="font-size: 11px; font-weight: 700; color: #38bdf8;">Ед. изм:</span>
+      <div class="unit-pill-group" title="Скорость: км/ч или узлы (kt)">
+        <button type="button" class="unit-pill-btn active" id="btnRibbonSpeedKmh" onclick="setSpeedUnit('kmh')">км/ч</button>
+        <button type="button" class="unit-pill-btn" id="btnRibbonSpeedKt" onclick="setSpeedUnit('kt')">узлы (kt)</button>
+      </div>
+      <div class="unit-pill-group" title="Высота: метры или футы (ft)">
+        <button type="button" class="unit-pill-btn active" id="btnRibbonAltM" onclick="setAltUnit('m')">м</button>
+        <button type="button" class="unit-pill-btn" id="btnRibbonAltFt" onclick="setAltUnit('ft')">футы (ft)</button>
+      </div>
+      <div class="unit-pill-group" title="Расстояние участка: км или морские мили (NM)">
+        <button type="button" class="unit-pill-btn active" id="btnRibbonDistKm" onclick="setDistUnit('km')">км</button>
+        <button type="button" class="unit-pill-btn" id="btnRibbonDistNm" onclick="setDistUnit('nm')">NM</button>
+      </div>
+    </div>
+
     <div class="calc-group" title="Метеорологическое направление ветра (откуда)">
       <label>Ветер δ:</label>
       <input type="text" id="quickWindDir" class="calc-input" value="" placeholder="270" oninput="onQuickWindChanged()">°
@@ -1145,7 +1218,7 @@
 
     <div class="calc-group" title="Скорость ветра на эшелоне">
       <label>U:</label>
-      <input type="text" id="quickWindSpeed" class="calc-input" value="" placeholder="40" oninput="onQuickWindChanged()"> км/ч
+      <input type="text" id="quickWindSpeed" class="calc-input" value="" placeholder="40" oninput="onQuickWindChanged()"> <span id="lblRibbonWindSpeedUnit">км/ч</span>
     </div>
 
     <div class="calc-group" title="Навигационный ветер куда дует">
@@ -1202,6 +1275,40 @@
         <span id="saveStatus">🔒 УВ, УС, МК, W защищены и рассчитываются автоматически</span>
       </div>
 
+      <!-- Card 0: Единицы измерения (Units) -->
+      <div class="drawer-card" style="border-color: #0369a1; background: #0a1426;">
+        <div class="drawer-card-title" style="color: #38bdf8;">🌐 Единицы измерения (Units)</div>
+        
+        <div class="drawer-row" style="margin-bottom: 7px;">
+          <label style="color: #f1f5f9; font-weight: 600;">Скорость (U, V<sub>и</sub>, W):</label>
+          <div class="unit-pill-group">
+            <button type="button" class="unit-pill-btn active" id="btnDrawerSpeedKmh" onclick="setSpeedUnit('kmh')">км/ч</button>
+            <button type="button" class="unit-pill-btn" id="btnDrawerSpeedKt" onclick="setSpeedUnit('kt')">узлы (kt)</button>
+          </div>
+        </div>
+
+        <div class="drawer-row" style="margin-bottom: 7px;">
+          <label style="color: #f1f5f9; font-weight: 600;">Высота (эшелон, H<sub>б</sub>, H<sub>пом</sub>):</label>
+          <div class="unit-pill-group">
+            <button type="button" class="unit-pill-btn active" id="btnDrawerAltM" onclick="setAltUnit('m')">метры (м)</button>
+            <button type="button" class="unit-pill-btn" id="btnDrawerAltFt" onclick="setAltUnit('ft')">футы (ft)</button>
+          </div>
+        </div>
+
+        <div class="drawer-row" style="margin-bottom: 7px;">
+          <label style="color: #f1f5f9; font-weight: 600;">Дистанция участков (S):</label>
+          <div class="unit-pill-group">
+            <button type="button" class="unit-pill-btn active" id="btnDrawerDistKm" onclick="setDistUnit('km')">км</button>
+            <button type="button" class="unit-pill-btn" id="btnDrawerDistNm" onclick="setDistUnit('nm')">мили (NM)</button>
+          </div>
+        </div>
+
+        <div style="font-size: 11px; color: #94a3b8; margin-top: 6px; display: flex; align-items: center; gap: 6px; padding-top: 4px; border-top: 1px solid #1a2942;">
+          <input type="checkbox" id="chkAutoConvert" checked style="cursor: pointer;">
+          <label for="chkAutoConvert" style="cursor: pointer; user-select: none;">Автоматически пересчитывать введенные числа</label>
+        </div>
+      </div>
+
       <!-- Card 1: Ветер и Вылет -->
       <div class="drawer-card">
         <div class="drawer-card-title">🧭 Ветер и Время вылета</div>
@@ -1214,7 +1321,7 @@
         <div class="drawer-row">
           <label>Скорость ветра U:</label>
           <div style="display: flex; align-items: center; gap: 4px;">
-            <input type="text" id="drawerWindSpeed" class="calc-input" value="" placeholder="40" oninput="onDrawerWindChanged()"> км/ч
+            <input type="text" id="drawerWindSpeed" class="calc-input" value="" placeholder="40" oninput="onDrawerWindChanged()"> <span id="lblDrawerWindSpeedUnit">км/ч</span>
           </div>
         </div>
         <div class="drawer-row">
@@ -1336,9 +1443,9 @@
             <thead>
               <tr>
                 <th style="width: 38%;">Пункты</th>
-                <th style="width: 20%;">Н</th>
+                <th style="width: 20%;" id="th_wind_h">Н (м)</th>
                 <th style="width: 20%;">δ</th>
-                <th style="width: 22%;">U км/ч</th>
+                <th style="width: 22%;" id="th_wind_u">U км/ч</th>
               </tr>
             </thead>
             <tbody id="windTableBody">
@@ -1570,21 +1677,21 @@
           <table class="tbl-route" id="routeTable">
             <thead>
               <tr>
-                <th rowspan="2" style="width: 48px;">H прив</th>
-                <th rowspan="2" style="width: 52px; line-height: 1.05;">H б 760<br><span style="font-size: 8.5px;">H б пр</span></th>
+                <th rowspan="2" style="width: 48px;" id="th_route_hpriv">H прив<br><span class="unit-sub" id="hdrRouteHprivUnit">м</span></th>
+                <th rowspan="2" style="width: 52px; line-height: 1.05;" id="th_route_hbez">H б 760<br><span class="unit-sub" id="hdrRouteHbezUnit">H б пр (м)</span></th>
                 <th rowspan="2" style="width: 170px;">МАРШРУТ</th>
                 <th rowspan="2" style="width: 36px; background: #f8fafc;" title="Угол ветра (УВ) рассчитывается автоматически">🔒 УВ</th>
                 <th rowspan="2" style="width: 36px; background: #f8fafc;" title="Угол сноса (УС) рассчитывается автоматически через острый угол α">🔒 УС</th>
                 <th rowspan="2" style="width: 40px;" title="Магнитный путевой угол (вводится)">МПУ</th>
                 <th rowspan="2" style="width: 40px; background: #f8fafc;" title="Магнитный курс (МК = МПУ - УС) рассчитывается автоматически">🔒 МК</th>
-                <th rowspan="2" style="width: 38px;" title="Истинная скорость Vи (вводится)">V<sub>и</sub></th>
-                <th rowspan="2" style="width: 38px; background: #f8fafc;" title="Путевая скорость (W) рассчитывается автоматически">🔒 W</th>
-                <th rowspan="2" style="width: 40px;" title="Расстояние участка S (вводится)">S</th>
+                <th rowspan="2" style="width: 40px;" title="Истинная скорость Vи (вводится)">V<sub>и</sub><br><span class="unit-sub" id="hdrRouteViUnit">км/ч</span></th>
+                <th rowspan="2" style="width: 40px; background: #f8fafc;" title="Путевая скорость (W) рассчитывается автоматически">🔒 W<br><span class="unit-sub" id="hdrRouteWUnit">км/ч</span></th>
+                <th rowspan="2" style="width: 40px;" title="Расстояние участка S (вводится)">S<br><span class="unit-sub" id="hdrRouteSUnit">км</span></th>
                 <th rowspan="2" style="width: 38px;" title="Время полета t = S / W * 60 (рассчитывается)">t</th>
                 <th colspan="2" style="width: 84px;">Топливо</th>
                 <th rowspan="2" style="width: 46px;" title="Расчетное время пролета (Т расч)">Т расч</th>
                 <th rowspan="2" style="width: 46px;">Т факт</th>
-                <th rowspan="2" style="width: 48px;">H пом</th>
+                <th rowspan="2" style="width: 48px;">H пом<br><span class="unit-sub" id="hdrRouteHpUnit">м</span></th>
               </tr>
               <tr>
                 <th style="width: 42px;">Q р</th>
@@ -1735,7 +1842,7 @@
             <span contenteditable="true" class="fill-line" id="f_altn" style="min-width: 140px;"></span>
             <span>&nbsp;S&nbsp;</span>
             <span contenteditable="true" class="fill-line" id="f_altn_s" style="min-width: 45px;"></span>
-            <span>&nbsp;км&nbsp;&nbsp;Q&nbsp;</span>
+            <span>&nbsp;<span id="lblFooterAltnUnit">км</span>&nbsp;&nbsp;Q&nbsp;</span>
             <span contenteditable="true" class="fill-line" id="f_altn_q" style="min-width: 45px;"></span>
             <span>&nbsp;кг</span>
           </div>
@@ -1743,7 +1850,7 @@
           <div class="footer-row">
             <span>Рубеж ухода (возвр.) на аэр. выл. Sр.у.&nbsp;</span>
             <span contenteditable="true" class="fill-line" id="f_ru_s" style="min-width: 50px;"></span>
-            <span>&nbsp;км&nbsp;&nbsp;Q р.у.&nbsp;</span>
+            <span>&nbsp;<span id="lblFooterRuUnit">км</span>&nbsp;&nbsp;Q р.у.&nbsp;</span>
             <span contenteditable="true" class="fill-line" id="f_ru_q" style="min-width: 50px;"></span>
             <span>&nbsp;кг</span>
           </div>
@@ -1859,9 +1966,241 @@
     let isWidescreen = true;
     let saveTimeout = null;
 
+    // =========================================================
+    // UNITS CONFIGURATION (Speed: km/h | kt, Alt: m | ft, Dist: km | NM)
+    // =========================================================
+    const currentUnits = {
+      speed: 'kmh', // 'kmh' or 'kt'
+      alt: 'm',     // 'm' or 'ft'
+      dist: 'km'    // 'km' or 'nm'
+    };
+
+    function setSpeedUnit(unit, convertData = true) {
+      if (unit !== 'kmh' && unit !== 'kt') return;
+      if (currentUnits.speed === unit) return;
+
+      const oldUnit = currentUnits.speed;
+      currentUnits.speed = unit;
+
+      const chk = document.getElementById('chkAutoConvert');
+      const shouldConvert = convertData && (!chk || chk.checked);
+
+      if (shouldConvert) {
+        convertSpeedValues(oldUnit, unit);
+      }
+
+      updateUnitUI();
+      recalculateEntireFlightPlan();
+      debouncedSave();
+    }
+
+    function setAltUnit(unit, convertData = true) {
+      if (unit !== 'm' && unit !== 'ft') return;
+      if (currentUnits.alt === unit) return;
+
+      const oldUnit = currentUnits.alt;
+      currentUnits.alt = unit;
+
+      const chk = document.getElementById('chkAutoConvert');
+      const shouldConvert = convertData && (!chk || chk.checked);
+
+      if (shouldConvert) {
+        convertAltValues(oldUnit, unit);
+      }
+
+      updateUnitUI();
+      recalculateEntireFlightPlan();
+      debouncedSave();
+    }
+
+    function setDistUnit(unit, convertData = true) {
+      if (unit !== 'km' && unit !== 'nm') return;
+      if (currentUnits.dist === unit) return;
+
+      const oldUnit = currentUnits.dist;
+      currentUnits.dist = unit;
+
+      const chk = document.getElementById('chkAutoConvert');
+      const shouldConvert = convertData && (!chk || chk.checked);
+
+      if (shouldConvert) {
+        convertDistValues(oldUnit, unit);
+      }
+
+      updateUnitUI();
+      recalculateEntireFlightPlan();
+      debouncedSave();
+    }
+
+    function convertSpeedValues(fromUnit, toUnit) {
+      const factor = (toUnit === 'kt') ? (1 / 1.852) : 1.852;
+
+      // 1. Quick wind speed & drawer wind speed
+      const qU = document.getElementById('quickWindSpeed');
+      if (qU && qU.value.trim()) {
+        const val = parseFloat(qU.value.replace(',', '.'));
+        if (!isNaN(val)) qU.value = Math.round(val * factor);
+      }
+      syncAllWindAndFuelInputs('desktop');
+
+      // 2. Top wind table column 3 (U)
+      document.querySelectorAll('#windTableBody tr').forEach(tr => {
+        const tdU = tr.children[3];
+        if (tdU && tdU.innerText.trim()) {
+          const val = parseFloat(tdU.innerText.replace(',', '.'));
+          if (!isNaN(val)) tdU.innerText = Math.round(val * factor);
+        }
+      });
+
+      // 3. Route table column col-vi
+      document.querySelectorAll('#routeTableBody .col-vi').forEach(td => {
+        if (td.innerText.trim()) {
+          const val = parseFloat(td.innerText.replace(',', '.'));
+          if (!isNaN(val)) td.innerText = Math.round(val * factor);
+        }
+      });
+    }
+
+    function convertAltValues(fromUnit, toUnit) {
+      const factor = (toUnit === 'ft') ? 3.28084 : (1 / 3.28084);
+
+      // 1. Top wind table column 1 (H)
+      document.querySelectorAll('#windTableBody tr').forEach(tr => {
+        const tdH = tr.children[1];
+        if (tdH && tdH.innerText.trim()) {
+          const txt = tdH.innerText.trim();
+          const val = parseFloat(txt.replace(',', '.'));
+          if (!isNaN(val) && !txt.toUpperCase().includes('FL')) {
+            tdH.innerText = toUnit === 'ft' ? Math.round(val * factor / 100) * 100 : Math.round(val * factor / 50) * 50;
+          }
+        }
+      });
+
+      // 2. Route table H columns (col-hpriv, col-hbez, col-hp)
+      ['.col-hpriv', '.col-hbez', '.col-hp'].forEach(cls => {
+        document.querySelectorAll('#routeTableBody ' + cls).forEach(td => {
+          const txt = td.innerText.trim();
+          const val = parseFloat(txt.replace(',', '.'));
+          if (!isNaN(val) && !txt.toUpperCase().includes('FL')) {
+            td.innerText = toUnit === 'ft' ? Math.round(val * factor / 100) * 100 : Math.round(val * factor / 50) * 50;
+          }
+        });
+      });
+    }
+
+    function convertDistValues(fromUnit, toUnit) {
+      const factor = (toUnit === 'nm') ? (1 / 1.852) : 1.852;
+
+      // 1. Route table S column
+      document.querySelectorAll('#routeTableBody .col-s').forEach(td => {
+        if (td.innerText.trim()) {
+          const val = parseFloat(td.innerText.replace(',', '.'));
+          if (!isNaN(val)) {
+            td.innerText = Math.round(val * factor * 10) / 10;
+          }
+        }
+      });
+
+      // 2. Footer alternate distances
+      ['f_altn_s', 'f_ru_s'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.innerText.trim()) {
+          const val = parseFloat(el.innerText.replace(',', '.'));
+          if (!isNaN(val)) {
+            el.innerText = Math.round(val * factor * 10) / 10;
+          }
+        }
+      });
+    }
+
+    function updateUnitUI() {
+      const spKmh = currentUnits.speed === 'kmh';
+      const altM = currentUnits.alt === 'm';
+      const distKm = currentUnits.dist === 'km';
+
+      // Speed buttons
+      const bRSK = document.getElementById('btnRibbonSpeedKmh');
+      const bRST = document.getElementById('btnRibbonSpeedKt');
+      const bDSK = document.getElementById('btnDrawerSpeedKmh');
+      const bDST = document.getElementById('btnDrawerSpeedKt');
+      if (bRSK) bRSK.classList.toggle('active', spKmh);
+      if (bRST) bRST.classList.toggle('active', !spKmh);
+      if (bDSK) bDSK.classList.toggle('active', spKmh);
+      if (bDST) bDST.classList.toggle('active', !spKmh);
+
+      // Alt buttons
+      const bRAM = document.getElementById('btnRibbonAltM');
+      const bRAF = document.getElementById('btnRibbonAltFt');
+      const bDAM = document.getElementById('btnDrawerAltM');
+      const bDAF = document.getElementById('btnDrawerAltFt');
+      if (bRAM) bRAM.classList.toggle('active', altM);
+      if (bRAF) bRAF.classList.toggle('active', !altM);
+      if (bDAM) bDAM.classList.toggle('active', altM);
+      if (bDAF) bDAF.classList.toggle('active', !altM);
+
+      // Dist buttons
+      const bRDK = document.getElementById('btnRibbonDistKm');
+      const bRDN = document.getElementById('btnRibbonDistNm');
+      const bDDK = document.getElementById('btnDrawerDistKm');
+      const bDDN = document.getElementById('btnDrawerDistNm');
+      if (bRDK) bRDK.classList.toggle('active', distKm);
+      if (bRDN) bRDN.classList.toggle('active', !distKm);
+      if (bDDK) bDDK.classList.toggle('active', distKm);
+      if (bDDN) bDDN.classList.toggle('active', !distKm);
+
+      // Update table headers and labels
+      const speedLabel = spKmh ? 'км/ч' : 'kt';
+      const altLabel = altM ? 'м' : 'ft';
+      const distLabel = distKm ? 'км' : 'NM';
+
+      const thWindU = document.getElementById('th_wind_u');
+      if (thWindU) thWindU.innerHTML = `U ${speedLabel}`;
+
+      const thWindH = document.getElementById('th_wind_h');
+      if (thWindH) thWindH.innerHTML = `Н (${altLabel})`;
+
+      const hVi = document.getElementById('hdrRouteViUnit');
+      if (hVi) hVi.textContent = speedLabel;
+
+      const hW = document.getElementById('hdrRouteWUnit');
+      if (hW) hW.textContent = speedLabel;
+
+      const hS = document.getElementById('hdrRouteSUnit');
+      if (hS) hS.textContent = distLabel;
+
+      const hHpriv = document.getElementById('hdrRouteHprivUnit');
+      if (hHpriv) hHpriv.textContent = altLabel;
+
+      const hHbez = document.getElementById('hdrRouteHbezUnit');
+      if (hHbez) hHbez.textContent = `H б пр (${altLabel})`;
+
+      const hHp = document.getElementById('hdrRouteHpUnit');
+      if (hHp) hHp.textContent = altLabel;
+
+      const lblRW = document.getElementById('lblRibbonWindSpeedUnit');
+      if (lblRW) lblRW.textContent = speedLabel;
+
+      const lblDW = document.getElementById('lblDrawerWindSpeedUnit');
+      if (lblDW) lblDW.textContent = speedLabel;
+
+      const lblFA = document.getElementById('lblFooterAltnUnit');
+      if (lblFA) lblFA.textContent = distLabel;
+
+      const lblFR = document.getElementById('lblFooterRuUnit');
+      if (lblFR) lblFR.textContent = distLabel;
+
+      // Update quick inputs placeholder
+      const qU = document.getElementById('quickWindSpeed');
+      if (qU) qU.placeholder = spKmh ? '40' : '22';
+      const dU = document.getElementById('drawerWindSpeed');
+      if (dU) dU.placeholder = spKmh ? '40' : '22';
+    }
+
+
     // DOM Ready
     document.addEventListener('DOMContentLoaded', () => {
       loadSavedData();
+      updateUnitUI();
       setupKeyboardNavigation();
       setupInputListeners();
       syncWindFieldsFromTable();
@@ -2226,10 +2565,18 @@
         if (w <= 0) w = 1;
       }
 
-      // 7. Время полета (t = S / W * 60)
+      // 7. Время полета (t = S / W * 60) с учетом единиц скорости и дистанции
       let tMins = 0;
       if (w > 0 && dist > 0) {
-        tMins = (dist / w) * 60;
+        let wEffective = w;
+        if (currentUnits.speed === 'kt' && currentUnits.dist === 'km') {
+          // w in knots (NM/h), dist in km -> 1 NM = 1.852 km -> w in km/h
+          wEffective = w * 1.852;
+        } else if (currentUnits.speed === 'kmh' && currentUnits.dist === 'nm') {
+          // w in km/h, dist in NM -> 1 NM = 1.852 km -> w in NM/h
+          wEffective = w / 1.852;
+        }
+        tMins = (dist / wEffective) * 60;
       }
 
       // 8. Топливо этапа Qр: tMins * (fuelFlowHour / 60)
@@ -2297,7 +2644,8 @@
       const res = calculateLegParameters(mpu, vi, s, metWindDir, windSpeed, fuelFlow);
       if (!res) return;
 
-      const tooltip = `НТС через α: УВ=${res.uv}°, α=${res.alpha}°, Uбок=${res.uBok} км/ч, Uэкв=${res.uEkv} км/ч`;
+      const spUnit = currentUnits.speed === 'kt' ? 'kt' : 'км/ч';
+      const tooltip = `НТС через α: УВ=${res.uv}°, α=${res.alpha}°, Uбок=${res.uBok} ${spUnit}, Uэкв=${res.uEkv} ${spUnit}`;
 
       if (cellUv) {
         cellUv.innerText = `${res.uv}°`;
@@ -2314,11 +2662,12 @@
       }
       if (cellW) {
         cellW.innerText = res.w;
-        cellW.title = `W = ${vi} · cos(${res.us}°) ± ${res.uEkv} = ${res.w} км/ч`;
+        cellW.title = `W = ${vi} · cos(${res.us}°) ± ${res.uEkv} = ${res.w} ${spUnit}`;
       }
       if (cellT && s > 0) {
         cellT.innerText = res.t;
-        cellT.title = `t = (${s} / ${res.w}) · 60 = ${res.t} мин`;
+        const distUnit = currentUnits.dist === 'nm' ? 'NM' : 'км';
+        cellT.title = `t = (${s} ${distUnit} / ${res.w} ${spUnit}) · 60 = ${res.t} мин`;
       }
       if (cellQr && res.qr > 0) {
         cellQr.innerText = res.qr;
@@ -2474,7 +2823,8 @@
 
       if (telemWind) {
         if (qW && qU && (qW.value.trim() || qU.value.trim())) {
-          telemWind.innerText = `${qW.value || '0'}° / ${qU.value || '0'}`;
+          const spUnit = currentUnits.speed === 'kt' ? 'kt' : 'км/ч';
+          telemWind.innerText = `${qW.value || '0'}° / ${qU.value || '0'} ${spUnit}`;
         } else {
           telemWind.innerText = '—';
         }
@@ -2598,7 +2948,8 @@
         quickDepTime: document.getElementById('quickDepTime').value,
         quickFuelHour: document.getElementById('quickFuelHour').value,
         quickFuelMin: document.getElementById('quickFuelMin').value,
-        quickFuelAnz: document.getElementById('quickFuelAnz').value
+        quickFuelAnz: document.getElementById('quickFuelAnz').value,
+        units: currentUnits
       };
 
       document.querySelectorAll('[id]').forEach(el => {
@@ -2728,6 +3079,13 @@
           });
         }
 
+        if (data.units) {
+          if (data.units.speed) currentUnits.speed = data.units.speed;
+          if (data.units.alt) currentUnits.alt = data.units.alt;
+          if (data.units.dist) currentUnits.dist = data.units.dist;
+          updateUnitUI();
+        }
+
         if (data.autoNts !== undefined) {
           autoNtsEnabled = data.autoNts;
           const btn = document.getElementById('drawerAutoNtsBtn');
@@ -2745,14 +3103,18 @@
       }
     }
 
-    // 10. Sample Data (Сасово - Тамбов)
+    // 10. Sample Data (Сасово - Тамбов с адаптацией под выбранные единицы)
     function loadSampleData() {
       if (!confirm('Заполнить бланк типовым реальным расчетом полета Сасово - Тамбов?')) {
         return;
       }
 
+      const isKt = currentUnits.speed === 'kt';
+      const isFt = currentUnits.alt === 'ft';
+      const isNm = currentUnits.dist === 'nm';
+
       document.getElementById('quickWindDir').value = '270';
-      document.getElementById('quickWindSpeed').value = '40';
+      document.getElementById('quickWindSpeed').value = isKt ? '22' : '40';
       document.getElementById('quickDepTime').value = '08:00';
       document.getElementById('quickFuelHour').value = '450';
       document.getElementById('quickFuelMin').value = '7.5';
@@ -2770,24 +3132,24 @@
         windRows[0].children[0].innerText = 'ЭШЕЛОН';
         windRows[0].children[1].innerText = 'FL150';
         windRows[0].children[2].innerText = '270';
-        windRows[0].children[3].innerText = '40';
+        windRows[0].children[3].innerText = isKt ? '22' : '40';
       }
       if (windRows[1]) {
         windRows[1].children[0].innerText = 'САСОВО';
-        windRows[1].children[1].innerText = '1500';
+        windRows[1].children[1].innerText = isFt ? '5000' : '1500';
         windRows[1].children[2].innerText = '270';
-        windRows[1].children[3].innerText = '35';
+        windRows[1].children[3].innerText = isKt ? '19' : '35';
       }
       if (windRows[2]) {
         windRows[2].children[0].innerText = 'ТАМБОВ';
-        windRows[2].children[1].innerText = '4500';
+        windRows[2].children[1].innerText = isFt ? '15000' : '4500';
         windRows[2].children[2].innerText = '260';
-        windRows[2].children[3].innerText = '45';
+        windRows[2].children[3].innerText = isKt ? '24' : '45';
       }
       if (windRows[3]) {
         windRows[3].children[1].innerText = 'земля';
         windRows[3].children[2].innerText = '090';
-        windRows[3].children[3].innerText = '18';
+        windRows[3].children[3].innerText = isKt ? '10' : '18';
       }
 
       // Header fields
@@ -2837,15 +3199,15 @@
       setTxt('f_night_h', '0'); setTxt('f_night_m', '0');
       setTxt('f_sig_kvs', 'Иванов А.С.'); setTxt('f_sig_copilot', 'Петров В.М.'); setTxt('f_sig_ae', 'Ковалев Г.В.');
 
-      // Route Legs
+      // Route Legs adapted to current units
       const sampleLegs = [
-        { hPriv: 'Круг', hBez: '300', point: 'ВЗЛЕТ (ВПП 26)', mpu: 260, vi: 240, s: 12, hp: '300' },
-        { hPriv: 'FL090', hBez: '900', point: 'НАБОР ЭШЕЛОНА', mpu: 210, vi: 380, s: 45, hp: '1200' },
-        { hPriv: 'FL150', hBez: '1500', point: 'МОРШАНСК (ТРАССА)', mpu: 195, vi: 430, s: 85, hp: '1800' },
-        { hPriv: 'FL150', hBez: '1500', point: 'ППМ ВЕРНАДОВКА', mpu: 190, vi: 430, s: 64, hp: '1800' },
-        { hPriv: 'FL090', hBez: '900', point: 'НАЧАЛО СНИЖЕНИЯ', mpu: 185, vi: 400, s: 48, hp: '1400' },
-        { hPriv: 'Круг', hBez: '400', point: 'ВЫХОД НА 4-й РАЗВ.', mpu: 238, vi: 270, s: 22, hp: '600' },
-        { hPriv: 'ВПП', hBez: 'ВПР', point: 'ПОСАДКА УУОТ', mpu: 238, vi: 190, s: 8, hp: '0' },
+        { hPriv: 'Круг', hBez: isFt ? '1000' : '300', point: 'ВЗЛЕТ (ВПП 26)', mpu: 260, vi: isKt ? 130 : 240, s: isNm ? 6.5 : 12, hp: isFt ? '1000' : '300' },
+        { hPriv: 'FL090', hBez: isFt ? '3000' : '900', point: 'НАБОР ЭШЕЛОНА', mpu: 210, vi: isKt ? 205 : 380, s: isNm ? 24.3 : 45, hp: isFt ? '4000' : '1200' },
+        { hPriv: 'FL150', hBez: isFt ? '5000' : '1500', point: 'МОРШАНСК (ТРАССА)', mpu: 195, vi: isKt ? 232 : 430, s: isNm ? 45.9 : 85, hp: isFt ? '6000' : '1800' },
+        { hPriv: 'FL150', hBez: isFt ? '5000' : '1500', point: 'ППМ ВЕРНАДОВКА', mpu: 190, vi: isKt ? 232 : 430, s: isNm ? 34.6 : 64, hp: isFt ? '6000' : '1800' },
+        { hPriv: 'FL090', hBez: isFt ? '3000' : '900', point: 'НАЧАЛО СНИЖЕНИЯ', mpu: 185, vi: isKt ? 216 : 400, s: isNm ? 25.9 : 48, hp: isFt ? '4500' : '1400' },
+        { hPriv: 'Круг', hBez: isFt ? '1300' : '400', point: 'ВЫХОД НА 4-й РАЗВ.', mpu: 238, vi: isKt ? 146 : 270, s: isNm ? 11.9 : 22, hp: isFt ? '2000' : '600' },
+        { hPriv: 'ВПП', hBez: 'ВПР', point: 'ПОСАДКА УУОТ', mpu: 238, vi: isKt ? 103 : 190, s: isNm ? 4.3 : 8, hp: '0' },
       ];
 
       const tbody = document.getElementById('routeTableBody');
