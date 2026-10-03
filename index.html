@@ -6,10 +6,13 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
   <title>Штурманский бортовой журнал (ШБЖ) с расчетом НТС</title>
   <style>
     /* =========================================================
-       CSS RESET & BASE CONFIGURATION
+       PREMIUM DARK GREY & WHITE AVIATION THEME (ЧИСТЫЙ ТЕМНО-СЕРО-БЕЛЫЙ ДИЗАЙН)
        ========================================================= */
     * {
       box-sizing: border-box;
@@ -18,42 +21,40 @@
     }
 
     body {
-      background-color: #080d1a;
-      font-family: "Times New Roman", Times, "PT Astra Serif", serif;
-      color: #000;
-      line-height: 1.15;
+      background-color: #121316;
+      color: #f4f4f5;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      line-height: 1.3;
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 0;
       margin: 0;
+      padding: 0;
       min-height: 100vh;
       overflow-x: hidden;
     }
 
-    /* =========================================================
-       OFFICIAL EFB FLIGHT DECK NAVIGATION & APP BAR (NO-PRINT)
-       ========================================================= */
+    /* ---------------------------------------------------------
+       TOP NAVIGATION BAR (HEADER)
+       --------------------------------------------------------- */
     .app-header {
       position: sticky;
       top: 0;
       z-index: 1100;
       width: 100%;
-      background: rgba(11, 19, 36, 0.96);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-bottom: 1px solid #1e2d4a;
-      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.45);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: #181a1e;
+      border-bottom: 1px solid #282a30;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
     }
 
     .app-header-inner {
       width: 100%;
-      max-width: 1400px;
+      max-width: 1440px;
       margin: 0 auto;
       padding: 0 16px;
-      height: 50px;
+      height: 48px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -70,42 +71,43 @@
     .brand-logo {
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 8px;
       font-size: 15px;
       font-weight: 800;
-      color: #f8fafc;
-      letter-spacing: 0.6px;
+      color: #ffffff;
+      letter-spacing: 0.5px;
     }
 
     .brand-badge {
-      background: #1e293b;
-      color: #94a3b8;
+      background: #23252b;
+      color: #a1a1aa;
       font-size: 10px;
       font-weight: 700;
       padding: 2px 7px;
       border-radius: 4px;
-      border: 1px solid #334155;
+      border: 1px solid #33363e;
       letter-spacing: 0.5px;
       text-transform: uppercase;
     }
 
+    /* Telemetry Pill Capsule */
     .header-telemetry {
       display: flex;
       align-items: center;
       gap: 8px;
-      background: #131d31;
-      border: 1px solid #233552;
-      padding: 4px 12px;
+      background: #202227;
+      border: 1px solid #30333b;
+      padding: 4px 14px;
       border-radius: 20px;
       font-size: 12px;
-      color: #94a3b8;
+      color: #a1a1aa;
       cursor: pointer;
       transition: all 0.15s ease;
     }
     .header-telemetry:hover {
-      background: #18253e;
-      border-color: #38bdf8;
-      color: #e2e8f0;
+      background: #272a31;
+      border-color: #52525b;
+      color: #f4f4f5;
     }
     .telemetry-item {
       display: inline-flex;
@@ -113,31 +115,25 @@
       gap: 4px;
     }
     .telemetry-val {
-      font-family: monospace;
+      font-family: 'JetBrains Mono', monospace;
       font-weight: 700;
-      color: #e2e8f0;
-    }
-    .telemetry-val.accent {
-      color: #38bdf8;
-    }
-    .telemetry-val.success {
-      color: #4ade80;
+      color: #ffffff;
     }
 
+    /* Header Actions */
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
 
-    /* Buttons: Restrained Official Aviation Palette */
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
       padding: 6px 12px;
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 600;
       border-radius: 6px;
       border: 1px solid transparent;
@@ -146,342 +142,200 @@
       white-space: nowrap;
       user-select: none;
       touch-action: manipulation;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: inherit;
     }
     .btn:active {
       transform: translateY(1px);
     }
 
-    .btn-official-outline {
-      background: #172238;
-      color: #cbd5e1;
-      border-color: #2b3d5d;
-    }
-    .btn-official-outline:hover {
-      background: #1e2d4a;
-      border-color: #3d5683;
-      color: #f8fafc;
-    }
-
-    .btn-official-primary {
-      background: #0284c7;
+    .btn-dark {
+      background: #25272e;
       color: #ffffff;
-      border-color: #0369a1;
+      border-color: #383b44;
     }
-    .btn-official-primary:hover {
-      background: #0369a1;
-    }
-
-    .btn-official-success {
-      background: #0f766e;
+    .btn-dark:hover {
+      background: #32353e;
+      border-color: #52525b;
       color: #ffffff;
-      border-color: #0d9488;
-    }
-    .btn-official-success:hover {
-      background: #115e59;
     }
 
-    .btn-menu-trigger {
-      background: #1e293b;
-      color: #f1f5f9;
-      border: 1px solid #334155;
-      padding: 6px 12px;
+    .btn-white {
+      background: #ffffff;
+      color: #09090b;
+      border-color: #ffffff;
       font-weight: 700;
     }
-    .btn-menu-trigger:hover {
-      background: #334155;
-      border-color: #475569;
+    .btn-white:hover {
+      background: #e4e4e7;
     }
 
-    /* Desktop Collapsible Parameters Ribbon */
-    .desktop-params-ribbon {
+    .btn-ctrl {
+      background: #202228;
+      color: #e4e4e7;
+      border: 1px solid #363942;
+      padding: 3px 8px;
+      font-size: 11.5px;
+      border-radius: 4px;
+    }
+    .btn-ctrl:hover {
+      background: #30333b;
+      color: #ffffff;
+      border-color: #71717a;
+    }
+
+    /* ---------------------------------------------------------
+       UNIFIED CONTROL TOOLBAR (ПАРАМЕТРЫ, ЕДИНИЦЫ И ТОПЛИВО)
+       --------------------------------------------------------- */
+    .control-toolbar {
       width: 100%;
-      background: #0d1527;
-      border-bottom: 1px solid #1c2a44;
+      background: #1a1c21;
+      border-bottom: 1px solid #282a30;
       padding: 6px 16px;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 12px;
       flex-wrap: wrap;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       font-size: 12px;
-      color: #94a3b8;
-      transition: all 0.2s ease;
-    }
-    .desktop-params-ribbon.collapsed {
-      display: none;
+      color: #a1a1aa;
     }
 
-    .calc-group {
+    .ctrl-section {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
     }
+
+    .ctrl-label {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #a1a1aa;
+    }
+
+    .ctrl-divider {
+      width: 1px;
+      height: 20px;
+      background: #2c2e35;
+      margin: 0 4px;
+    }
+
+    /* Segmented Pill Switcher (Units) */
+    .unit-pill-group {
+      display: inline-flex;
+      align-items: center;
+      background: #121316;
+      border: 1px solid #2c2e35;
+      border-radius: 5px;
+      padding: 2px;
+      gap: 1px;
+    }
+    .unit-pill-btn {
+      background: transparent;
+      border: none;
+      color: #71717a;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.12s ease;
+      font-family: inherit;
+    }
+    .unit-pill-btn:hover {
+      color: #f4f4f5;
+    }
+    .unit-pill-btn.active {
+      background: #ffffff;
+      color: #09090b;
+      font-weight: 700;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    /* Inputs in Toolbar */
     .calc-input {
-      background: #090e1a;
-      border: 1px solid #2d3e58;
-      color: #7dd3fc;
+      background: #121316;
+      border: 1px solid #363942;
+      color: #ffffff;
       font-weight: 700;
       padding: 3px 6px;
       border-radius: 4px;
-      width: 54px;
+      width: 52px;
       text-align: center;
-      font-family: monospace;
-      font-size: 13px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      transition: border-color 0.15s ease;
     }
     .calc-input:focus {
       outline: none;
-      border-color: #38bdf8;
-      box-shadow: 0 0 0 1px #38bdf8;
+      border-color: #ffffff;
+      box-shadow: 0 0 0 1px #ffffff;
+    }
+    .calc-input::placeholder {
+      color: #52525b;
+      font-weight: normal;
     }
 
-    /* Status indicator */
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #10b981;
-      display: inline-block;
-    }
-
-    /* =========================================================
-       SIDE DRAWER (EFB CONTROL PANEL) - ALL DEVICES & MOBILE
-       ========================================================= */
-    .drawer-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(4, 8, 16, 0.7);
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(5px);
-      z-index: 2100;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.25s ease, visibility 0.25s ease;
-    }
-    .drawer-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .drawer-panel {
-      position: fixed;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      width: 380px;
-      max-width: 90vw;
-      background: #0c1424;
-      border-left: 1px solid #1e2d4a;
-      box-shadow: -8px 0 35px rgba(0, 0, 0, 0.6);
-      z-index: 2200;
-      display: flex;
-      flex-direction: column;
-      transform: translateX(100%);
-      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-    .drawer-panel.active {
-      transform: translateX(0);
-    }
-
-    .drawer-header {
-      padding: 14px 18px;
-      border-bottom: 1px solid #1a2740;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #090f1d;
-    }
-    .drawer-title-group h3 {
-      font-size: 15px;
+    .ctrl-val {
+      font-family: 'JetBrains Mono', monospace;
       font-weight: 700;
-      color: #f8fafc;
-      display: flex;
-      align-items: center;
-      gap: 7px;
+      color: #ffffff;
     }
-    .drawer-title-group p {
-      font-size: 11px;
-      color: #64748b;
-      margin-top: 2px;
-    }
-    .drawer-close-btn {
-      background: transparent;
-      border: 1px solid #233552;
-      color: #94a3b8;
-      width: 30px;
-      height: 30px;
-      border-radius: 6px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 15px;
-      transition: all 0.15s ease;
-    }
-    .drawer-close-btn:hover {
-      background: #1e293b;
-      color: #fff;
-      border-color: #475569;
-    }
-
-    .drawer-content {
-      flex: 1;
-      overflow-y: auto;
-      padding: 14px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .drawer-card {
-      background: #111a2d;
-      border: 1px solid #1e2e4b;
-      border-radius: 8px;
-      padding: 12px 14px;
-    }
-    .drawer-card-title {
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      color: #38bdf8;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .drawer-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 8px;
-      font-size: 13px;
-      color: #cbd5e1;
-    }
-    .drawer-row:last-child {
-      margin-bottom: 0;
-    }
-    .drawer-row label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .drawer-fuel-total-box {
-      background: #092036;
-      border: 1px solid #0369a1;
-      border-radius: 6px;
-      padding: 10px 12px;
-      margin-top: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .drawer-fuel-total-label {
-      font-size: 12px;
-      color: #7dd3fc;
-      font-weight: 600;
-    }
-    .drawer-fuel-total-val {
-      font-size: 16px;
+    .ctrl-val-accent {
+      font-family: 'JetBrains Mono', monospace;
       font-weight: 800;
-      font-family: monospace;
-      color: #38bdf8;
+      color: #ffffff;
+      background: #252830;
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid #3f424c;
     }
 
-    .drawer-btn-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    .drawer-btn-full {
-      width: 100%;
-      margin-bottom: 8px;
-    }
-    .drawer-btn-full:last-child {
-      margin-bottom: 0;
-    }
-
-    /* Mobile Bottom Quick-Bar */
-    .mobile-bottom-bar {
-      display: none;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 52px;
-      background: rgba(11, 19, 36, 0.98);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-top: 1px solid #1e2d4a;
-      z-index: 1050;
-      padding: 0 10px;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-    .mobile-bottom-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      height: 100%;
-    }
-    .mobile-tab-btn {
-      background: transparent;
-      border: none;
-      color: #94a3b8;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 3px;
-      font-size: 11px;
-      font-weight: 600;
-      padding: 6px 12px;
-      cursor: pointer;
-      border-radius: 6px;
-      touch-action: manipulation;
-    }
-    .mobile-tab-btn:active, .mobile-tab-btn:hover {
-      color: #38bdf8;
-      background: #172238;
-    }
-
-    /* =========================================================
-       DOCUMENT PAGE CONTAINER (FULL-SCREEN RESPONSIVE / WIDESCREEN)
-       ========================================================= */
+    /* ---------------------------------------------------------
+       DOCUMENT SHEET & PAPER CANVAS
+       --------------------------------------------------------- */
     .sheet-outer-wrapper {
       width: 100%;
       display: flex;
       justify-content: center;
-      padding: 14px 12px 30px 12px;
+      padding: 16px 14px 40px 14px;
     }
 
     .page-sheet {
       width: 100%;
       max-width: 100%;
       background: #ffffff;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
-      border: 1px solid #cbd5e1;
+      color: #09090b;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.45);
+      border: 1px solid #27272a;
       padding: 16px 20px;
       position: relative;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      border-radius: 6px;
+      border-radius: 4px;
       transition: all 0.2s ease;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
-    /* When constrained to standard A4 sheet proportion */
     .page-sheet.mode-a4 {
       max-width: 1100px;
     }
 
-    /* =========================================================
-       TYPOGRAPHY & GENERIC TABLES
-       ========================================================= */
+    /* Status bar */
+    .sheet-status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 11px;
+      color: #71717a;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #e4e4e7;
+    }
+
+    /* ---------------------------------------------------------
+       CRISP HIGH-CONTRAST TABLES & CELLS
+       --------------------------------------------------------- */
     table {
       border-collapse: collapse;
       width: 100%;
@@ -489,46 +343,56 @@
     }
 
     th, td {
-      border: 1px solid #000;
+      border: 1px solid #18181b;
       text-align: center;
       vertical-align: middle;
       font-size: 12.5px;
-      padding: 3px 2px;
+      padding: 4px 2px;
       overflow: hidden;
       word-wrap: break-word;
+      font-variant-numeric: tabular-nums;
     }
 
     th {
-      font-weight: bold;
-      background-color: #fff;
+      font-weight: 700;
+      background-color: #f4f4f6;
+      color: #09090b;
       font-size: 11.5px;
     }
 
-    /* Contenteditable interactive styling */
+    /* Editable cells */
     [contenteditable="true"] {
       outline: none;
-      transition: background-color 0.15s ease;
+      transition: background-color 0.12s ease;
       cursor: text;
     }
-
     [contenteditable="true"]:hover {
-      background-color: #eff6ff;
+      background-color: #f8fafc;
     }
-
     [contenteditable="true"]:focus {
-      background-color: #dbeafe !important;
-      box-shadow: inset 0 0 0 1px #2563eb;
+      background-color: #ffffff !important;
+      box-shadow: inset 0 0 0 1.5px #18181b !important;
     }
 
-    
-    /* Ghost prediction for actual flight times (Т факт) */
+    /* Auto-calculated read-only cells (Hб, α, УС, МК, W) */
+    td.col-readonly, td[contenteditable="false"] {
+      background-color: #f0f2f5;
+      cursor: not-allowed;
+      user-select: none;
+      font-weight: 700;
+      color: #09090b;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Ghost projected actual time (Т факт) */
     td.col-tf {
       position: relative;
+      font-family: 'JetBrains Mono', monospace;
     }
     td.col-tf:empty::before {
       content: attr(data-ghost);
-      color: #64748b;
-      opacity: 0.38;
+      color: #71717a;
+      opacity: 0.45;
       font-weight: 500;
       letter-spacing: 0.5px;
       pointer-events: none;
@@ -538,780 +402,175 @@
     td.col-tf:focus:empty::before {
       opacity: 0.2;
     }
+
+    /* Section 1 Header form styling */
+    .flight-header-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .header-field-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+    .fill-line {
+      border-bottom: 1px solid #18181b;
+      min-width: 40px;
+      padding: 0 4px;
+      font-weight: 600;
+    }
+
+    /* Unit sub-labels in table headers */
+    .unit-sub {
+      font-size: 9.5px;
+      font-weight: 600;
+      color: #52525b;
+    }
+
+    /* Drawer Side Panel */
+    .drawer-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      z-index: 1200;
+    }
+    .drawer-overlay.active {
+      display: block;
+    }
+
+    .drawer-panel {
+      position: fixed;
+      top: 0;
+      right: -360px;
+      width: 340px;
+      height: 100vh;
+      background: #181a1e;
+      border-left: 1px solid #282a30;
+      box-shadow: -6px 0 25px rgba(0, 0, 0, 0.5);
+      z-index: 1250;
+      overflow-y: auto;
+      transition: right 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+    }
+    .drawer-panel.active {
+      right: 0;
+    }
+    .drawer-header {
+      padding: 14px 16px;
+      background: #1f2126;
+      border-bottom: 1px solid #282a30;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .drawer-header h3 {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+    }
+    .drawer-close-btn {
+      background: #252830;
+      border: 1px solid #363942;
+      color: #a1a1aa;
+      font-size: 16px;
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .drawer-close-btn:hover {
+      color: #ffffff;
+      background: #32353e;
+    }
+    .drawer-content {
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .drawer-card {
+      background: #202227;
+      border: 1px solid #2e3138;
+      border-radius: 6px;
+      padding: 12px;
+    }
+    .drawer-card-title {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .drawer-btn-full {
+      width: 100%;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+    .drawer-btn-full:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Print styles */
     @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+      }
+      .no-print, .app-header, .control-toolbar, .drawer-panel, .drawer-overlay, .sheet-status-bar {
+        display: none !important;
+      }
+      .sheet-outer-wrapper {
+        padding: 0 !important;
+      }
+      .page-sheet {
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+        max-width: 100% !important;
+      }
+      th {
+        background-color: #f4f4f4 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      td.col-readonly {
+        background-color: #f0f0f0 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
       td.col-tf:empty::before {
         display: none !important;
       }
     }
 
-    /* Non-editable auto-calculated cells (УВ, УС, МК, W) */
-    td.col-readonly, td[contenteditable="false"] {
-      background-color: #f1f5f9;
-      cursor: not-allowed;
-      user-select: none;
-      font-weight: 600;
-      color: #0f172a;
-    }
-
-    td.col-readonly:hover, td[contenteditable="false"]:hover {
-      background-color: #e2e8f0;
-    }
-
-    /* Underlined fill-in blanks */
-    .fill-line {
-      display: inline-block;
-      border-bottom: 1px solid #000;
-      min-width: 50px;
-      padding: 0 4px;
-      vertical-align: baseline;
-      text-align: center;
-      font-weight: bold;
-    }
-
-    /* =========================================================
-       SECTION 1: TOP HEADER ROW (LEFT TABLE, TITLE, RIGHT TABLE)
-       ========================================================= */
-    .top-section {
-      display: grid;
-      grid-template-columns: 260px 1fr 250px;
-      gap: 14px;
-      align-items: start;
-      margin-bottom: 8px;
-    }
-
-    /* Top Left: Wind Table */
-    .tbl-wind {
-      width: 100%;
-    }
-    .tbl-wind th {
-      font-size: 11px;
-      height: 20px;
-    }
-    .tbl-wind td {
-      height: 20px;
-      font-size: 12px;
-    }
-
-    /* Top Center: Title & Flight Info */
-    .doc-header-center {
-      text-align: center;
-      padding: 0 4px;
-    }
-
-    .doc-main-title {
-      font-size: 17px;
-      font-weight: bold;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-
-    .header-lines {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      font-size: 12.5px;
-      text-align: left;
-    }
-
-    .header-line-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      width: 100%;
-      flex-wrap: wrap;
-      gap: 4px;
-    }
-
-    .header-field {
-      display: inline-flex;
-      align-items: baseline;
-      white-space: nowrap;
-    }
-
-    /* Top Right: Sun Table */
-    .tbl-sun {
-      width: 100%;
-    }
-    .tbl-sun th {
-      font-size: 11px;
-      height: 19px;
-    }
-    .tbl-sun td {
-      height: 19px;
-      font-size: 12px;
-    }
-
-    /* =========================================================
-       SECTION 2: AERODROME & WEATHER SUB-TABLES
-       ========================================================= */
-    .sub-section {
-      display: grid;
-      grid-template-columns: 1fr 250px;
-      gap: 14px;
-      margin-bottom: 8px;
-    }
-
-    .aerodrome-tables-wrapper {
-      display: flex;
-      gap: 10px;
-      align-items: start;
-    }
-
-    .tbl-dep {
-      flex: 1.5;
-    }
-    .tbl-dest {
-      flex: 1;
-    }
-
-    .tbl-sub th {
-      font-size: 11px;
-      padding: 2px 2px;
-      height: 20px;
-    }
-    .tbl-sub td {
-      height: 22px;
-      font-size: 12px;
-    }
-
-    /* Weather table */
-    .tbl-weather {
-      width: 100%;
-    }
-    .tbl-weather th {
-      font-size: 10.5px;
-      height: 20px;
-    }
-    .tbl-weather td {
-      height: 20px;
-      font-size: 11.5px;
-    }
-
-    /* =========================================================
-       SECTION 3: MAIN ROUTE FLIGHT LOG + RIGHT SIDEBAR
-       ========================================================= */
-    .main-body-section {
-      display: grid;
-      grid-template-columns: 1fr 250px;
-      gap: 14px;
-      align-items: stretch;
-      margin-bottom: 8px;
-    }
-
-    /* Horizontal scroll container for phone screens */
-    .table-scroll-container {
-      width: 100%;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    /* Main Flight Plan Table */
-    .tbl-route {
-      width: 100%;
-      min-width: 820px;
-      border: 1.5px solid #000;
-    }
-
-    .tbl-route th {
-      font-size: 11px;
-      padding: 3px 2px;
-      height: 22px;
-    }
-
-    .tbl-route td {
-      height: 25px;
-      font-size: 12.5px;
-      padding: 2px 3px;
-    }
-
-    .tbl-route tr.route-data-row td:nth-child(3) {
-      text-align: left;
-      padding-left: 6px;
-      font-weight: 500;
-    }
-
-    /* Summary row */
-    .tbl-route tr.route-summary-row {
-      font-weight: bold;
-      background: #fafafa;
-    }
-    .tbl-route tr.route-summary-row td {
-      height: 26px;
-      font-size: 13px;
-    }
-
-    /* Fuel & Reserve (АНЗ) Summary Sub-row */
-    .tbl-route tr.route-fuel-summary-row td {
-      height: 24px;
-      font-size: 11.5px;
-      background: #f8fafc;
-    }
-
-    /* Right Sidebar (Notes, Approach Diagram, Wind Rose) */
-    .right-sidebar {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      border: 1px solid #000;
-      padding: 5px;
-    }
-
-    /* Notes Box */
-    .notes-box {
-      border: 1px solid #000;
-      display: flex;
-      flex-direction: column;
-      min-height: 120px;
-      flex: 1;
-    }
-
-    .notes-title {
-      font-size: 11px;
-      font-weight: bold;
-      text-align: center;
-      border-bottom: 1px solid #000;
-      padding: 2px 0;
-      background: #fdfdfd;
-    }
-
-    .notes-content {
-      flex: 1;
-      padding: 4px 6px;
-      font-size: 11.5px;
-      line-height: 17px;
-      outline: none;
-      background-image: repeating-linear-gradient(
-        transparent,
-        transparent 16px,
-        #e2e8f0 16px,
-        #e2e8f0 17px
-      );
-      background-attachment: local;
-      min-height: 95px;
-    }
-
-    /* Landing Diagram Box */
-    .diagram-box {
-      border: 1px solid #000;
-      padding: 4px;
-      text-align: center;
-      position: relative;
-      background: #fff;
-    }
-
-    .diagram-svg {
-      width: 100%;
-      height: 85px;
-      display: block;
-    }
-
-    /* Wind Rose Box */
-    .windrose-box {
-      border: 1px solid #000;
-      padding: 5px;
-      text-align: center;
-      background: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .windrose-svg {
-      width: 120px;
-      height: 120px;
-      display: block;
-    }
-
-    /* =========================================================
-       SECTION 4: FOOTER SIGNATURES & DIVERSION DATA
-       ========================================================= */
-    .footer-section {
-      display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 16px;
-      border-top: 1px solid #000;
-      padding-top: 8px;
-      font-size: 12px;
-    }
-
-    .footer-left {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .footer-right {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .footer-row {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      white-space: nowrap;
-      flex-wrap: wrap;
-      gap: 4px;
-    }
-
-    /* Modal for Math formulas */
-    .math-modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.65);
-      z-index: 2000;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-    }
-    .math-modal-content {
-      background: #ffffff;
-      color: #0f172a;
-      max-width: 720px;
-      width: 100%;
-      border-radius: 8px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-      padding: 20px;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      font-size: 13.5px;
-      line-height: 1.45;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-    .math-modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid #e2e8f0;
-      padding-bottom: 10px;
-      margin-bottom: 12px;
-    }
-    .math-formula-box {
-      background: #f1f5f9;
-      border-left: 4px solid #2563eb;
-      padding: 10px 14px;
-      margin: 8px 0;
-      border-radius: 0 6px 6px 0;
-      font-family: Consolas, monospace;
-      font-size: 13px;
-    }
-
-    /* =========================================================
-       MOBILE & TABLET ADAPTIVE LAYOUT (@media max-width: 900px)
-       ========================================================= */
-    @media (max-width: 900px) {
-      .units-master-bar { display: flex !important; top: 48px; padding: 6px 8px; }
-      body {
-        padding: 0 0 65px 0;
-        background-color: #080d1a;
-      }
-
-      .app-header-inner {
-        padding: 0 10px;
-        height: 48px;
-      }
-
-      .brand-badge {
-        display: none;
-      }
-
-      .header-telemetry {
-        display: none;
-      }
-
-      .desktop-params-ribbon {
-        display: none !important;
-      }
-
-      .desktop-header-btn {
-        display: none !important;
-      }
-
-      .mobile-bottom-bar {
-        display: block !important;
-      }
-
-      .sheet-outer-wrapper {
-        padding: 6px 4px 65px 4px;
-      }
-
-      .page-sheet {
-        padding: 10px 8px;
-        border-radius: 4px;
-        width: 100%;
-      }
-
-      .top-section {
-        grid-template-columns: 1fr;
-        gap: 10px;
-      }
-
-      .doc-header-center {
-        order: -1;
-        margin-bottom: 4px;
-      }
-
-      .sub-section {
-        grid-template-columns: 1fr;
-        gap: 10px;
-      }
-
-      .aerodrome-tables-wrapper {
-        flex-direction: column;
-      }
-
-      .main-body-section {
-        grid-template-columns: 1fr;
-      }
-
-      .right-sidebar {
-        margin-top: 8px;
-      }
-
-      .footer-section {
-        grid-template-columns: 1fr;
-        gap: 10px;
-      }
-
-      th, td {
-        font-size: 11.5px;
-      }
-    }
-
-    /* =========================================================
-       PRINT OPTIMIZATIONS (@media print)
-       ========================================================= */
-    @media print {
-      .unit-sub { color: #000 !important; font-weight: normal !important; }
-      @page {
-        size: A4 landscape;
-        margin: 5mm;
-      }
-
-      html, body {
-        background: #ffffff !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        width: 100% !important;
-        height: 100% !important;
-      }
-
-      .app-header,
-      .desktop-params-ribbon,
-      .drawer-overlay,
-      .drawer-panel,
-      .mobile-bottom-bar,
-      .no-print {
-        display: none !important;
-      }
-
-      .page-sheet {
-        width: 100% !important;
-        max-width: none !important;
-        min-height: auto !important;
-        box-shadow: none !important;
-        border: none !important;
-        padding: 0 !important;
-        margin: 0 !important;
-      }
-
-      .top-section {
-        display: grid !important;
-        grid-template-columns: 240px 1fr 220px !important;
-        gap: 10px !important;
-        margin-bottom: 5px !important;
-      }
-
-      .sub-section {
-        display: grid !important;
-        grid-template-columns: 1fr 220px !important;
-        gap: 10px !important;
-        margin-bottom: 5px !important;
-      }
-
-      .aerodrome-tables-wrapper {
-        display: flex !important;
-        flex-direction: row !important;
-      }
-
-      .main-body-section {
-        display: grid !important;
-        grid-template-columns: 1fr 220px !important;
-        gap: 10px !important;
-        margin-bottom: 5px !important;
-      }
-
-      .footer-section {
-        display: grid !important;
-        grid-template-columns: 1.2fr 1fr !important;
-        gap: 14px !important;
-        padding-top: 4px !important;
-        font-size: 10.5px !important;
-      }
-
-      .tbl-route {
-        min-width: 0 !important;
-      }
-
-      th, td {
-        font-size: 10px !important;
-        padding: 1px 2px !important;
-      }
-
-      .tbl-route td {
-        height: 18px !important;
-      }
-
-      .tbl-route tr.route-fuel-summary-row td {
-        height: 18px !important;
-        font-size: 10px !important;
-        background: transparent !important;
-      }
-
-      [contenteditable="true"] {
-        background: transparent !important;
-        box-shadow: none !important;
-      }
-
-      td.col-readonly, td[contenteditable="false"] {
-        background-color: transparent !important;
-      }
-
-      .notes-content {
-        background-image: repeating-linear-gradient(
-          transparent,
-          transparent 14px,
-          #cbd5e1 14px,
-          #cbd5e1 15px
-        ) !important;
-      }
-
-      * {
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-      }
-    }
-  
-    /* Segmented Unit Pill Controls (Speed in kt/kmh, Altitude in ft/m, Distance in NM/km) */
-    .unit-pill-group {
-      display: inline-flex;
-      background: #080f1d;
-      border: 1px solid #1e2e4b;
-      border-radius: 6px;
-      padding: 2px;
-      gap: 2px;
-      vertical-align: middle;
-    }
-
-    .unit-pill-btn {
-      background: transparent;
-      border: none;
-      color: #94a3b8;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      user-select: none;
-      white-space: nowrap;
-    }
-
-    .unit-pill-btn:hover {
-      color: #f8fafc;
-      background: #17243c;
-    }
-
-    .unit-pill-btn.active {
-      background: #0284c7;
-      color: #ffffff;
-      box-shadow: 0 1px 4px rgba(2, 132, 199, 0.4);
-    }
-
-    .unit-sub {
-      display: block;
-      font-size: 8.5px;
-      font-weight: bold;
-      color: #0369a1;
-      line-height: 1;
-      margin-top: 1px;
-    }
-
-    .units-ribbon-group {
-      background: #111a2e;
-      border: 1px solid #1e2e4b;
-      padding: 3px 8px;
-      border-radius: 6px;
-      gap: 7px;
-    }
-
-  
-    /* Master Always-Visible Units Bar */
-    .units-master-bar {
-      width: 100%;
-      background: #0b1324;
-      border-bottom: 2px solid #0284c7;
-      padding: 7px 12px;
-      display: flex !important;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      z-index: 1090;
-      position: sticky;
-      top: 50px;
-    }
-
-    .units-bar-inner {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      max-width: 1400px;
-      width: 100%;
-    }
-
-    .units-bar-title {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: #38bdf8;
-      font-weight: 800;
-      font-size: 12px;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-
-    .units-segment {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: #111a2e;
-      padding: 3px 8px;
-      border-radius: 6px;
-      border: 1px solid #1e2e4b;
-    }
-
-    .units-segment-lbl {
-      color: #94a3b8;
-      font-size: 11.5px;
-      font-weight: 600;
-      white-space: nowrap;
-    }
-
-    /* Interactive Unit Badges at the top of the White Sheet */
-    .sheet-units-banner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 10px;
-      padding: 6px 12px;
-      background: #f8fafc;
-      border: 1.5px dashed #0284c7;
-      border-radius: 6px;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      font-size: 12px;
-      flex-wrap: wrap;
-    }
-
-    .sheet-unit-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      background: #ffffff;
-      border: 1.5px solid #0284c7;
-      color: #0369a1;
-      padding: 3px 10px;
-      border-radius: 5px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      user-select: none;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-    }
-
-    .sheet-unit-badge:hover {
-      background: #0284c7;
-      color: #ffffff;
-      transform: translateY(-1px);
-    }
-
-    .sheet-unit-badge b {
-      color: #0284c7;
-      font-weight: 800;
-    }
-
-    .sheet-unit-badge:hover b {
-      color: #ffffff;
-    }
-
-    /* Header Compact Unit Toggles */
-    .header-units-quick {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .hdr-unit-btn {
-      background: #131d31;
-      border: 1px solid #233552;
-      color: #94a3b8;
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-size: 11.5px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      white-space: nowrap;
-    }
-
-    .hdr-unit-btn:hover {
-      background: #18253e;
-      border-color: #38bdf8;
-      color: #f1f5f9;
-    }
-
-    .hdr-unit-btn strong {
-      color: #38bdf8;
-    }
-
   </style>
 </head>
 <body>
-
-  <!-- =========================================================
-       OFFICIAL EFB FLIGHT DECK NAVIGATION & APP BAR (NO-PRINT)
-       ========================================================= -->
+  <!-- Top Navigation Header -->
   <header class="app-header no-print">
     <div class="app-header-inner">
-      <!-- Left: Official Title & Aviation Emblem -->
       <div class="brand-section">
-        <div class="brand-logo" onclick="toggleDrawer(true)" style="cursor: pointer;" title="Открыть меню EFB">
+        <div class="brand-logo">
           <span>✈️</span>
-          <span>ШБЖ ПЛАН</span>
+          <span>ШБЖ</span>
+          <span class="brand-badge">СЛУ ГА</span>
         </div>
-        <span class="brand-badge">ГА РФ • А-4</span>
       </div>
 
-      <!-- Header Compact Quick Unit Toggles -->
-      <div class="header-units-quick no-print" title="Нажмите для быстрого переключения единиц">
-        <button type="button" class="hdr-unit-btn" id="hdrBtnSpeed" onclick="setSpeedUnit(currentUnits.speed === 'kmh' ? 'kt' : 'kmh')" title="Переключить км/ч ⇄ узлы (kt)">
-          ⚡ Скорость: <strong id="hdrSpeedVal">км/ч</strong> ⇄
-        </button>
-        <button type="button" class="hdr-unit-btn" id="hdrBtnAlt" onclick="setAltUnit(currentUnits.alt === 'm' ? 'ft' : 'm')" title="Переключить метры ⇄ футы (ft)">
-          Высота: <strong id="hdrAltVal">м</strong> ⇄
-        </button>
-      </div>
-
-      <!-- Center: Live Telemetry Capsule (Desktop & Tablet) -->
-      <div class="header-telemetry" onclick="toggleDrawer(true)" title="Нажмите, чтобы открыть параметры полета и топлива">
+      <!-- Center: Clean Telemetry Strip -->
+      <div class="header-telemetry" onclick="toggleDrawer(true)" title="Открыть меню параметров и документов">
         <div class="telemetry-item">
           <span>Ветер:</span>
           <span id="telemWind" class="telemetry-val">—</span>
@@ -1328,31 +587,20 @@
         </div>
         <span>•</span>
         <div class="telemetry-item">
-          <span>Расход:</span>
-          <span id="telemFuel" class="telemetry-val">—</span>
-        </div>
-        <span>•</span>
-        <div class="telemetry-item">
           <span>Q<sub>запр</sub>:</span>
-          <span id="telemTotal" class="telemetry-val success">0 кг</span>
+          <span id="telemTotal" class="telemetry-val">0 кг</span>
         </div>
       </div>
 
-      <!-- Right: Action Buttons -->
+      <!-- Right: Main Actions -->
       <div class="header-actions">
-        <button class="btn btn-official-outline desktop-header-btn" id="btnRibbonToggle" onclick="toggleDesktopRibbon()" title="Показать / скрыть панель параметров">
-          ⚙️ Параметры НТС
-        </button>
-
-        <button class="btn btn-official-outline desktop-header-btn" onclick="saveToLocalStorage(true)" title="Сохранить в браузер">
-          💾 Сохранить
-        </button>
-
-        <button class="btn btn-official-primary desktop-header-btn" onclick="window.print()" title="Печать официального бланка А4">
+        <button class="btn btn-dark" onclick="window.print()" title="Печать бланка">
           🖨️ Печать
         </button>
-
-        <button class="btn btn-menu-trigger" onclick="toggleDrawer(true)" title="Главное меню">
+        <button class="btn btn-dark" onclick="saveToLocalStorage(true)" title="Сохранить бланк в браузере">
+          💾 Сохранить
+        </button>
+        <button class="btn btn-white" onclick="toggleDrawer(true)" title="Открыть главное меню">
           ☰ Меню
         </button>
       </div>
@@ -1360,325 +608,118 @@
   </header>
 
   <!-- =========================================================
-       PROMINENT ALWAYS-VISIBLE MASTER UNITS BAR (ALL SCREENS)
+       UNIFIED CONTROL TOOLBAR (ЕДИНАЯ ПАНЕЛЬ ПАРАМЕТРОВ И ЕДИНИЦ)
        ========================================================= -->
-  <div class="units-master-bar no-print" id="unitsMasterBar">
-    <div class="units-bar-inner">
-      <div class="units-bar-title" title="Выбор единиц расчета для бланка">
-        <span>🌐</span>
-        <span>ЕДИНИЦЫ:</span>
-      </div>
-
-      <div class="units-segment" title="Скорость: ветер, истинная Vи, путевая W">
-        <span class="units-segment-lbl">Скорость:</span>
-        <div class="unit-pill-group">
-          <button type="button" class="unit-pill-btn active" id="btnBarSpeedKmh" onclick="setSpeedUnit('kmh')">км/ч</button>
-          <button type="button" class="unit-pill-btn" id="btnBarSpeedKt" onclick="setSpeedUnit('kt')">узлы (kt)</button>
-        </div>
-      </div>
-
-      <div class="units-segment" title="Высота: эшелон, Hб, Hпом">
-        <span class="units-segment-lbl">Высота:</span>
-        <div class="unit-pill-group">
-          <button type="button" class="unit-pill-btn active" id="btnBarAltM" onclick="setAltUnit('m')">метры (м)</button>
-          <button type="button" class="unit-pill-btn" id="btnBarAltFt" onclick="setAltUnit('ft')">футы (ft)</button>
-        </div>
-      </div>
-
-      <div class="units-segment" title="Дистанция участков S">
-        <span class="units-segment-lbl">Дистанция:</span>
-        <div class="unit-pill-group">
-          <button type="button" class="unit-pill-btn active" id="btnBarDistKm" onclick="setDistUnit('km')">км</button>
-          <button type="button" class="unit-pill-btn" id="btnBarDistNm" onclick="setDistUnit('nm')">мили (NM)</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Collapsible Desktop Navigation & Fuel Ribbon -->
-  <div class="desktop-params-ribbon no-print" id="desktopParamsRibbon">
-    <div style="font-weight: 700; color: #38bdf8;">
-      Параметры НТС &amp; топлива:
-    </div>
-
-    <!-- Unit switchers in Desktop Ribbon -->
-    <div class="calc-group units-ribbon-group" title="Выбор единиц измерения (скорость, высота, дистанция)">
-      <span style="font-size: 11px; font-weight: 700; color: #38bdf8;">Ед. изм:</span>
+  <div class="control-toolbar no-print">
+    <!-- Group 1: Units -->
+    <div class="ctrl-section" title="Выбор единиц измерения">
+      <span class="ctrl-label">Единицы:</span>
       <div class="unit-pill-group" title="Скорость: км/ч или узлы (kt)">
-        <button type="button" class="unit-pill-btn active" id="btnRibbonSpeedKmh" onclick="setSpeedUnit('kmh')">км/ч</button>
-        <button type="button" class="unit-pill-btn" id="btnRibbonSpeedKt" onclick="setSpeedUnit('kt')">узлы (kt)</button>
+        <button type="button" class="unit-pill-btn active" id="btnBarSpeedKmh" onclick="setSpeedUnit('kmh')">км/ч</button>
+        <button type="button" class="unit-pill-btn" id="btnBarSpeedKt" onclick="setSpeedUnit('kt')">kt</button>
       </div>
       <div class="unit-pill-group" title="Высота: метры или футы (ft)">
-        <button type="button" class="unit-pill-btn active" id="btnRibbonAltM" onclick="setAltUnit('m')">м</button>
-        <button type="button" class="unit-pill-btn" id="btnRibbonAltFt" onclick="setAltUnit('ft')">футы (ft)</button>
+        <button type="button" class="unit-pill-btn active" id="btnBarAltM" onclick="setAltUnit('m')">м</button>
+        <button type="button" class="unit-pill-btn" id="btnBarAltFt" onclick="setAltUnit('ft')">ft</button>
       </div>
-      <div class="unit-pill-group" title="Расстояние участка: км или морские мили (NM)">
-        <button type="button" class="unit-pill-btn active" id="btnRibbonDistKm" onclick="setDistUnit('km')">км</button>
-        <button type="button" class="unit-pill-btn" id="btnRibbonDistNm" onclick="setDistUnit('nm')">NM</button>
+      <div class="unit-pill-group" title="Дистанция: км или морские мили (NM)">
+        <button type="button" class="unit-pill-btn active" id="btnBarDistKm" onclick="setDistUnit('km')">км</button>
+        <button type="button" class="unit-pill-btn" id="btnBarDistNm" onclick="setDistUnit('nm')">NM</button>
       </div>
     </div>
 
-    <div class="calc-group" title="Метеорологическое направление ветра (откуда)">
-      <label>Ветер δ:</label>
+    <div class="ctrl-divider"></div>
+
+    <!-- Group 2: Wind -->
+    <div class="ctrl-section" title="Ветер: метеорологический δ (откуда) и скорость U">
+      <span class="ctrl-label">Ветер δ:</span>
       <input type="text" id="quickWindDir" class="calc-input" value="" placeholder="270" oninput="onQuickWindChanged()">°
+      <span class="ctrl-label" style="margin-left: 2px;">U:</span>
+      <input type="text" id="quickWindSpeed" class="calc-input" value="" placeholder="40" oninput="onQuickWindChanged()">
+      <span id="lblRibbonWindSpeedUnit" class="ctrl-label">км/ч</span>
+      <span class="ctrl-label" style="margin-left: 4px;">δ<sub>н</sub>:</span>
+      <span id="quickNavWind" class="ctrl-val">—</span>
     </div>
 
-    <div class="calc-group" title="Скорость ветра на эшелоне">
-      <label>U:</label>
-      <input type="text" id="quickWindSpeed" class="calc-input" value="" placeholder="40" oninput="onQuickWindChanged()"> <span id="lblRibbonWindSpeedUnit">км/ч</span>
-    </div>
+    <div class="ctrl-divider"></div>
 
-    <div class="calc-group" title="Навигационный ветер куда дует">
-      <label>δ<sub>н</sub>:</label>
-      <span id="quickNavWind" style="font-family: monospace; font-weight: bold; color: #facc15;">—</span>
-    </div>
-
-    <div class="calc-group" title="Время вылета (ЧЧ:ММ)">
-      <label>Вылет:</label>
+    <!-- Group 3: Timings -->
+    <div class="ctrl-section" title="Времена: Вылет, время на взлет и на посадку">
+      <span class="ctrl-label">Вылет:</span>
       <input type="text" id="quickDepTime" class="calc-input" value="" placeholder="08:00" style="width: 50px;" oninput="recalculateEntireFlightPlan()">
+      <span class="ctrl-label" style="margin-left: 2px;">t взл:</span>
+      <input type="text" id="quickTimeDep" class="calc-input" value="4" placeholder="4" style="width: 36px;" oninput="onQuickDepLandingTimeChanged()">
+      <span class="ctrl-label">t пос:</span>
+      <input type="text" id="quickTimeArr" class="calc-input" value="6" placeholder="6" style="width: 36px;" oninput="onQuickDepLandingTimeChanged()">
     </div>
 
-    <div class="calc-group" title="Маневренное время на взлет (по умолчанию 4 мин -> 0.04)">
-      <label style="color: #38bdf8; font-weight: bold;">t взл:</label>
-      <input type="text" id="quickTimeDep" class="calc-input" value="4" placeholder="4" style="width: 36px; color: #38bdf8; font-weight: bold;" oninput="onQuickDepLandingTimeChanged()"> мин
+    <div class="ctrl-divider"></div>
+
+    <!-- Group 4: Fuel -->
+    <div class="ctrl-section" title="Топливный расчет и АНЗ">
+      <span class="ctrl-label">Расход/ч:</span>
+      <input type="text" id="quickFuelHour" class="calc-input" value="" placeholder="450" style="width: 44px;" oninput="onFuelHourInput()">
+      <span class="ctrl-label">АНЗ:</span>
+      <input type="text" id="quickFuelAnz" class="calc-input" value="" placeholder="180" style="width: 44px;" oninput="onFuelAnzInput()">
+      <span class="ctrl-label">Заправка:</span>
+      <span id="quickFuelTotal" class="ctrl-val-accent">0 кг</span>
     </div>
 
-    <div class="calc-group" title="Маневренное время на посадку (по умолчанию 6 мин -> 0.06)">
-      <label style="color: #38bdf8; font-weight: bold;">t пос:</label>
-      <input type="text" id="quickTimeArr" class="calc-input" value="6" placeholder="6" style="width: 36px; color: #38bdf8; font-weight: bold;" oninput="onQuickDepLandingTimeChanged()"> мин
-    </div>
+    <div class="ctrl-divider"></div>
 
-    <div class="calc-group" title="Часовой расход топлива">
-      <label>Расход/ч:</label>
-      <input type="text" id="quickFuelHour" class="calc-input" value="" placeholder="450" style="width: 48px;" oninput="onFuelHourInput()"> кг
-    </div>
-
-    <div class="calc-group" title="Минутный расход топлива">
-      <label>/мин:</label>
-      <input type="text" id="quickFuelMin" class="calc-input" value="" placeholder="7.5" style="width: 44px;" oninput="onFuelMinInput()"> кг
-    </div>
-
-    <div class="calc-group" title="Аэронавигационный запас топлива">
-      <label style="color: #fca5a5; font-weight: bold;">АНЗ:</label>
-      <input type="text" id="quickFuelAnz" class="calc-input" value="" placeholder="180" style="width: 48px; color: #f87171; border-color: #f87171;" oninput="onFuelAnzInput()"> кг
-    </div>
-
-    <div class="calc-group" title="Необходимое топливо к заправке">
-      <label style="color: #86efac; font-weight: bold;">Q<sub>запр</sub>:</label>
-      <span id="quickFuelTotal" style="font-family: monospace; font-weight: bold; color: #4ade80;">0 кг</span>
-    </div>
-
-    <div style="display: inline-flex; gap: 4px; margin-left: 6px;">
-      <button class="btn btn-official-outline" style="padding: 2px 8px; font-size: 11px;" onclick="addRouteRow()" title="Добавить строку в таблицу">➕ Строка</button>
-      <button class="btn btn-official-outline" style="padding: 2px 8px; font-size: 11px;" onclick="recalculateEntireFlightPlan()" title="Пересчитать НТС">⚡ Расчет</button>
+    <!-- Group 5: Route Rows -->
+    <div class="ctrl-section">
+      <button class="btn btn-ctrl" onclick="addRouteRow()" title="Добавить строку в таблицу">+ Строка</button>
+      <button class="btn btn-ctrl" onclick="removeRouteRow()" title="Удалить последнюю строку">- Строка</button>
     </div>
   </div>
 
-  <!-- Slide-out Drawer Overlay & Panel (EFB Control Panel) -->
+  <!-- Slide-out Drawer Overlay & Panel -->
   <div class="drawer-overlay no-print" id="drawerOverlay" onclick="toggleDrawer(false)"></div>
   <aside class="drawer-panel no-print" id="drawerPanel" aria-label="Меню управления полетом">
     <div class="drawer-header">
-      <div class="drawer-title-group">
-        <h3>✈️ ШБЖ • УПРАВЛЕНИЕ</h3>
-        <p>Штурманский расчет и топливный план</p>
-      </div>
-      <button class="drawer-close-btn" onclick="toggleDrawer(false)" title="Закрыть меню">✕</button>
+      <h3>✈️ МЕНЮ БЛАНКА</h3>
+      <button class="drawer-close-btn" onclick="toggleDrawer(false)">✕</button>
     </div>
-
     <div class="drawer-content">
-      <!-- Status pill -->
-      <div style="font-size: 11.5px; color: #94a3b8; display: flex; align-items: center; gap: 6px; padding: 4px 6px; background: #080f1d; border-radius: 4px; border: 1px solid #1c2b45;">
-        <span class="status-dot"></span>
-        <span id="saveStatus">🔒 Hб.пр, α, УС, МК, W защищены и рассчитываются автоматически</span>
-      </div>
-
-      <!-- Card 0: Единицы измерения (Units) -->
-      <div class="drawer-card" style="border-color: #0369a1; background: #0a1426;">
-        <div class="drawer-card-title" style="color: #38bdf8;">🌐 Единицы измерения (Units)</div>
-        
-        <div class="drawer-row" style="margin-bottom: 7px;">
-          <label style="color: #f1f5f9; font-weight: 600;">Скорость (U, V<sub>и</sub>, W):</label>
-          <div class="unit-pill-group">
-            <button type="button" class="unit-pill-btn active" id="btnDrawerSpeedKmh" onclick="setSpeedUnit('kmh')">км/ч</button>
-            <button type="button" class="unit-pill-btn" id="btnDrawerSpeedKt" onclick="setSpeedUnit('kt')">узлы (kt)</button>
-          </div>
-        </div>
-
-        <div class="drawer-row" style="margin-bottom: 7px;">
-          <label style="color: #f1f5f9; font-weight: 600;">Высота (эшелон, H<sub>б</sub>, H<sub>пом</sub>):</label>
-          <div class="unit-pill-group">
-            <button type="button" class="unit-pill-btn active" id="btnDrawerAltM" onclick="setAltUnit('m')">метры (м)</button>
-            <button type="button" class="unit-pill-btn" id="btnDrawerAltFt" onclick="setAltUnit('ft')">футы (ft)</button>
-          </div>
-        </div>
-
-        <div class="drawer-row" style="margin-bottom: 7px;">
-          <label style="color: #f1f5f9; font-weight: 600;">Дистанция участков (S):</label>
-          <div class="unit-pill-group">
-            <button type="button" class="unit-pill-btn active" id="btnDrawerDistKm" onclick="setDistUnit('km')">км</button>
-            <button type="button" class="unit-pill-btn" id="btnDrawerDistNm" onclick="setDistUnit('nm')">мили (NM)</button>
-          </div>
-        </div>
-
-        <div style="font-size: 11px; color: #94a3b8; margin-top: 6px; display: flex; align-items: center; gap: 6px; padding-top: 4px; border-top: 1px solid #1a2942;">
-          <input type="checkbox" id="chkAutoConvert" checked style="cursor: pointer;">
-          <label for="chkAutoConvert" style="cursor: pointer; user-select: none;">Автоматически пересчитывать введенные числа</label>
-        </div>
-      </div>
-
-      <!-- Card 1: Ветер и Вылет -->
-      <div class="drawer-card">
-        <div class="drawer-card-title">🧭 Ветер и Время вылета</div>
-        <div class="drawer-row">
-          <label>Метеоветер δ (откуда):</label>
-          <div style="display: flex; align-items: center; gap: 4px;">
-            <input type="text" id="drawerWindDir" class="calc-input" value="" placeholder="270" oninput="onDrawerWindChanged()"> °
-          </div>
-        </div>
-        <div class="drawer-row">
-          <label>Скорость ветра U:</label>
-          <div style="display: flex; align-items: center; gap: 4px;">
-            <input type="text" id="drawerWindSpeed" class="calc-input" value="" placeholder="40" oninput="onDrawerWindChanged()"> <span id="lblDrawerWindSpeedUnit">км/ч</span>
-          </div>
-        </div>
-        <div class="drawer-row">
-          <label>Навигационный ветер δ<sub>н</sub>:</label>
-          <span id="drawerNavWind" style="font-family: monospace; font-weight: bold; color: #facc15;">—</span>
-        </div>
-        <div class="drawer-row">
-          <label>Время вылета (ЧЧ:ММ):</label>
-          <input type="text" id="drawerDepTime" class="calc-input" value="" placeholder="08:00" style="width: 60px;" oninput="onDrawerDepTimeChanged()">
-        </div>
-        <div class="drawer-row" style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #1e2e4b;">
-          <label style="color: #38bdf8; font-weight: 600;">Время на взлет (t взл):</label>
-          <div style="display: flex; align-items: center; gap: 4px;">
-            <input type="text" id="drawerTimeDep" class="calc-input" value="4" placeholder="4" style="width: 48px; color: #38bdf8; font-weight: bold;" oninput="onDrawerDepLandingTimeChanged()"> мин
-          </div>
-        </div>
-        <div class="drawer-row">
-          <label style="color: #38bdf8; font-weight: 600;">Время на посадку (t пос):</label>
-          <div style="display: flex; align-items: center; gap: 4px;">
-            <input type="text" id="drawerTimeArr" class="calc-input" value="6" placeholder="6" style="width: 48px; color: #38bdf8; font-weight: bold;" oninput="onDrawerDepLandingTimeChanged()"> мин
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 2: Топливо и АНЗ -->
-      <div class="drawer-card">
-        <div class="drawer-card-title">⛽ Топливный расчет и АНЗ</div>
-        <div class="drawer-row">
-          <label>Расход в час:</label>
-          <div style="display: flex; align-items: center; gap: 4px;">
-            <input type="text" id="drawerFuelHour" class="calc-input" value="" placeholder="450" style="width: 58px;" oninput="onDrawerFuelHourInput()"> кг/ч
-          </div>
-        </div>
-        <div class="drawer-row">
-          <label>Расход в минуту:</label>
-          <div style="display: flex; align-items: center; gap: 4px;">
-            <input type="text" id="drawerFuelMin" class="calc-input" value="" placeholder="7.5" style="width: 52px;" oninput="onDrawerFuelMinInput()"> кг/мин
-          </div>
-        </div>
-        <div class="drawer-row">
-          <label style="color: #fca5a5;">Запас АНЗ:</label>
-          <div style="display: flex; align-items: center; gap: 4px;">
-            <input type="text" id="drawerFuelAnz" class="calc-input" value="" placeholder="180" style="width: 58px; color: #f87171; border-color: #f87171;" oninput="onDrawerFuelAnzInput()"> кг
-          </div>
-        </div>
-        <div class="drawer-fuel-total-box">
-          <span class="drawer-fuel-total-label">Заправка Q<sub>запр</sub> (рейс + АНЗ):</span>
-          <span class="drawer-fuel-total-val" id="drawerFuelTotal">0 кг</span>
-        </div>
-      </div>
-
-      <!-- Card 3: Маршрут -->
-      <div class="drawer-card">
-        <div class="drawer-card-title">✈️ Маршрут и расчет</div>
-        <div class="drawer-btn-grid" style="margin-bottom: 8px;">
-          <button class="btn btn-official-outline" onclick="addRouteRow()">➕ Добавить строку</button>
-          <button class="btn btn-official-outline" onclick="removeRouteRow()">➖ Удалить строку</button>
-        </div>
-        <button class="btn btn-official-primary drawer-btn-full" onclick="recalculateEntireFlightPlan(); toggleDrawer(false);">
-          ⚡ Пересчитать план НТС
-        </button>
-        <button class="btn btn-official-outline drawer-btn-full" id="drawerAutoNtsBtn" onclick="toggleAutoNts()" style="margin-top: 6px;">
-          📐 Авторасчет НТС: ВКЛ
-        </button>
-      </div>
-
-      <!-- Card 4: Документ & Печать -->
+      <!-- Card 1: Документ & Печать -->
       <div class="drawer-card">
         <div class="drawer-card-title">📄 Бланк и печать</div>
-        <button class="btn btn-official-success drawer-btn-full" onclick="window.print()">
+        <button class="btn btn-white drawer-btn-full" onclick="window.print()">
           🖨️ Печать / Сохранить в PDF
         </button>
-        <button class="btn btn-official-outline drawer-btn-full" onclick="saveToLocalStorage(true)">
+        <button class="btn btn-dark drawer-btn-full" onclick="saveToLocalStorage(true)">
           💾 Сохранить в память браузера
         </button>
-        <button class="btn btn-official-outline drawer-btn-full" id="btnWidthToggle" onclick="toggleSheetWidth()">
+        <button class="btn btn-dark drawer-btn-full" id="btnWidthToggle" onclick="toggleSheetWidth()">
           🖥️ На весь экран
         </button>
-        <button class="btn btn-official-outline drawer-btn-full" onclick="loadSampleData()">
-          📋 Заполнить учебным рейсом
+      </div>
+
+      <!-- Card 2: Маршруты и сброс -->
+      <div class="drawer-card">
+        <div class="drawer-card-title">📋 Данные маршрута</div>
+        <button class="btn btn-dark drawer-btn-full" onclick="loadSampleData(); toggleDrawer(false);">
+          📋 Заполнить учебным рейсом C172S
         </button>
-        <button class="btn btn-official-outline drawer-btn-full" onclick="openMathHelpModal()">
-          📖 Формулы расчета (α)
+        <button class="btn btn-dark drawer-btn-full" onclick="openMathHelpModal(); toggleDrawer(false);">
+          📖 Справка по формулам (α, Hб, НТС)
         </button>
-        <button class="btn drawer-btn-full" style="background: #3b0707; border: 1px solid #7f1d1d; color: #fca5a5; margin-top: 4px;" onclick="clearFormConfirm()">
+        <button class="btn drawer-btn-full" style="background: #2a1616; border: 1px solid #542222; color: #fca5a5; margin-top: 4px;" onclick="clearFormConfirm(); toggleDrawer(false);">
           🧹 Очистить журнал
         </button>
       </div>
     </div>
   </aside>
 
-  <!-- Mobile Fixed Bottom Navigation Bar -->
-  <nav class="mobile-bottom-bar no-print">
-    <div class="mobile-bottom-inner">
-      <button class="mobile-tab-btn" onclick="toggleDrawer(true)" title="Единицы измерения и параметры" style="color: #38bdf8;">
-        <span style="font-size: 16px;">🌐</span>
-        <span>Единицы</span>
-      </button>
-      <button class="mobile-tab-btn" onclick="addRouteRow()" title="Добавить строку">
-        <span style="font-size: 16px;">➕</span>
-        <span>Строка</span>
-      </button>
-      <button class="mobile-tab-btn" onclick="recalculateEntireFlightPlan()" title="Пересчитать">
-        <span style="font-size: 16px;">⚡</span>
-        <span>Расчет</span>
-      </button>
-      <button class="mobile-tab-btn" onclick="saveToLocalStorage(true)" title="Сохранить">
-        <span style="font-size: 16px;">💾</span>
-        <span>Сохранить</span>
-      </button>
-      <button class="mobile-tab-btn" onclick="toggleDrawer(true)" title="Меню">
-        <span style="font-size: 16px;">☰</span>
-        <span>Меню</span>
-      </button>
-    </div>
-  </nav>
-
-  <!-- =========================================================
-       OFFICIAL A4 LANDSCAPE FLIGHT LOG SHEET
-       ========================================================= -->
   <div class="sheet-outer-wrapper">
     <div class="page-sheet" id="shbjDocument">
+      <div class="sheet-status-bar no-print">
+        <span id="saveStatus">🔒 Hб.пр, α, УС, МК, W рассчитываются автоматически</span>
+        <span>Формат времени: ч.мм • СЛУ ГА Сасово</span>
+      </div>
 
-      <!-- Interactive Quick Unit Bar on Document (no-print) -->
-      <div class="sheet-units-banner no-print">
-        <span style="font-weight: 700; color: #1e3a8a; display: flex; align-items: center; gap: 5px;">
-          <span>✈️</span>
-          <span>Единицы бланка:</span>
-        </span>
-        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-          <span class="sheet-unit-badge" onclick="setSpeedUnit(currentUnits.speed === 'kmh' ? 'kt' : 'kmh')" title="Нажмите, чтобы переключить: км/ч ⇄ узлы (kt)">
-            Скорость: <b id="bannerSpeedUnit">км/ч</b> (нажмите для смены ⇄)
-          </span>
-          <span class="sheet-unit-badge" onclick="setAltUnit(currentUnits.alt === 'm' ? 'ft' : 'm')" title="Нажмите, чтобы переключить: метры ⇄ футы (ft)">
-            Высота: <b id="bannerAltUnit">м</b> (сменить ⇄)
-          </span>
-          <span class="sheet-unit-badge" onclick="setDistUnit(currentUnits.dist === 'km' ? 'nm' : 'km')" title="Нажмите, чтобы переключить: км ⇄ мили (NM)">
-            Дистанция: <b id="bannerDistUnit">км</b> (сменить ⇄)
-          </span>
-        </div>
+      
       </div>
 
       <!-- =========================================================
