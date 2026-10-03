@@ -9,10 +9,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✈️</text></svg>">
   <title>Штурманский бортовой журнал (ШБЖ) с расчетом НТС</title>
   <style>
     /* =========================================================
-       PREMIUM DARK GREY & WHITE AVIATION THEME (ЧИСТЫЙ ТЕМНО-СЕРО-БЕЛЫЙ ДИЗАЙН)
+       PREMIUM DARK GREY & WHITE AVIATION THEME
        ========================================================= */
     * {
       box-sizing: border-box;
@@ -96,10 +97,11 @@
       align-items: center;
       gap: 8px;
       background: #202227;
-      border: 1px solid #30333b;
-      padding: 4px 14px;
+      border: 1px solid #363942;
       border-radius: 20px;
+      padding: 4px 14px;
       font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
       color: #a1a1aa;
       cursor: pointer;
       transition: all 0.15s ease;
@@ -109,18 +111,11 @@
       border-color: #52525b;
       color: #f4f4f5;
     }
-    .telemetry-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
     .telemetry-val {
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 700;
       color: #ffffff;
+      font-weight: 700;
     }
 
-    /* Header Actions */
     .header-actions {
       display: flex;
       align-items: center;
@@ -132,20 +127,17 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      padding: 6px 12px;
-      font-size: 12px;
+      font-family: inherit;
+      font-size: 12.5px;
       font-weight: 600;
-      border-radius: 6px;
-      border: 1px solid transparent;
+      padding: 5px 12px;
+      border-radius: 5px;
       cursor: pointer;
       transition: all 0.15s ease;
-      white-space: nowrap;
+      text-decoration: none;
+      border: 1px solid transparent;
       user-select: none;
-      touch-action: manipulation;
-      font-family: inherit;
-    }
-    .btn:active {
-      transform: translateY(1px);
+      white-space: nowrap;
     }
 
     .btn-dark {
@@ -290,101 +282,6 @@
       border: 1px solid #3f424c;
     }
 
-    /* ---------------------------------------------------------
-       DOCUMENT SHEET & PAPER CANVAS
-       --------------------------------------------------------- */
-    .sheet-outer-wrapper {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      padding: 16px 14px 40px 14px;
-    }
-
-    .page-sheet {
-      width: 100%;
-      max-width: 100%;
-      background: #ffffff;
-      color: #09090b;
-      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.45);
-      border: 1px solid #27272a;
-      padding: 16px 20px;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      border-radius: 4px;
-      transition: all 0.2s ease;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-
-    .page-sheet.mode-a4 {
-      max-width: 1100px;
-    }
-
-    /* Status bar */
-    .sheet-status-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 8px;
-      font-size: 11px;
-      color: #71717a;
-      padding-bottom: 4px;
-      border-bottom: 1px solid #e4e4e7;
-    }
-
-    /* ---------------------------------------------------------
-       CRISP HIGH-CONTRAST TABLES & CELLS
-       --------------------------------------------------------- */
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      table-layout: fixed;
-    }
-
-    th, td {
-      border: 1px solid #18181b;
-      text-align: center;
-      vertical-align: middle;
-      font-size: 12.5px;
-      padding: 4px 2px;
-      overflow: hidden;
-      word-wrap: break-word;
-      font-variant-numeric: tabular-nums;
-    }
-
-    th {
-      font-weight: 700;
-      background-color: #f4f4f6;
-      color: #09090b;
-      font-size: 11.5px;
-    }
-
-    /* Editable cells */
-    [contenteditable="true"] {
-      outline: none;
-      transition: background-color 0.12s ease;
-      cursor: text;
-    }
-    [contenteditable="true"]:hover {
-      background-color: #f8fafc;
-    }
-    [contenteditable="true"]:focus {
-      background-color: #ffffff !important;
-      box-shadow: inset 0 0 0 1.5px #18181b !important;
-    }
-
-    /* Auto-calculated read-only cells (Hб, α, УС, МК, W) */
-    td.col-readonly, td[contenteditable="false"] {
-      background-color: #f0f2f5;
-      cursor: not-allowed;
-      user-select: none;
-      font-weight: 700;
-      color: #09090b;
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    
     /* Floating Vi Prompt & Quick Action */
     .vi-floating-prompt {
       position: absolute;
@@ -468,53 +365,6 @@
       pointer-events: auto;
     }
 
-    /* Ghost projected actual time (Т факт) */
-    td.col-tf {
-      position: relative;
-      font-family: 'JetBrains Mono', monospace;
-    }
-    td.col-tf:empty::before {
-      content: attr(data-ghost);
-      color: #71717a;
-      opacity: 0.45;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      pointer-events: none;
-      user-select: none;
-      display: inline-block;
-    }
-    td.col-tf:focus:empty::before {
-      opacity: 0.2;
-    }
-
-    /* Section 1 Header form styling */
-    .flight-header-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 12px;
-      margin-bottom: 8px;
-    }
-    .header-field-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      margin-bottom: 4px;
-    }
-    .fill-line {
-      border-bottom: 1px solid #18181b;
-      min-width: 40px;
-      padding: 0 4px;
-      font-weight: 600;
-    }
-
-    /* Unit sub-labels in table headers */
-    .unit-sub {
-      font-size: 9.5px;
-      font-weight: 600;
-      color: #52525b;
-    }
-
     /* Drawer Side Panel */
     .drawer-overlay {
       display: none;
@@ -524,7 +374,7 @@
       backdrop-filter: blur(4px);
       z-index: 1200;
     }
-    .drawer-overlay.active {
+    .drawer-overlay.open {
       display: block;
     }
 
@@ -536,33 +386,33 @@
       height: 100vh;
       background: #181a1e;
       border-left: 1px solid #282a30;
-      box-shadow: -6px 0 25px rgba(0, 0, 0, 0.5);
-      z-index: 1250;
-      overflow-y: auto;
-      transition: right 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: -8px 0 30px rgba(0, 0, 0, 0.5);
+      z-index: 1300;
       display: flex;
       flex-direction: column;
+      transition: right 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      font-size: 13px;
     }
-    .drawer-panel.active {
+    .drawer-panel.open {
       right: 0;
     }
+
     .drawer-header {
-      padding: 14px 16px;
-      background: #1f2126;
-      border-bottom: 1px solid #282a30;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding: 14px 16px;
+      background: #1f2126;
+      border-bottom: 1px solid #282a30;
     }
     .drawer-header h3 {
-      font-size: 13.5px;
+      font-size: 14px;
       font-weight: 700;
       color: #ffffff;
-      letter-spacing: 0.5px;
     }
     .drawer-close-btn {
       background: #252830;
-      border: 1px solid #363942;
+      border: 1px solid #383b44;
       color: #a1a1aa;
       font-size: 16px;
       width: 28px;
@@ -577,69 +427,882 @@
       color: #ffffff;
       background: #32353e;
     }
-    .drawer-content {
-      padding: 14px 16px;
+
+    .drawer-body {
+      padding: 16px;
+      overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-    }
-    .drawer-card {
-      background: #202227;
-      border: 1px solid #2e3138;
-      border-radius: 6px;
-      padding: 12px;
-    }
-    .drawer-card-title {
-      font-size: 11.5px;
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .drawer-btn-full {
-      width: 100%;
-      margin-bottom: 6px;
-      text-align: center;
-    }
-    .drawer-btn-full:last-child {
-      margin-bottom: 0;
+      gap: 14px;
     }
 
-    /* Print styles */
+    .drawer-card {
+      background: #202227;
+      border: 1px solid #2e313a;
+      border-radius: 6px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .drawer-card-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+    }
+
+    /* Status bar */
+    .sheet-status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 11px;
+      color: #71717a;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #e4e4e7;
+    }
+
+    /* =========================================================
+       PROVEN SHEET AND TABLE LAYOUT (АВИАЦИОННЫЙ БЛАНК ШБЖ)
+       ========================================================= */
+/* =========================================================
+       DOCUMENT PAGE CONTAINER (FULL-SCREEN RESPONSIVE / WIDESCREEN)
+       ========================================================= */
+    .sheet-outer-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      padding: 14px 12px 30px 12px;
+    }
+
+    .page-sheet {
+      width: 100%;
+      max-width: 100%;
+      background: #ffffff;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+      border: 1px solid #cbd5e1;
+      padding: 16px 20px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+
+    /* When constrained to standard A4 sheet proportion */
+    .page-sheet.mode-a4 {
+      max-width: 1100px;
+    }
+
+    /* =========================================================
+       TYPOGRAPHY & GENERIC TABLES
+       ========================================================= */
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      table-layout: fixed;
+    }
+
+    th, td {
+      border: 1px solid #000;
+      text-align: center;
+      vertical-align: middle;
+      font-size: 12.5px;
+      padding: 3px 2px;
+      overflow: hidden;
+      word-wrap: break-word;
+    }
+
+    th {
+      font-weight: bold;
+      background-color: #fff;
+      font-size: 11.5px;
+    }
+
+    /* Contenteditable interactive styling */
+    [contenteditable="true"] {
+      outline: none;
+      transition: background-color 0.15s ease;
+      cursor: text;
+    }
+
+    [contenteditable="true"]:hover {
+      background-color: #eff6ff;
+    }
+
+    [contenteditable="true"]:focus {
+      background-color: #dbeafe !important;
+      box-shadow: inset 0 0 0 1px #2563eb;
+    }
+
+    
+    /* Ghost prediction for actual flight times (Т факт) */
+    td.col-tf {
+      position: relative;
+    }
+    td.col-tf:empty::before {
+      content: attr(data-ghost);
+      color: #64748b;
+      opacity: 0.38;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      pointer-events: none;
+      user-select: none;
+      display: inline-block;
+    }
+    td.col-tf:focus:empty::before {
+      opacity: 0.2;
+    }
     @media print {
-      body {
-        background: #ffffff !important;
-        color: #000000 !important;
-      }
-      .no-print, .app-header, .control-toolbar, .drawer-panel, .drawer-overlay, .sheet-status-bar {
-        display: none !important;
-      }
-      .sheet-outer-wrapper {
-        padding: 0 !important;
-      }
-      .page-sheet {
-        box-shadow: none !important;
-        border: none !important;
-        padding: 0 !important;
-        max-width: 100% !important;
-      }
-      th {
-        background-color: #f4f4f4 !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-      td.col-readonly {
-        background-color: #f0f0f0 !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
       td.col-tf:empty::before {
         display: none !important;
       }
     }
 
-  </style>
+    /* Non-editable auto-calculated cells (УВ, УС, МК, W) */
+    td.col-readonly, td[contenteditable="false"] {
+      background-color: #f1f5f9;
+      cursor: not-allowed;
+      user-select: none;
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    td.col-readonly:hover, td[contenteditable="false"]:hover {
+      background-color: #e2e8f0;
+    }
+
+    /* Underlined fill-in blanks */
+    .fill-line {
+      display: inline-block;
+      border-bottom: 1px solid #000;
+      min-width: 50px;
+      padding: 0 4px;
+      vertical-align: baseline;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    /* =========================================================
+       SECTION 1: TOP HEADER ROW (LEFT TABLE, TITLE, RIGHT TABLE)
+       ========================================================= */
+    .top-section {
+      display: grid;
+      grid-template-columns: 260px 1fr 250px;
+      gap: 14px;
+      align-items: start;
+      margin-bottom: 8px;
+    }
+
+    /* Top Left: Wind Table */
+    .tbl-wind {
+      width: 100%;
+    }
+    .tbl-wind th {
+      font-size: 11px;
+      height: 20px;
+    }
+    .tbl-wind td {
+      height: 20px;
+      font-size: 12px;
+    }
+
+    /* Top Center: Title & Flight Info */
+    .doc-header-center {
+      text-align: center;
+      padding: 0 4px;
+    }
+
+    .doc-main-title {
+      font-size: 17px;
+      font-weight: bold;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .header-lines {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 12.5px;
+      text-align: left;
+    }
+
+    .header-line-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      width: 100%;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .header-field {
+      display: inline-flex;
+      align-items: baseline;
+      white-space: nowrap;
+    }
+
+    /* Top Right: Sun Table */
+    .tbl-sun {
+      width: 100%;
+    }
+    .tbl-sun th {
+      font-size: 11px;
+      height: 19px;
+    }
+    .tbl-sun td {
+      height: 19px;
+      font-size: 12px;
+    }
+
+    /* =========================================================
+       SECTION 2: AERODROME & WEATHER SUB-TABLES
+       ========================================================= */
+    .sub-section {
+      display: grid;
+      grid-template-columns: 1fr 250px;
+      gap: 14px;
+      margin-bottom: 8px;
+    }
+
+    .aerodrome-tables-wrapper {
+      display: flex;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .tbl-dep {
+      flex: 1.5;
+    }
+    .tbl-dest {
+      flex: 1;
+    }
+
+    .tbl-sub th {
+      font-size: 11px;
+      padding: 2px 2px;
+      height: 20px;
+    }
+    .tbl-sub td {
+      height: 22px;
+      font-size: 12px;
+    }
+
+    /* Weather table */
+    .tbl-weather {
+      width: 100%;
+    }
+    .tbl-weather th {
+      font-size: 10.5px;
+      height: 20px;
+    }
+    .tbl-weather td {
+      height: 20px;
+      font-size: 11.5px;
+    }
+
+    /* =========================================================
+       SECTION 3: MAIN ROUTE FLIGHT LOG + RIGHT SIDEBAR
+       ========================================================= */
+    .main-body-section {
+      display: grid;
+      grid-template-columns: 1fr 250px;
+      gap: 14px;
+      align-items: stretch;
+      margin-bottom: 8px;
+    }
+
+    /* Horizontal scroll container for phone screens */
+    .table-scroll-container {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Main Flight Plan Table */
+    .tbl-route {
+      width: 100%;
+      min-width: 820px;
+      border: 1.5px solid #000;
+    }
+
+    .tbl-route th {
+      font-size: 11px;
+      padding: 3px 2px;
+      height: 22px;
+    }
+
+    .tbl-route td {
+      height: 25px;
+      font-size: 12.5px;
+      padding: 2px 3px;
+    }
+
+    .tbl-route tr.route-data-row td:nth-child(3) {
+      text-align: left;
+      padding-left: 6px;
+      font-weight: 500;
+    }
+
+    /* Summary row */
+    .tbl-route tr.route-summary-row {
+      font-weight: bold;
+      background: #fafafa;
+    }
+    .tbl-route tr.route-summary-row td {
+      height: 26px;
+      font-size: 13px;
+    }
+
+    /* Fuel & Reserve (АНЗ) Summary Sub-row */
+    .tbl-route tr.route-fuel-summary-row td {
+      height: 24px;
+      font-size: 11.5px;
+      background: #f8fafc;
+    }
+
+    /* Right Sidebar (Notes, Approach Diagram, Wind Rose) */
+    .right-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      border: 1px solid #000;
+      padding: 5px;
+    }
+
+    /* Notes Box */
+    .notes-box {
+      border: 1px solid #000;
+      display: flex;
+      flex-direction: column;
+      min-height: 120px;
+      flex: 1;
+    }
+
+    .notes-title {
+      font-size: 11px;
+      font-weight: bold;
+      text-align: center;
+      border-bottom: 1px solid #000;
+      padding: 2px 0;
+      background: #fdfdfd;
+    }
+
+    .notes-content {
+      flex: 1;
+      padding: 4px 6px;
+      font-size: 11.5px;
+      line-height: 17px;
+      outline: none;
+      background-image: repeating-linear-gradient(
+        transparent,
+        transparent 16px,
+        #e2e8f0 16px,
+        #e2e8f0 17px
+      );
+      background-attachment: local;
+      min-height: 95px;
+    }
+
+    /* Landing Diagram Box */
+    .diagram-box {
+      border: 1px solid #000;
+      padding: 4px;
+      text-align: center;
+      position: relative;
+      background: #fff;
+    }
+
+    .diagram-svg {
+      width: 100%;
+      height: 85px;
+      display: block;
+    }
+
+    /* Wind Rose Box */
+    .windrose-box {
+      border: 1px solid #000;
+      padding: 5px;
+      text-align: center;
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .windrose-svg {
+      width: 120px;
+      height: 120px;
+      display: block;
+    }
+
+    /* =========================================================
+       SECTION 4: FOOTER SIGNATURES & DIVERSION DATA
+       ========================================================= */
+    .footer-section {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 16px;
+      border-top: 1px solid #000;
+      padding-top: 8px;
+      font-size: 12px;
+    }
+
+    .footer-left {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .footer-right {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .footer-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      white-space: nowrap;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    /* Modal for Math formulas */
+    .math-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .math-modal-content {
+      background: #ffffff;
+      color: #0f172a;
+      max-width: 720px;
+      width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 13.5px;
+      line-height: 1.45;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .math-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 10px;
+      margin-bottom: 12px;
+    }
+    .math-formula-box {
+      background: #f1f5f9;
+      border-left: 4px solid #2563eb;
+      padding: 10px 14px;
+      margin: 8px 0;
+      border-radius: 0 6px 6px 0;
+      font-family: Consolas, monospace;
+      font-size: 13px;
+    }
+
+    /* =========================================================
+       MOBILE & TABLET ADAPTIVE LAYOUT (@media max-width: 900px)
+       ========================================================= */
+    @media (max-width: 900px) {
+      .units-master-bar { display: flex !important; top: 48px; padding: 6px 8px; }
+      body {
+        padding: 0 0 65px 0;
+        background-color: #080d1a;
+      }
+
+      .app-header-inner {
+        padding: 0 10px;
+        height: 48px;
+      }
+
+      .brand-badge {
+        display: none;
+      }
+
+      .header-telemetry {
+        display: none;
+      }
+
+      .desktop-params-ribbon {
+        display: none !important;
+      }
+
+      .desktop-header-btn {
+        display: none !important;
+      }
+
+      .mobile-bottom-bar {
+        display: block !important;
+      }
+
+      .sheet-outer-wrapper {
+        padding: 6px 4px 65px 4px;
+      }
+
+      .page-sheet {
+        padding: 10px 8px;
+        border-radius: 4px;
+        width: 100%;
+      }
+
+      .top-section {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .doc-header-center {
+        order: -1;
+        margin-bottom: 4px;
+      }
+
+      .sub-section {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .aerodrome-tables-wrapper {
+        flex-direction: column;
+      }
+
+      .main-body-section {
+        grid-template-columns: 1fr;
+      }
+
+      .right-sidebar {
+        margin-top: 8px;
+      }
+
+      .footer-section {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      th, td {
+        font-size: 11.5px;
+      }
+    }
+
+    /* =========================================================
+       PRINT OPTIMIZATIONS (@media print)
+       ========================================================= */
+    @media print {
+      .unit-sub { color: #000 !important; font-weight: normal !important; }
+      @page {
+        size: A4 landscape;
+        margin: 5mm;
+      }
+
+      html, body {
+        background: #ffffff !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+      }
+
+      .app-header,
+      .desktop-params-ribbon,
+      .drawer-overlay,
+      .drawer-panel,
+      .mobile-bottom-bar,
+      .no-print {
+        display: none !important;
+      }
+
+      .page-sheet {
+        width: 100% !important;
+        max-width: none !important;
+        min-height: auto !important;
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+
+      .top-section {
+        display: grid !important;
+        grid-template-columns: 240px 1fr 220px !important;
+        gap: 10px !important;
+        margin-bottom: 5px !important;
+      }
+
+      .sub-section {
+        display: grid !important;
+        grid-template-columns: 1fr 220px !important;
+        gap: 10px !important;
+        margin-bottom: 5px !important;
+      }
+
+      .aerodrome-tables-wrapper {
+        display: flex !important;
+        flex-direction: row !important;
+      }
+
+      .main-body-section {
+        display: grid !important;
+        grid-template-columns: 1fr 220px !important;
+        gap: 10px !important;
+        margin-bottom: 5px !important;
+      }
+
+      .footer-section {
+        display: grid !important;
+        grid-template-columns: 1.2fr 1fr !important;
+        gap: 14px !important;
+        padding-top: 4px !important;
+        font-size: 10.5px !important;
+      }
+
+      .tbl-route {
+        min-width: 0 !important;
+      }
+
+      th, td {
+        font-size: 10px !important;
+        padding: 1px 2px !important;
+      }
+
+      .tbl-route td {
+        height: 18px !important;
+      }
+
+      .tbl-route tr.route-fuel-summary-row td {
+        height: 18px !important;
+        font-size: 10px !important;
+        background: transparent !important;
+      }
+
+      [contenteditable="true"] {
+        background: transparent !important;
+        box-shadow: none !important;
+      }
+
+      td.col-readonly, td[contenteditable="false"] {
+        background-color: transparent !important;
+      }
+
+      .notes-content {
+        background-image: repeating-linear-gradient(
+          transparent,
+          transparent 14px,
+          #cbd5e1 14px,
+          #cbd5e1 15px
+        ) !important;
+      }
+
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+    }
+  
+    /* Segmented Unit Pill Controls (Speed in kt/kmh, Altitude in ft/m, Distance in NM/km) */
+    .unit-pill-group {
+      display: inline-flex;
+      background: #080f1d;
+      border: 1px solid #1e2e4b;
+      border-radius: 6px;
+      padding: 2px;
+      gap: 2px;
+      vertical-align: middle;
+    }
+
+    .unit-pill-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .unit-pill-btn:hover {
+      color: #f8fafc;
+      background: #17243c;
+    }
+
+    .unit-pill-btn.active {
+      background: #0284c7;
+      color: #ffffff;
+      box-shadow: 0 1px 4px rgba(2, 132, 199, 0.4);
+    }
+
+    .unit-sub {
+      display: block;
+      font-size: 8.5px;
+      font-weight: bold;
+      color: #0369a1;
+      line-height: 1;
+      margin-top: 1px;
+    }
+
+    .units-ribbon-group {
+      background: #111a2e;
+      border: 1px solid #1e2e4b;
+      padding: 3px 8px;
+      border-radius: 6px;
+      gap: 7px;
+    }
+
+  
+    /* Master Always-Visible Units Bar */
+    .units-master-bar {
+      width: 100%;
+      background: #0b1324;
+      border-bottom: 2px solid #0284c7;
+      padding: 7px 12px;
+      display: flex !important;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      z-index: 1090;
+      position: sticky;
+      top: 50px;
+    }
+
+    .units-bar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      max-width: 1400px;
+      width: 100%;
+    }
+
+    .units-bar-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #38bdf8;
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .units-segment {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #111a2e;
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid #1e2e4b;
+    }
+
+    .units-segment-lbl {
+      color: #94a3b8;
+      font-size: 11.5px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    /* Interactive Unit Badges at the top of the White Sheet */
+    .sheet-units-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+      padding: 6px 12px;
+      background: #f8fafc;
+      border: 1.5px dashed #0284c7;
+      border-radius: 6px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 12px;
+      flex-wrap: wrap;
+    }
+
+    .sheet-unit-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #ffffff;
+      border: 1.5px solid #0284c7;
+      color: #0369a1;
+      padding: 3px 10px;
+      border-radius: 5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      user-select: none;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .sheet-unit-badge:hover {
+      background: #0284c7;
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .sheet-unit-badge b {
+      color: #0284c7;
+      font-weight: 800;
+    }
+
+    .sheet-unit-badge:hover b {
+      color: #ffffff;
+    }
+
+    /* Header Compact Unit Toggles */
+    .header-units-quick {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hdr-unit-btn {
+      background: #131d31;
+      border: 1px solid #233552;
+      color: #94a3b8;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      white-space: nowrap;
+    }
+
+    .hdr-unit-btn:hover {
+      background: #18253e;
+      border-color: #38bdf8;
+      color: #f1f5f9;
+    }
+
+    .hdr-unit-btn strong {
+      color: #38bdf8;
+    }
+
+  
+</style>
 </head>
 <body>
   <!-- Top Navigation Header -->
@@ -2845,23 +3508,28 @@
 
     // 9. Save & Load LocalStorage
     function saveToLocalStorage(showFeedback = true) {
+      const getVal = id => {
+        const el = document.getElementById(id);
+        return el ? (el.value || '') : '';
+      };
+
       const data = {
         fields: {},
         windRows: [],
         sunRows: [],
         routeRows: [],
-        notes: document.getElementById('notesArea').innerHTML,
+        notes: document.getElementById('notesArea')?.innerHTML || '',
         autoNts: autoNtsEnabled,
         isWidescreen: isWidescreen,
-        quickWindDir: document.getElementById('quickWindDir').value,
-        quickWindSpeed: document.getElementById('quickWindSpeed').value,
-        quickDepTime: document.getElementById('quickDepTime').value,
-        quickFuelHour: document.getElementById('quickFuelHour').value,
-        quickFuelMin: document.getElementById('quickFuelMin').value,
-        quickFuelAnz: document.getElementById('quickFuelAnz').value,
-        quickTimeDep: document.getElementById('quickTimeDep')?.value || '4',
-        quickTimeArr: document.getElementById('quickTimeArr')?.value || '6',
-        quickTas: document.getElementById('quickTas')?.value || '180',
+        quickWindDir: getVal('quickWindDir'),
+        quickWindSpeed: getVal('quickWindSpeed'),
+        quickDepTime: getVal('quickDepTime'),
+        quickFuelHour: getVal('quickFuelHour'),
+        quickFuelMin: getVal('quickFuelMin'),
+        quickFuelAnz: getVal('quickFuelAnz'),
+        quickTimeDep: getVal('quickTimeDep') || '4',
+        quickTimeArr: getVal('quickTimeArr') || '6',
+        quickTas: getVal('quickTas') || '180',
         angleDisplayMode: angleDisplayMode,
         units: currentUnits
       };
@@ -2898,7 +3566,7 @@
       }
 
       if (showFeedback) {
-        alert('Данные ШБЖ и расчет НТС сохранены в памяти браузера!');
+        showToastNotification('✓ Данные ШБЖ сохранены в памяти');
       }
     }
 
@@ -2909,34 +3577,58 @@
       try {
         const data = JSON.parse(raw);
 
+        // Safe unit restoration
+        if (data.units && typeof setSpeedUnit === 'function') {
+          try {
+            if (data.units.speed) currentUnits.speed = data.units.speed;
+            if (data.units.alt) currentUnits.alt = data.units.alt;
+            if (data.units.dist) currentUnits.dist = data.units.dist;
+            updateUnitUI();
+          } catch(e) { console.warn('Unit restore err', e); }
+        }
+
+        // Safe angleDisplayMode
+        if (data.angleDisplayMode && typeof setAngleDisplayMode === 'function') {
+          try { setAngleDisplayMode(data.angleDisplayMode); } catch(e) {}
+        }
+
         if (data.isWidescreen !== undefined) {
           isWidescreen = data.isWidescreen;
           const sheet = document.getElementById('shbjDocument');
           const btn = document.getElementById('btnWidthToggle');
-          if (!isWidescreen) {
-            sheet.classList.add('mode-a4');
-            if (btn) btn.innerHTML = '📄 Режим бланка (А4)';
-          } else {
-            sheet.classList.remove('mode-a4');
-            if (btn) btn.innerHTML = '🖥️ На весь экран: ВКЛ';
+          if (sheet) {
+            if (!isWidescreen) {
+              sheet.classList.add('mode-a4');
+              if (btn) btn.innerHTML = '📄 Режим бланка (А4)';
+            } else {
+              sheet.classList.remove('mode-a4');
+              if (btn) btn.innerHTML = '🖥️ На весь экран: ВКЛ';
+            }
           }
         }
 
-        if (data.quickWindDir) document.getElementById('quickWindDir').value = data.quickWindDir;
-        if (data.quickWindSpeed) document.getElementById('quickWindSpeed').value = data.quickWindSpeed;
-        if (data.quickDepTime) document.getElementById('quickDepTime').value = data.quickDepTime;
-        if (data.quickFuelHour) document.getElementById('quickFuelHour').value = data.quickFuelHour;
-        if (data.quickFuelMin) document.getElementById('quickFuelMin').value = data.quickFuelMin;
-        if (data.quickFuelAnz) document.getElementById('quickFuelAnz').value = data.quickFuelAnz;
-        if (data.quickTimeDep) document.getElementById('quickTimeDep').value = data.quickTimeDep;
-        if (data.quickTimeArr) document.getElementById('quickTimeArr').value = data.quickTimeArr;
-        if (data.quickTas) document.getElementById('quickTas').value = data.quickTas;
+        const safeSetVal = (id, val) => {
+          if (val !== undefined && val !== null) {
+            const el = document.getElementById(id);
+            if (el) el.value = val;
+          }
+        };
+
+        safeSetVal('quickWindDir', data.quickWindDir);
+        safeSetVal('quickWindSpeed', data.quickWindSpeed);
+        safeSetVal('quickDepTime', data.quickDepTime);
+        safeSetVal('quickFuelHour', data.quickFuelHour);
+        safeSetVal('quickFuelMin', data.quickFuelMin);
+        safeSetVal('quickFuelAnz', data.quickFuelAnz);
+        safeSetVal('quickTimeDep', data.quickTimeDep);
+        safeSetVal('quickTimeArr', data.quickTimeArr);
+        safeSetVal('quickTas', data.quickTas);
 
         if (data.fields) {
           for (const [id, val] of Object.entries(data.fields)) {
             const el = document.getElementById(id);
             if (el) {
-              if (el.tagName === 'INPUT') el.value = val;
+              if (el.tagName === 'INPUT' || el.tagName === 'SELECT') el.value = val;
               else el.innerHTML = val;
             }
           }
@@ -2973,54 +3665,46 @@
 
         if (data.routeRows && data.routeRows.length > 0) {
           const tbody = document.getElementById('routeTableBody');
-          tbody.innerHTML = '';
-          const classNames = ['col-hpriv','col-hbez','col-name','col-uv','col-us','col-mpu','col-mk','col-vi','col-w','col-s','col-t','col-qr','col-qf','col-tr','col-tf','col-hp'];
+          if (tbody) {
+            tbody.innerHTML = '';
+            const classNames = ['col-hpriv','col-hbez','col-name','col-uv','col-us','col-mpu','col-mk','col-vi','col-w','col-s','col-t','col-qr','col-qf','col-tr','col-tf','col-hp'];
 
-          data.routeRows.forEach(savedRow => {
-            const tr = document.createElement('tr');
-            tr.className = 'route-data-row';
-            savedRow.forEach((val, cIdx) => {
-              const td = document.createElement('td');
-              // УВ (3), УС (4), МК (6), W (8) are strictly read-only
-              if (cIdx === 3 || cIdx === 4 || cIdx === 6 || cIdx === 8) {
-                td.contentEditable = 'false';
-                td.className = classNames[cIdx] + ' col-readonly';
-              } else {
-                td.contentEditable = 'true';
-                if (classNames[cIdx]) td.className = classNames[cIdx];
-              }
-              td.innerHTML = val;
-              tr.appendChild(td);
+            data.routeRows.forEach(savedRow => {
+              const tr = document.createElement('tr');
+              tr.className = 'route-data-row';
+              savedRow.forEach((val, cIdx) => {
+                const td = document.createElement('td');
+                // УВ (3), УС (4), МК (6), W (8) and Hбез (1) are read-only
+                if (cIdx === 1 || cIdx === 3 || cIdx === 4 || cIdx === 6 || cIdx === 8) {
+                  td.contentEditable = 'false';
+                  td.className = (classNames[cIdx] || '') + ' col-readonly';
+                } else {
+                  td.contentEditable = 'true';
+                  if (classNames[cIdx]) td.className = classNames[cIdx];
+                }
+                td.innerHTML = val;
+                tr.appendChild(td);
+              });
+              tbody.appendChild(tr);
             });
-            tbody.appendChild(tr);
-          });
-        }
-
-        if (data.angleDisplayMode) {
-          angleDisplayMode = data.angleDisplayMode;
-          updateAngleHeaderUI();
-        }
-        if (data.units) {
-          if (data.units.speed) currentUnits.speed = data.units.speed;
-          if (data.units.alt) currentUnits.alt = data.units.alt;
-          if (data.units.dist) currentUnits.dist = data.units.dist;
-          updateUnitUI();
+          }
         }
 
         if (data.autoNts !== undefined) {
           autoNtsEnabled = data.autoNts;
           const btn = document.getElementById('drawerAutoNtsBtn');
-          if (btn) {
-            btn.textContent = autoNtsEnabled ? '📐 Авторасчет НТС: ВКЛ' : '📐 Авторасчет НТС: ВЫКЛ';
-            btn.style.borderColor = autoNtsEnabled ? '#0d9488' : '#e11d48';
-          }
+          if (btn) btn.textContent = autoNtsEnabled ? 'ВКЛ' : 'ВЫКЛ';
         }
 
-        syncAllWindAndFuelInputs('desktop');
-        updateNavWindDisplay();
+        try { recalculateEntireFlightPlan(); } catch(e) { console.warn('recalc err', e); }
+        try { recalculateAllSafeAltitudes(); } catch(e) { console.warn('safe alt err', e); }
+        try { recalculateAllActualProjections(); } catch(e) { console.warn('proj err', e); }
 
-      } catch (e) {
-        console.error('Error loading saved flight log:', e);
+        const status = document.getElementById('saveStatus');
+        if (status) status.textContent = '✓ Загружено из памяти';
+
+      } catch (err) {
+        console.error('Error loading saved flight log:', err);
       }
     }
 
