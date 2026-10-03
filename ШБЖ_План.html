@@ -1465,7 +1465,7 @@
       <!-- Status pill -->
       <div style="font-size: 11.5px; color: #94a3b8; display: flex; align-items: center; gap: 6px; padding: 4px 6px; background: #080f1d; border-radius: 4px; border: 1px solid #1c2b45;">
         <span class="status-dot"></span>
-        <span id="saveStatus">🔒 α, УС, МК, W защищены и рассчитываются автоматически</span>
+        <span id="saveStatus">🔒 Hб.пр, α, УС, МК, W защищены и рассчитываются автоматически</span>
       </div>
 
       <!-- Card 0: Единицы измерения (Units) -->
@@ -1901,8 +1901,8 @@
           <table class="tbl-route" id="routeTable">
             <thead>
               <tr>
-                <th rowspan="2" style="width: 48px;" id="th_route_hpriv">H прив<br><span class="unit-sub" id="hdrRouteHprivUnit">м</span></th>
-                <th rowspan="2" style="width: 52px; line-height: 1.05;" id="th_route_hbez">H б 760<br><span class="unit-sub" id="hdrRouteHbezUnit">H б пр (м)</span></th>
+                <th rowspan="2" style="width: 48px;" id="th_route_hprep" title="Высота препятствия с учетом рельефа H преп (вводится)">H преп<br><span class="unit-sub" id="hdrRouteHprepUnit">м</span></th>
+                <th rowspan="2" style="width: 52px; line-height: 1.05; background: #f8fafc;" id="th_route_hbez" title="Безопасная высота Hб.пр = Hпреп + Hист.без - ΔHt (рассчитывается автоматически)">🔒 H б 760<br><span class="unit-sub" id="hdrRouteHbezUnit">H б пр (м)</span></th>
                 <th rowspan="2" style="width: 170px;">МАРШРУТ</th>
                 <th rowspan="2" style="width: 36px; background: #f8fafc; cursor: pointer; user-select: none;" id="th_route_alpha" onclick="toggleAngleDisplayMode()" title="Острый угол ветра α (направление между МПУ и ближайшим направлением ветра, 0°–90°). Нажмите для переключения α / УВ">🔒 α</th>
                 <th rowspan="2" style="width: 36px; background: #f8fafc;" title="Угол сноса (УС) рассчитывается автоматически через острый угол α">🔒 УС</th>
@@ -1915,7 +1915,7 @@
                 <th colspan="2" style="width: 84px;">Топливо</th>
                 <th rowspan="2" style="width: 46px;" title="Расчетное время пролета (Т расч)">Т расч</th>
                 <th rowspan="2" style="width: 46px;">Т факт</th>
-                <th rowspan="2" style="width: 48px;">H пом<br><span class="unit-sub" id="hdrRouteHpUnit">м</span></th>
+                <th rowspan="2" style="width: 48px;" title="Высота/эшелон полета">H пол<br><span class="unit-sub" id="hdrRouteHpUnit">м</span></th>
               </tr>
               <tr>
                 <th style="width: 42px;">Q р</th>
@@ -1923,19 +1923,19 @@
               </tr>
             </thead>
             <tbody id="routeTableBody">
-              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
-              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
-              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
-              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
-              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
-              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
-              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
-              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
-              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
-              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
-              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
-              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
-              <tr class="route-data-row"><td contenteditable="true" class="col-hpriv"></td><td contenteditable="true" class="col-hbez"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
+              <tr class="route-data-row"><td contenteditable="true" class="col-hprep col-hpriv"></td><td contenteditable="false" class="col-hbez col-readonly" title="Рассчитывается автоматически: Hб.пр = Hпреп + Hист.без - ΔHt"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
+              <tr class="route-data-row"><td contenteditable="true" class="col-hprep col-hpriv"></td><td contenteditable="false" class="col-hbez col-readonly" title="Рассчитывается автоматически: Hб.пр = Hпреп + Hист.без - ΔHt"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
+              <tr class="route-data-row"><td contenteditable="true" class="col-hprep col-hpriv"></td><td contenteditable="false" class="col-hbez col-readonly" title="Рассчитывается автоматически: Hб.пр = Hпреп + Hист.без - ΔHt"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
+              <tr class="route-data-row"><td contenteditable="true" class="col-hprep col-hpriv"></td><td contenteditable="false" class="col-hbez col-readonly" title="Рассчитывается автоматически: Hб.пр = Hпреп + Hист.без - ΔHt"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
+              <tr class="route-data-row"><td contenteditable="true" class="col-hprep col-hpriv"></td><td contenteditable="false" class="col-hbez col-readonly" title="Рассчитывается автоматически: Hб.пр = Hпреп + Hист.без - ΔHt"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
+              <tr class="route-data-row"><td contenteditable="true" class="col-hprep col-hpriv"></td><td contenteditable="false" class="col-hbez col-readonly" title="Рассчитывается автоматически: Hб.пр = Hпреп + Hист.без - ΔHt"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
+              <tr class="route-data-row"><td contenteditable="true" class="col-hprep col-hpriv"></td><td contenteditable="false" class="col-hbez col-readonly" title="Рассчитывается автоматически: Hб.пр = Hпреп + Hист.без - ΔHt"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
+              <tr class="route-data-row"><td contenteditable="true" class="col-hprep col-hpriv"></td><td contenteditable="false" class="col-hbez col-readonly" title="Рассчитывается автоматически: Hб.пр = Hпреп + Hист.без - ΔHt"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
+              <tr class="route-data-row"><td contenteditable="true" class="col-hprep col-hpriv"></td><td contenteditable="false" class="col-hbez col-readonly" title="Рассчитывается автоматически: Hб.пр = Hпреп + Hист.без - ΔHt"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
+              <tr class="route-data-row"><td contenteditable="true" class="col-hprep col-hpriv"></td><td contenteditable="false" class="col-hbez col-readonly" title="Рассчитывается автоматически: Hб.пр = Hпреп + Hист.без - ΔHt"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
+              <tr class="route-data-row"><td contenteditable="true" class="col-hprep col-hpriv"></td><td contenteditable="false" class="col-hbez col-readonly" title="Рассчитывается автоматически: Hб.пр = Hпреп + Hист.без - ΔHt"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
+              <tr class="route-data-row"><td contenteditable="true" class="col-hprep col-hpriv"></td><td contenteditable="false" class="col-hbez col-readonly" title="Рассчитывается автоматически: Hб.пр = Hпреп + Hист.без - ΔHt"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
+              <tr class="route-data-row"><td contenteditable="true" class="col-hprep col-hpriv"></td><td contenteditable="false" class="col-hbez col-readonly" title="Рассчитывается автоматически: Hб.пр = Hпреп + Hист.без - ΔHt"></td><td contenteditable="true" class="col-name"></td><td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически: УВ = δн - МПУ"></td><td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически через острый угол α"></td><td contenteditable="true" class="col-mpu"></td><td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически: МК = МПУ - УС"></td><td contenteditable="true" class="col-vi"></td><td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически: W = Vи * cos(УС) ± Uэкв"></td><td contenteditable="true" class="col-s"></td><td contenteditable="true" class="col-t"></td><td contenteditable="true" class="col-qr"></td><td contenteditable="true" class="col-qf"></td><td contenteditable="true" class="col-tr"></td><td contenteditable="true" class="col-tf"></td><td contenteditable="true" class="col-hp"></td></tr>
             </tbody>
             <!-- Summary Rows -->
             <tfoot>
@@ -2176,7 +2176,17 @@
       </div>
 
       <p style="font-size: 11.5px; color: #64748b; margin-top: 10px;">
-        💡 <em>Подсказка: наведите курсор мыши на любое значение УВ, УС, МК или W в таблице, чтобы увидеть точные значения α, U<sub>бок</sub> и U<sub>экв</sub>.</em>
+        <strong>3. Безопасная высота полета ниже нижнего эшелона (Hб.пр / Нниж.без):</strong><br>
+          По нормам ФАП 136/42/51 (п. 16):<br>
+          <code>Hб.пр = Hпреп + Hист.без - ΔHt</code><br>
+          • <strong>Hпреп</strong> — абсолютная высота наивысшей точки с учетом искусственных препятствий (вводится пилотом).<br>
+          • <strong>Hист.без</strong> — установленная истинная безопасная высота:<br>
+          &nbsp;&nbsp;– <strong>100 м</strong> — при Vи ≤ 300 км/ч (на равнине);<br>
+          &nbsp;&nbsp;– <strong>200 м</strong> — при Vи > 300 км/ч (на равнине).<br>
+          • <strong>ΔHt</strong> — методическая температурная поправка высотомера:<br>
+          &nbsp;&nbsp;<code>ΔHt = ((t0 - 15°) / 300) · (Hпреп + Hист.без)</code><br>
+          &nbsp;&nbsp;где <code>t0</code> — фактическая температура на аэродроме взлета или посадки.<br><br>
+          💡 <em>Подсказка: наведите курсор мыши на любое значение УВ, УС, МК или W в таблице, чтобы увидеть точные значения α, U<sub>бок</sub> и U<sub>экв</sub>.</em>
       </p>
     </div>
   </div>
@@ -2509,17 +2519,23 @@
         if (target.id === 'wind_d_1' || target.id === 'wind_u_1') {
           syncWindFromTopTable();
         }
+        if (target.id === 'dep_t' || target.id === 'wx_t') {
+          recalculateEntireFlightPlan();
+        }
 
         // Live calculation if enabled
         if (autoNtsEnabled) {
           if (target.closest('#routeTableBody')) {
             const tr = target.closest('tr.route-data-row');
             // If user edited MPU, Vi, S
-            if (target.classList.contains('col-name')) {
+            if (target.classList.contains('col-hprep') || target.classList.contains('col-hpriv')) {
+              recalculateRowSafeAltitude(tr);
+            } else if (target.classList.contains('col-name')) {
               applyTakeoffLandingTimes();
               recalculateTimingsAndFuel();
               updateCalculatedTotals();
             } else if (target.classList.contains('col-mpu') || target.classList.contains('col-vi') || target.classList.contains('col-s')) {
+              if (target.classList.contains('col-vi')) recalculateRowSafeAltitude(tr);
               recalculateRowNTS(tr);
               recalculateTimingsAndFuel();
             } else if (target.classList.contains('col-t') || target.classList.contains('col-qr') || target.classList.contains('col-qf')) {
@@ -2982,6 +2998,70 @@
     }
 
     // 4. Recalculate single row (УВ, УС, МК, W strictly non-editable)
+    
+    // Расчет безопасной высоты Hб.пр по формуле ФАП 136:
+    // Hб.пр = Hпреп + Hист.без - ΔHt
+    function recalculateRowSafeAltitude(tr) {
+      if (!tr) return;
+      const cellHprep = tr.querySelector('.col-hprep') || tr.querySelector('.col-hpriv');
+      const cellHbez = tr.querySelector('.col-hbez');
+      if (!cellHprep || !cellHbez) return;
+
+      // Make Hbez read-only
+      cellHbez.contentEditable = "false";
+      cellHbez.classList.add('col-readonly');
+
+      const rawTxt = cellHprep.innerText.replace(',', '.').trim();
+      const hPrepVal = parseFloat(rawTxt);
+
+      if (isNaN(hPrepVal) || hPrepVal <= 0) {
+        cellHbez.innerText = '';
+        cellHbez.title = 'Безопасная высота Hб.пр: рассчитывается автоматически при вводе Hпреп';
+        return;
+      }
+
+      // 1. Температура у земли t0 (из dep_t или wx_t, ФАП: меньшая из них)
+      let t0 = 15;
+      const tDepTxt = document.getElementById('dep_t')?.innerText?.replace(',', '.').replace('+', '').trim();
+      const tWxTxt = document.getElementById('wx_t')?.innerText?.replace(',', '.').replace('+', '').trim();
+      const tDep = parseFloat(tDepTxt);
+      const tWx = parseFloat(tWxTxt);
+      if (!isNaN(tDep) && !isNaN(tWx)) {
+        t0 = Math.min(tDep, tWx);
+      } else if (!isNaN(tDep)) {
+        t0 = tDep;
+      } else if (!isNaN(tWx)) {
+        t0 = tWx;
+      }
+
+      // 2. Скорость Vи (для определения Hист.без)
+      const cellVi = tr.querySelector('.col-vi');
+      const viVal = parseFloat(cellVi?.innerText?.replace(',', '.').trim()) || 180;
+      const isSpeedKt = currentUnits.speed === 'kt';
+      const viKmh = isSpeedKt ? (viVal * 1.852) : viVal;
+
+      // 3. Истинная безопасная высота (100м при Vи <= 300км/ч, 200м при Vи > 300км/ч)
+      const isAltFt = currentUnits.alt === 'ft';
+      const hPrepM = isAltFt ? (hPrepVal * 0.3048) : hPrepVal;
+      const hIstBezM = (viKmh <= 300) ? 100 : 200;
+
+      // 4. Методическая температурная поправка высотомера ΔHt = ((t0 - 15) / 300) * Hиспр
+      const hIsprM = hPrepM + hIstBezM;
+      const dHtM = ((t0 - 15) / 300) * hIsprM;
+
+      // 5. Безопасная высота Hб.пр = Hпреп + Hист.без - ΔHt
+      const hBezPrM = Math.round(hIsprM - dHtM);
+      const hBezFinal = isAltFt ? Math.round(hBezPrM / 0.3048) : hBezPrM;
+
+      cellHbez.innerText = hBezFinal;
+
+      const altUnit = isAltFt ? 'ft' : 'м';
+      const spUnit = isSpeedKt ? 'kt' : 'км/ч';
+      cellHbez.title = `Hб.пр = ${hBezFinal} ${altUnit}\n` +
+        `Формула ФАП 136: Hб.пр = Hпреп (${hPrepVal}) + Hист.без (${isAltFt ? Math.round(hIstBezM / 0.3048) : hIstBezM}) - ΔHt (${Math.round(isAltFt ? dHtM / 0.3048 : dHtM)} ${altUnit})\n` +
+        `Условия: t0=${t0}°C, Vи=${viVal} ${spUnit}`;
+    }
+
     function recalculateRowNTS(tr) {
       if (!tr) return;
 
@@ -3067,6 +3147,7 @@
 
       const rows = document.querySelectorAll('#routeTableBody tr.route-data-row');
       rows.forEach(tr => {
+        recalculateRowSafeAltitude(tr);
         recalculateRowNTS(tr);
       });
 
@@ -3264,8 +3345,8 @@
       tr.className = 'route-data-row';
 
       tr.innerHTML = `
-        <td contenteditable="true" class="col-hpriv"></td>
-        <td contenteditable="true" class="col-hbez"></td>
+        <td contenteditable="true" class="col-hprep col-hpriv"></td>
+        <td contenteditable="false" class="col-hbez col-readonly" title="Рассчитывается автоматически: Hб.пр = Hпреп + Hист.без - ΔHt"></td>
         <td contenteditable="true" class="col-name"></td>
         <td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически"></td>
         <td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически"></td>
