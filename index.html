@@ -384,6 +384,90 @@
       font-family: 'JetBrains Mono', monospace;
     }
 
+    
+    /* Floating Vi Prompt & Quick Action */
+    .vi-floating-prompt {
+      position: absolute;
+      z-index: 1500;
+      background: #18191e;
+      color: #ffffff;
+      border: 1px solid #3f424c;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 11.5px;
+      font-weight: 600;
+      display: none;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+      animation: fadeIn 0.15s ease;
+    }
+    .vi-floating-prompt:hover {
+      background: #272a33;
+      border-color: #ffffff;
+      transform: translateY(-1px);
+    }
+    .vi-floating-prompt span.badge-num {
+      background: #ffffff;
+      color: #09090b;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Column header button */
+    .btn-th-vi-fill {
+      background: #252830;
+      border: 1px solid #3f424c;
+      color: #f4f4f5;
+      font-size: 9.5px;
+      font-weight: 700;
+      padding: 1px 4px;
+      margin-left: 3px;
+      border-radius: 3px;
+      cursor: pointer;
+      vertical-align: middle;
+      transition: all 0.12s ease;
+    }
+    .btn-th-vi-fill:hover {
+      background: #ffffff;
+      color: #09090b;
+      border-color: #ffffff;
+    }
+
+    /* Toast notification */
+    .shbj-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #18191e;
+      color: #ffffff;
+      border: 1px solid #3f424c;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 12.5px;
+      font-weight: 600;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      z-index: 2000;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .shbj-toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
     /* Ghost projected actual time (Т факт) */
     td.col-tf {
       position: relative;
@@ -630,7 +714,7 @@
 
     <div class="ctrl-divider"></div>
 
-    <!-- Group 2: Wind -->
+    <!-- Group 2: Wind & TAS -->
     <div class="ctrl-section" title="Ветер: метеорологический δ (откуда) и скорость U">
       <span class="ctrl-label">Ветер δ:</span>
       <input type="text" id="quickWindDir" class="calc-input" value="" placeholder="270" oninput="onQuickWindChanged()">°
@@ -639,6 +723,14 @@
       <span id="lblRibbonWindSpeedUnit" class="ctrl-label">км/ч</span>
       <span class="ctrl-label" style="margin-left: 4px;">δ<sub>н</sub>:</span>
       <span id="quickNavWind" class="ctrl-val">—</span>
+    </div>
+
+    <div class="ctrl-divider"></div>
+
+    <div class="ctrl-section" title="Генеральная истинная скорость Vи (нажмите 'Все', чтобы применить ко всем строкам с данными)">
+      <span class="ctrl-label">V<sub>и</sub>:</span>
+      <input type="text" id="quickTas" class="calc-input" value="180" placeholder="180" style="width: 44px;" oninput="onQuickTasInput()">
+      <button type="button" class="btn btn-ctrl" onclick="applyQuickTasToAll()" title="Заполнить Vи для всех этапов с данными">Все</button>
     </div>
 
     <div class="ctrl-divider"></div>
@@ -711,6 +803,18 @@
       </div>
     </div>
   </aside>
+
+    <!-- Floating Vi Quick Prompt -->
+  <div id="viFloatingPrompt" class="vi-floating-prompt no-print" onclick="onViFloatingPromptClick()">
+    <span>⚡</span>
+    <span>Применить <span class="badge-num" id="viPromptVal">180</span> ко всем этапам?</span>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="shbjToast" class="shbj-toast no-print">
+    <span id="toastIcon">✓</span>
+    <span id="toastText">Готово</span>
+  </div>
 
   <div class="sheet-outer-wrapper">
     <div class="page-sheet" id="shbjDocument">
@@ -973,7 +1077,7 @@
                 <th rowspan="2" style="width: 36px; background: #f8fafc;" title="Угол сноса (УС) рассчитывается автоматически через острый угол α">🔒 УС</th>
                 <th rowspan="2" style="width: 40px;" title="Магнитный путевой угол (вводится)">МПУ</th>
                 <th rowspan="2" style="width: 40px; background: #f8fafc;" title="Магнитный курс (МК = МПУ - УС) рассчитывается автоматически">🔒 МК</th>
-                <th rowspan="2" style="width: 40px;" title="Истинная скорость Vи (вводится)">V<sub>и</sub><br><span class="unit-sub" id="hdrRouteViUnit">км/ч</span></th>
+                <th rowspan="2" style="width: 48px; position: relative;" title="Истинная скорость Vи. Нажмите 'Все', чтобы применить ко всем этапам с данными">V<sub>и</sub> <button type="button" class="btn-th-vi-fill" onclick="applyHeaderViToAll(event)" title="Применить скорость Vи ко всем этапам с данными">⚡Все</button><br><span class="unit-sub" id="hdrRouteViUnit">км/ч</span></th>
                 <th rowspan="2" style="width: 40px; background: #f8fafc;" title="Путевая скорость (W) рассчитывается автоматически">🔒 W<br><span class="unit-sub" id="hdrRouteWUnit">км/ч</span></th>
                 <th rowspan="2" style="width: 40px;" title="Расстояние участка S (вводится)">S<br><span class="unit-sub" id="hdrRouteSUnit">км</span></th>
                 <th rowspan="2" style="width: 40px;" title="Время полета этапа t в формате час.минуты (например 0.04, 0.19, 1.15)">t</th>
@@ -1574,8 +1678,159 @@
     }
 
     // 1. Setup listeners on editable cells and inputs
+    
+    // ---------------------------------------------------------
+    // Vи ГЕНЕРАЛЬНОЕ ЗАПОЛНЕНИЕ ДЛЯ ВСЕХ ЭТАПОВ С ДАННЫМИ
+    // ---------------------------------------------------------
+    let currentActiveViCell = null;
+    let toastTimeout = null;
+
+    function showToastNotification(text, icon = '✓') {
+      const toast = document.getElementById('shbjToast');
+      const tText = document.getElementById('toastText');
+      const tIcon = document.getElementById('toastIcon');
+      if (!toast) return;
+
+      if (tText) tText.innerText = text;
+      if (tIcon) tIcon.innerText = icon;
+
+      toast.classList.add('show');
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2500);
+    }
+
+    function hideViPrompt() {
+      const promptEl = document.getElementById('viFloatingPrompt');
+      if (promptEl) {
+        promptEl.style.display = 'none';
+      }
+      currentActiveViCell = null;
+    }
+
+    function showViPromptForCell(cell) {
+      if (!cell) return;
+      currentActiveViCell = cell;
+      const raw = cell.innerText.replace(',', '.').trim();
+      const val = parseFloat(raw);
+
+      const promptEl = document.getElementById('viFloatingPrompt');
+      const valBadge = document.getElementById('viPromptVal');
+      if (!promptEl || isNaN(val) || val <= 0) {
+        hideViPrompt();
+        return;
+      }
+
+      if (valBadge) valBadge.innerText = val;
+
+      const rect = cell.getBoundingClientRect();
+      const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+      promptEl.style.top = `${rect.bottom + scrollTop + 4}px`;
+      promptEl.style.left = `${Math.max(10, rect.left + scrollLeft - 30)}px`;
+      promptEl.style.display = 'flex';
+
+      const qTas = document.getElementById('quickTas');
+      if (qTas) qTas.value = val;
+    }
+
+    function onViFloatingPromptClick() {
+      if (!currentActiveViCell) return;
+      const raw = currentActiveViCell.innerText.replace(',', '.').trim();
+      const val = parseFloat(raw);
+      if (!isNaN(val) && val > 0) {
+        applyViToAll(val);
+      }
+      hideViPrompt();
+    }
+
+    // Применение Vи ко всем этапам, где есть данные маршрута
+    function applyViToAll(speedVal) {
+      if (!speedVal || isNaN(speedVal)) return;
+      const rows = document.querySelectorAll('#routeTableBody tr.route-data-row');
+      let count = 0;
+
+      rows.forEach(tr => {
+        const name = (tr.querySelector('.col-name')?.innerText || '').trim();
+        const mpu = (tr.querySelector('.col-mpu')?.innerText || '').trim();
+        const s = (tr.querySelector('.col-s')?.innerText || '').trim();
+        const hprep = (tr.querySelector('.col-hprep, .col-hpriv')?.innerText || '').trim();
+        const hp = (tr.querySelector('.col-hp')?.innerText || '').trim();
+
+        // Проверяем, есть ли какие-то данные в строке
+        const hasData = (name !== '' || mpu !== '' || s !== '' || hprep !== '' || hp !== '');
+        const upper = name.toUpperCase();
+        const isTakeoffOrLanding = (upper === 'ВЗЛЕТ' || upper === 'ВЗЛЁТ' || upper.startsWith('ПОСАДКА')) && s === '' && mpu === '';
+
+        if (hasData && !isTakeoffOrLanding) {
+          const cellVi = tr.querySelector('.col-vi');
+          if (cellVi) {
+            cellVi.innerText = speedVal;
+            count++;
+          }
+        }
+      });
+
+      const qTas = document.getElementById('quickTas');
+      if (qTas) qTas.value = speedVal;
+
+      recalculateEntireFlightPlan();
+      debouncedSave();
+
+      const spUnit = currentUnits.speed === 'kt' ? 'kt' : 'км/ч';
+      showToastNotification(`Скорость Vи = ${speedVal} ${spUnit} применена ко всем этапам (${count} шт.)`);
+    }
+
+    function applyHeaderViToAll(e) {
+      if (e) e.stopPropagation();
+      let speedVal = parseFloat(document.getElementById('quickTas')?.value);
+
+      if (isNaN(speedVal) || speedVal <= 0) {
+        // Возьмем из первой заполненной ячейки col-vi
+        const firstVi = document.querySelector('#routeTableBody tr.route-data-row .col-vi');
+        const firstVal = parseFloat(firstVi?.innerText?.replace(',', '.'));
+        if (!isNaN(firstVal) && firstVal > 0) {
+          speedVal = firstVal;
+        } else {
+          speedVal = 180;
+        }
+      }
+
+      applyViToAll(speedVal);
+    }
+
+    function applyQuickTasToAll() {
+      const qTas = document.getElementById('quickTas');
+      const val = parseFloat(qTas ? qTas.value.replace(',', '.') : '180') || 180;
+      applyViToAll(val);
+    }
+
+    function onQuickTasInput() {
+      const qTas = document.getElementById('quickTas');
+      const val = parseFloat(qTas ? qTas.value.replace(',', '.') : '');
+      if (!isNaN(val) && val > 0) {
+        debouncedSave();
+      }
+    }
+
     function setupInputListeners() {
       const doc = document.getElementById('shbjDocument');
+            document.addEventListener('click', (e) => {
+        const promptEl = document.getElementById('viFloatingPrompt');
+        if (promptEl && promptEl.style.display !== 'none') {
+          if (!promptEl.contains(e.target) && !e.target.classList.contains('col-vi')) {
+            hideViPrompt();
+          }
+        }
+      });
+      window.addEventListener('scroll', () => {
+        if (currentActiveViCell) {
+          showViPromptForCell(currentActiveViCell);
+        }
+      }, { passive: true });
+
       doc.addEventListener('dblclick', (e) => {
         const target = e.target;
         if (target.classList.contains('col-tf') && target.getAttribute('data-ghost') && !target.innerText.trim()) {
@@ -1604,7 +1859,10 @@
           if (target.closest('#routeTableBody')) {
             const tr = target.closest('tr.route-data-row');
             // If user edited MPU, Vi, S
-            if (target.classList.contains('col-hprep') || target.classList.contains('col-hpriv')) {
+            if (target.classList.contains('col-vi')) {
+              showViPromptForCell(target);
+              recalculateRowSafeAltitude(tr);
+            } else if (target.classList.contains('col-hprep') || target.classList.contains('col-hpriv')) {
               recalculateRowSafeAltitude(tr);
             } else if (target.classList.contains('col-name')) {
               applyTakeoffLandingTimes();
@@ -2603,6 +2861,7 @@
         quickFuelAnz: document.getElementById('quickFuelAnz').value,
         quickTimeDep: document.getElementById('quickTimeDep')?.value || '4',
         quickTimeArr: document.getElementById('quickTimeArr')?.value || '6',
+        quickTas: document.getElementById('quickTas')?.value || '180',
         angleDisplayMode: angleDisplayMode,
         units: currentUnits
       };
@@ -2671,6 +2930,7 @@
         if (data.quickFuelAnz) document.getElementById('quickFuelAnz').value = data.quickFuelAnz;
         if (data.quickTimeDep) document.getElementById('quickTimeDep').value = data.quickTimeDep;
         if (data.quickTimeArr) document.getElementById('quickTimeArr').value = data.quickTimeArr;
+        if (data.quickTas) document.getElementById('quickTas').value = data.quickTas;
 
         if (data.fields) {
           for (const [id, val] of Object.entries(data.fields)) {
