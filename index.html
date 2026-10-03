@@ -1414,6 +1414,16 @@
       <input type="text" id="quickDepTime" class="calc-input" value="" placeholder="08:00" style="width: 50px;" oninput="recalculateEntireFlightPlan()">
     </div>
 
+    <div class="calc-group" title="Маневренное время на взлет (по умолчанию 4 мин -> 0.04)">
+      <label style="color: #38bdf8; font-weight: bold;">t взл:</label>
+      <input type="text" id="quickTimeDep" class="calc-input" value="4" placeholder="4" style="width: 36px; color: #38bdf8; font-weight: bold;" oninput="onQuickDepLandingTimeChanged()"> мин
+    </div>
+
+    <div class="calc-group" title="Маневренное время на посадку (по умолчанию 6 мин -> 0.06)">
+      <label style="color: #38bdf8; font-weight: bold;">t пос:</label>
+      <input type="text" id="quickTimeArr" class="calc-input" value="6" placeholder="6" style="width: 36px; color: #38bdf8; font-weight: bold;" oninput="onQuickDepLandingTimeChanged()"> мин
+    </div>
+
     <div class="calc-group" title="Часовой расход топлива">
       <label>Расход/ч:</label>
       <input type="text" id="quickFuelHour" class="calc-input" value="" placeholder="450" style="width: 48px;" oninput="onFuelHourInput()"> кг
@@ -1514,6 +1524,18 @@
         <div class="drawer-row">
           <label>Время вылета (ЧЧ:ММ):</label>
           <input type="text" id="drawerDepTime" class="calc-input" value="" placeholder="08:00" style="width: 60px;" oninput="onDrawerDepTimeChanged()">
+        </div>
+        <div class="drawer-row" style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #1e2e4b;">
+          <label style="color: #38bdf8; font-weight: 600;">Время на взлет (t взл):</label>
+          <div style="display: flex; align-items: center; gap: 4px;">
+            <input type="text" id="drawerTimeDep" class="calc-input" value="4" placeholder="4" style="width: 48px; color: #38bdf8; font-weight: bold;" oninput="onDrawerDepLandingTimeChanged()"> мин
+          </div>
+        </div>
+        <div class="drawer-row">
+          <label style="color: #38bdf8; font-weight: 600;">Время на посадку (t пос):</label>
+          <div style="display: flex; align-items: center; gap: 4px;">
+            <input type="text" id="drawerTimeArr" class="calc-input" value="6" placeholder="6" style="width: 48px; color: #38bdf8; font-weight: bold;" oninput="onDrawerDepLandingTimeChanged()"> мин
+          </div>
         </div>
       </div>
 
@@ -2470,10 +2492,31 @@
           if (target.closest('#routeTableBody')) {
             const tr = target.closest('tr.route-data-row');
             // If user edited MPU, Vi, S
-            if (target.classList.contains('col-mpu') || target.classList.contains('col-vi') || target.classList.contains('col-s')) {
+            if (target.classList.contains('col-name')) {
+              applyTakeoffLandingTimes();
+              recalculateTimingsAndFuel();
+              updateCalculatedTotals();
+            } else if (target.classList.contains('col-mpu') || target.classList.contains('col-vi') || target.classList.contains('col-s')) {
               recalculateRowNTS(tr);
               recalculateTimingsAndFuel();
             } else if (target.classList.contains('col-t') || target.classList.contains('col-qr') || target.classList.contains('col-qf')) {
+              if (target.classList.contains('col-t')) {
+                const tr = target.closest('tr.route-data-row');
+                const name = (tr?.querySelector('.col-name')?.innerText || '').toUpperCase();
+                const mins = parseLegMinutes(target.innerText);
+                if (mins > 0) {
+                  if (name.includes('ВЗЛЕТ') || name.includes('ВЗЛЁТ')) {
+                    const qD = document.getElementById('quickTimeDep');
+                    if (qD) qD.value = mins;
+                    syncAllWindAndFuelInputs('desktop');
+                  } else if (name.includes('ПОСАДКА')) {
+                    const qA = document.getElementById('quickTimeArr');
+                    if (qA) qA.value = mins;
+                    syncAllWindAndFuelInputs('desktop');
+                  }
+                }
+                recalculateTimingsAndFuel();
+              }
               updateCalculatedTotals();
             }
           }
@@ -2539,7 +2582,9 @@
         ['quickDepTime', 'drawerDepTime'],
         ['quickFuelHour', 'drawerFuelHour'],
         ['quickFuelMin', 'drawerFuelMin'],
-        ['quickFuelAnz', 'drawerFuelAnz']
+        ['quickFuelAnz', 'drawerFuelAnz'],
+        ['quickTimeDep', 'drawerTimeDep'],
+        ['quickTimeArr', 'drawerTimeArr']
       ];
 
       pairs.forEach(([qId, dId]) => {
@@ -2599,6 +2644,85 @@
     function onDrawerWindChanged() {
       syncAllWindAndFuelInputs('drawer');
       onQuickWindChanged();
+    }
+
+    
+    function onQuickDepLandingTimeChanged() {
+      syncAllWindAndFuelInputs('desktop');
+      applyTakeoffLandingTimes();
+      recalculateEntireFlightPlan();
+      debouncedSave();
+    }
+
+    function onDrawerDepLandingTimeChanged() {
+      syncAllWindAndFuelInputs('drawer');
+      applyTakeoffLandingTimes();
+      recalculateEntireFlightPlan();
+      debouncedSave();
+    }
+
+    // Автоматическое применение времени на взлет (default 4 мин -> 0.04) и на посадку (default 6 мин -> 0.06)
+    function applyTakeoffLandingTimes() {
+      const qDep = document.getElementById('quickTimeDep');
+      const qArr = document.getElementById('quickTimeArr');
+      const tDepMins = parseFloat(qDep ? qDep.value.replace(',', '.') : '4') || 4;
+      const tArrMins = parseFloat(qArr ? qArr.value.replace(',', '.') : '6') || 6;
+      const qH = parseFloat(document.getElementById('quickFuelHour')?.value.replace(',', '.')) || 0;
+
+      const rows = Array.from(document.querySelectorAll('#routeTableBody tr.route-data-row'));
+      if (rows.length === 0) return;
+
+      // 1. Поиск строки взлета (содержит ВЗЛЕТ)
+      let takeoffRow = null;
+      for (const tr of rows) {
+        const name = (tr.querySelector('.col-name')?.innerText || '').toUpperCase();
+        if (name.includes('ВЗЛЕТ') || name.includes('ВЗЛЁТ')) {
+          takeoffRow = tr;
+          break;
+        }
+      }
+
+      if (takeoffRow) {
+        const cellT = takeoffRow.querySelector('.col-t');
+        const cellQr = takeoffRow.querySelector('.col-qr');
+        if (cellT) {
+          const tH = Math.floor(tDepMins / 60);
+          const tM = Math.round(tDepMins % 60);
+          cellT.innerText = `${tH}.${tM.toString().padStart(2, '0')}`;
+          cellT.title = `Время на взлет: ${tDepMins} мин (${cellT.innerText} ч.мм)`;
+        }
+        if (cellQr && qH > 0 && (!cellQr.innerText.trim() || cellQr.getAttribute('data-auto-time') === 'dep')) {
+          cellQr.innerText = Math.round((tDepMins / 60) * qH);
+          cellQr.setAttribute('data-auto-time', 'dep');
+          cellQr.title = `Топливо на взлет: ${tDepMins} мин = ${cellQr.innerText} кг`;
+        }
+      }
+
+      // 2. Поиск строки посадки (содержит ПОСАДКА)
+      let landingRow = null;
+      for (let i = rows.length - 1; i >= 0; i--) {
+        const name = (rows[i].querySelector('.col-name')?.innerText || '').toUpperCase();
+        if (name.includes('ПОСАДКА')) {
+          landingRow = rows[i];
+          break;
+        }
+      }
+
+      if (landingRow) {
+        const cellT = landingRow.querySelector('.col-t');
+        const cellQr = landingRow.querySelector('.col-qr');
+        if (cellT) {
+          const tH = Math.floor(tArrMins / 60);
+          const tM = Math.round(tArrMins % 60);
+          cellT.innerText = `${tH}.${tM.toString().padStart(2, '0')}`;
+          cellT.title = `Время на посадку: ${tArrMins} мин (${cellT.innerText} ч.мм)`;
+        }
+        if (cellQr && qH > 0 && (!cellQr.innerText.trim() || cellQr.getAttribute('data-auto-time') === 'arr')) {
+          cellQr.innerText = Math.round((tArrMins / 60) * qH);
+          cellQr.setAttribute('data-auto-time', 'arr');
+          cellQr.title = `Топливо на посадку: ${tArrMins} мин = ${cellQr.innerText} кг`;
+        }
+      }
     }
 
     function onDrawerDepTimeChanged() {
@@ -2915,6 +3039,7 @@
     function recalculateEntireFlightPlan() {
       syncWindFieldsFromTable();
       syncFuelToSheetDisplay();
+      applyTakeoffLandingTimes();
 
       const rows = document.querySelectorAll('#routeTableBody tr.route-data-row');
       rows.forEach(tr => {
@@ -2950,22 +3075,34 @@
       if (!depTimeStr) {
         return;
       }
-      let [hStr, mStr] = depTimeStr.includes(':') ? depTimeStr.split(':') : ['08', '00'];
-      let currentMinutes = (parseInt(hStr, 10) || 0) * 60 + (parseInt(mStr, 10) || 0);
+      let parts = depTimeStr.includes(':') ? depTimeStr.split(':') : (depTimeStr.includes('.') ? depTimeStr.split('.') : [depTimeStr, '00']);
+      let currentMinutes = (parseInt(parts[0], 10) || 0) * 60 + (parseInt(parts[1], 10) || 0);
 
       const rows = document.querySelectorAll('#routeTableBody tr.route-data-row');
+      let isFirstTakeoff = true;
       rows.forEach(tr => {
         const cellT = tr.querySelector('.col-t');
         const cellTr = tr.querySelector('.col-tr');
+        const name = (tr.querySelector('.col-name')?.innerText || '').toUpperCase();
 
         if (cellT && cellTr) {
           const tVal = parseLegMinutes(cellT.innerText);
+
+          if (isFirstTakeoff && (name.includes('ВЗЛЕТ') || name.includes('ВЗЛЁТ'))) {
+            const hh = Math.floor((currentMinutes / 60) % 24).toString().padStart(2, '0');
+            const mm = Math.round(currentMinutes % 60).toString().padStart(2, '0');
+            cellTr.innerText = `${hh}.${mm}`;
+            if (tVal > 0) currentMinutes += tVal;
+            isFirstTakeoff = false;
+            return;
+          }
+          isFirstTakeoff = false;
 
           if (tVal > 0) {
             currentMinutes += tVal;
             const hh = Math.floor((currentMinutes / 60) % 24).toString().padStart(2, '0');
             const mm = Math.round(currentMinutes % 60).toString().padStart(2, '0');
-            cellTr.innerText = `${hh}:${mm}`;
+            cellTr.innerText = `${hh}.${mm}`;
           }
         }
       });
@@ -3194,6 +3331,8 @@
         quickFuelHour: document.getElementById('quickFuelHour').value,
         quickFuelMin: document.getElementById('quickFuelMin').value,
         quickFuelAnz: document.getElementById('quickFuelAnz').value,
+        quickTimeDep: document.getElementById('quickTimeDep')?.value || '4',
+        quickTimeArr: document.getElementById('quickTimeArr')?.value || '6',
         units: currentUnits
       };
 
@@ -3259,6 +3398,8 @@
         if (data.quickFuelHour) document.getElementById('quickFuelHour').value = data.quickFuelHour;
         if (data.quickFuelMin) document.getElementById('quickFuelMin').value = data.quickFuelMin;
         if (data.quickFuelAnz) document.getElementById('quickFuelAnz').value = data.quickFuelAnz;
+        if (data.quickTimeDep) document.getElementById('quickTimeDep').value = data.quickTimeDep;
+        if (data.quickTimeArr) document.getElementById('quickTimeArr').value = data.quickTimeArr;
 
         if (data.fields) {
           for (const [id, val] of Object.entries(data.fields)) {
@@ -3350,7 +3491,7 @@
 
     // 10. Sample Data (Сасово - Тамбов с адаптацией под выбранные единицы)
     function loadSampleData() {
-      if (!confirm('Заполнить бланк типовым реальным расчетом полета Сасово - Тамбов?')) {
+      if (!confirm('Заполнить бланк учебным штурманским расчетом C172S Сасово - Екатериновка - Наследничье?')) {
         return;
       }
 
@@ -3358,14 +3499,16 @@
       const isFt = currentUnits.alt === 'ft';
       const isNm = currentUnits.dist === 'nm';
 
-      document.getElementById('quickWindDir').value = '270';
-      document.getElementById('quickWindSpeed').value = isKt ? '22' : '40';
-      document.getElementById('quickDepTime').value = '08:00';
-      document.getElementById('quickFuelHour').value = '450';
-      document.getElementById('quickFuelMin').value = '7.5';
-      document.getElementById('quickFuelAnz').value = '180';
+      document.getElementById('quickWindDir').value = '050';
+      document.getElementById('quickWindSpeed').value = isKt ? '16' : '30';
+      document.getElementById('quickDepTime').value = '05.00';
+      document.getElementById('quickTimeDep').value = '4';
+      document.getElementById('quickTimeArr').value = '6';
+      document.getElementById('quickFuelHour').value = '28';
+      document.getElementById('quickFuelMin').value = '0.47';
+      document.getElementById('quickFuelAnz').value = '33';
       const sAnz = document.getElementById('sheet_fuel_anz');
-      if (sAnz) sAnz.innerText = '180';
+      if (sAnz) sAnz.innerText = '33';
 
       syncAllWindAndFuelInputs('desktop');
       updateNavWindDisplay();
@@ -3397,17 +3540,17 @@
         windRows[3].children[3].innerText = isKt ? '10' : '18';
       }
 
-      // Header fields
-      const fNum = document.getElementById('fieldFlightNumber'); if (fNum) fNum.innerText = '104';
-      const fKvs = document.getElementById('fieldKvs'); if (fKvs) fKvs.innerText = 'Иванов А.С.';
-      const fCop = document.getElementById('fieldCopilot'); if (fCop) fCop.innerText = 'Петров В.М.';
-      const fUnit = document.getElementById('fieldUnit'); if (fUnit) fUnit.innerText = '1-я АЭ СЛУ ГА';
-      const fDate = document.getElementById('fieldDate'); if (fDate) fDate.innerText = '29.09.2026';
-      const fAcType = document.getElementById('fieldAcType'); if (fAcType) fAcType.innerText = 'Ан-26';
-      const fAcReg = document.getElementById('fieldAcReg'); if (fAcReg) fAcReg.innerText = '26104';
-      const fFl = document.getElementById('fieldFl'); if (fFl) fFl.innerText = 'FL150';
-      const fQnh = document.getElementById('fieldQnhMin'); if (fQnh) fQnh.innerText = '754';
-      const fHbez = document.getElementById('fieldHbezEsh'); if (fHbez) fHbez.innerText = '1800м';
+      // Header fields (Cessna 172S СЛУ ГА Сасово из типового бланка)
+      const fNum = document.getElementById('fieldFlightNumber'); if (fNum) fNum.innerText = '1';
+      const fKvs = document.getElementById('fieldKvs'); if (fKvs) fKvs.innerText = 'Курсант';
+      const fCop = document.getElementById('fieldCopilot'); if (fCop) fCop.innerText = 'Инструктор';
+      const fUnit = document.getElementById('fieldUnit'); if (fUnit) fUnit.innerText = 'СЛУ ГА';
+      const fDate = document.getElementById('fieldDate'); if (fDate) fDate.innerText = new Date().toLocaleDateString('ru-RU');
+      const fAcType = document.getElementById('fieldAcType'); if (fAcType) fAcType.innerText = 'C172S';
+      const fAcReg = document.getElementById('fieldAcReg'); if (fAcReg) fAcReg.innerText = 'RA67536';
+      const fFl = document.getElementById('fieldFl'); if (fFl) fFl.innerText = '550 ПВП';
+      const fQnh = document.getElementById('fieldQnhMin'); if (fQnh) fQnh.innerText = '1021';
+      const fHbez = document.getElementById('fieldHbezEsh'); if (fHbez) fHbez.innerText = '030/040';
 
       // Sun
       const sunRows = document.querySelectorAll('#sunTableBody tr');
@@ -3424,13 +3567,13 @@
         sunRows[1].children[3].innerText = '13:33';
       }
 
-      // Departure & Destination
+      // Departure & Destination (по реальному бланку C172S)
       const setTxt = (id, txt) => { const el = document.getElementById(id); if (el) el.innerText = txt; };
-      setTxt('dep_delta', '240°'); setTxt('dep_u', '4 м/с'); setTxt('dep_p0', '758'); setTxt('dep_t', '+18'); setTxt('dep_sah', '24%'); setTxt('dep_mtow', '23.8 т'); setTxt('dep_votr', '205'); setTxt('dep_lraz', '820'); setTxt('dep_hbez', '300');
-      setTxt('dest_gpos', '21.5 т'); setTxt('dest_sah', '23%'); setTxt('dest_lprob', '650'); setTxt('dest_vpl', '210'); setTxt('dest_vpos', '190');
+      setTxt('dep_delta', '50'); setTxt('dep_u', '3'); setTxt('dep_p0', '1005'); setTxt('dep_t', '21'); setTxt('dep_sah', '1,092 м'); setTxt('dep_mtow', '1150'); setTxt('dep_votr', '55'); setTxt('dep_lraz', '280'); setTxt('dep_hbez', '213');
+      setTxt('dest_gpos', '1121'); setTxt('dest_sah', '1,085 м'); setTxt('dest_lprob', '210'); setTxt('dest_vpl', '70'); setTxt('dest_vpos', '55');
 
       // Weather
-      setTxt('wx_hour', '10'); setTxt('wx_min', '30'); setTxt('wx_mkpos', '238°'); setTxt('wx_ksc', '0.60'); setTxt('wx_delta', '250°'); setTxt('wx_vpr', '60м'); setTxt('wx_u', '5 м/с'); setTxt('wx_vis', '6000'); setTxt('wx_p', '756'); setTxt('wx_hlow', '240м'); setTxt('wx_t', '+16°'); setTxt('wx_extra', 'Б/О');
+      setTxt('wx_hour', '05'); setTxt('wx_min', '30'); setTxt('wx_mkpos', '355'); setTxt('wx_delta', '50'); setTxt('wx_u', '4'); setTxt('wx_p', '1006'); setTxt('wx_t', '22');
 
       // Notes
       const notes = document.getElementById('notesArea');
@@ -3444,15 +3587,14 @@
       setTxt('f_night_h', '0'); setTxt('f_night_m', '0');
       setTxt('f_sig_kvs', 'Иванов А.С.'); setTxt('f_sig_copilot', 'Петров В.М.'); setTxt('f_sig_ae', 'Ковалев Г.В.');
 
-      // Route Legs adapted to current units
+      // Route Legs из учебного бланка C172S Сасово:
+      // ВЗЛЕТ (4 мин -> 0.04) -> Сасово УУБГ (64 км) -> Екатериновка (32 км) -> Наследничье (53 км) -> ПОСАДКА Сасово (6 мин -> 0.06)
       const sampleLegs = [
-        { hPriv: 'Круг', hBez: isFt ? '1000' : '300', point: 'ВЗЛЕТ (ВПП 26)', mpu: 260, vi: isKt ? 130 : 240, s: isNm ? 6.5 : 12, hp: isFt ? '1000' : '300' },
-        { hPriv: 'FL090', hBez: isFt ? '3000' : '900', point: 'НАБОР ЭШЕЛОНА', mpu: 210, vi: isKt ? 205 : 380, s: isNm ? 24.3 : 45, hp: isFt ? '4000' : '1200' },
-        { hPriv: 'FL150', hBez: isFt ? '5000' : '1500', point: 'МОРШАНСК (ТРАССА)', mpu: 195, vi: isKt ? 232 : 430, s: isNm ? 45.9 : 85, hp: isFt ? '6000' : '1800' },
-        { hPriv: 'FL150', hBez: isFt ? '5000' : '1500', point: 'ППМ ВЕРНАДОВКА', mpu: 190, vi: isKt ? 232 : 430, s: isNm ? 34.6 : 64, hp: isFt ? '6000' : '1800' },
-        { hPriv: 'FL090', hBez: isFt ? '3000' : '900', point: 'НАЧАЛО СНИЖЕНИЯ', mpu: 185, vi: isKt ? 216 : 400, s: isNm ? 25.9 : 48, hp: isFt ? '4500' : '1400' },
-        { hPriv: 'Круг', hBez: isFt ? '1300' : '400', point: 'ВЫХОД НА 4-й РАЗВ.', mpu: 238, vi: isKt ? 146 : 270, s: isNm ? 11.9 : 22, hp: isFt ? '2000' : '600' },
-        { hPriv: 'ВПП', hBez: 'ВПР', point: 'ПОСАДКА УУОТ', mpu: 238, vi: isKt ? 103 : 190, s: isNm ? 4.3 : 8, hp: '0' },
+        { hPriv: '', hBez: '', point: 'ВЗЛЕТ', mpu: '', vi: '', s: '', t: '0.04', qr: '59', tr: '05:00', tf: '05:02', hp: '↗' },
+        { hPriv: '263', hBez: '356', point: 'Сасово (УУБГ)', mpu: 246, vi: isKt ? 97 : 180, s: isNm ? 34.6 : 64, t: '0.19', qr: '57', tr: '05:06', tf: '05:06', hp: '550' },
+        { hPriv: '194', hBez: '289', point: 'Екатериновка', mpu: '008', vi: isKt ? 97 : 180, s: isNm ? 17.3 : 32, t: '0.12', qr: '48', tr: '05:25', tf: '05:25', hp: '550' },
+        { hPriv: '176', hBez: '271', point: 'Наследничье', mpu: '095', vi: isKt ? 97 : 180, s: isNm ? 28.6 : 53, t: '0.18', qr: '42', tr: '05:37', tf: '05:37', hp: '550' },
+        { hPriv: '', hBez: '', point: 'ПОСАДКА Сасово (УУБГ)', mpu: '', vi: '', s: '', t: '0.06', qr: '33', tr: '05:45', tf: '05:45', hp: '↘' },
       ];
 
       const tbody = document.getElementById('routeTableBody');
@@ -3462,22 +3604,22 @@
         const tr = document.createElement('tr');
         tr.className = 'route-data-row';
         tr.innerHTML = `
-          <td contenteditable="true" class="col-hpriv">${leg.hPriv}</td>
-          <td contenteditable="true" class="col-hbez">${leg.hBez}</td>
-          <td contenteditable="true" class="col-name">${leg.point}</td>
+          <td contenteditable="true" class="col-hpriv">${leg.hPriv || ''}</td>
+          <td contenteditable="true" class="col-hbez">${leg.hBez || ''}</td>
+          <td contenteditable="true" class="col-name">${leg.point || ''}</td>
           <td contenteditable="false" class="col-uv col-readonly" title="Рассчитывается автоматически"></td>
           <td contenteditable="false" class="col-us col-readonly" title="Рассчитывается автоматически"></td>
-          <td contenteditable="true" class="col-mpu">${leg.mpu}</td>
+          <td contenteditable="true" class="col-mpu">${leg.mpu || ''}</td>
           <td contenteditable="false" class="col-mk col-readonly" title="Рассчитывается автоматически"></td>
-          <td contenteditable="true" class="col-vi">${leg.vi}</td>
+          <td contenteditable="true" class="col-vi">${leg.vi || ''}</td>
           <td contenteditable="false" class="col-w col-readonly" title="Рассчитывается автоматически"></td>
-          <td contenteditable="true" class="col-s">${leg.s}</td>
-          <td contenteditable="true" class="col-t"></td>
-          <td contenteditable="true" class="col-qr"></td>
+          <td contenteditable="true" class="col-s">${leg.s || ''}</td>
+          <td contenteditable="true" class="col-t">${leg.t || ''}</td>
+          <td contenteditable="true" class="col-qr">${leg.qr || ''}</td>
           <td contenteditable="true" class="col-qf"></td>
-          <td contenteditable="true" class="col-tr"></td>
-          <td contenteditable="true" class="col-tf"></td>
-          <td contenteditable="true" class="col-hp">${leg.hp}</td>
+          <td contenteditable="true" class="col-tr">${leg.tr || ''}</td>
+          <td contenteditable="true" class="col-tf">${leg.tf || ''}</td>
+          <td contenteditable="true" class="col-hp">${leg.hp || ''}</td>
         `;
         tbody.appendChild(tr);
       });
