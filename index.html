@@ -1465,7 +1465,7 @@
       <!-- Status pill -->
       <div style="font-size: 11.5px; color: #94a3b8; display: flex; align-items: center; gap: 6px; padding: 4px 6px; background: #080f1d; border-radius: 4px; border: 1px solid #1c2b45;">
         <span class="status-dot"></span>
-        <span id="saveStatus">🔒 УВ, УС, МК, W защищены и рассчитываются автоматически</span>
+        <span id="saveStatus">🔒 α, УС, МК, W защищены и рассчитываются автоматически</span>
       </div>
 
       <!-- Card 0: Единицы измерения (Units) -->
@@ -1904,7 +1904,7 @@
                 <th rowspan="2" style="width: 48px;" id="th_route_hpriv">H прив<br><span class="unit-sub" id="hdrRouteHprivUnit">м</span></th>
                 <th rowspan="2" style="width: 52px; line-height: 1.05;" id="th_route_hbez">H б 760<br><span class="unit-sub" id="hdrRouteHbezUnit">H б пр (м)</span></th>
                 <th rowspan="2" style="width: 170px;">МАРШРУТ</th>
-                <th rowspan="2" style="width: 36px; background: #f8fafc;" title="Угол ветра (УВ) рассчитывается автоматически">🔒 УВ</th>
+                <th rowspan="2" style="width: 36px; background: #f8fafc; cursor: pointer; user-select: none;" id="th_route_alpha" onclick="toggleAngleDisplayMode()" title="Острый угол ветра α (направление между МПУ и ближайшим направлением ветра, 0°–90°). Нажмите для переключения α / УВ">🔒 α</th>
                 <th rowspan="2" style="width: 36px; background: #f8fafc;" title="Угол сноса (УС) рассчитывается автоматически через острый угол α">🔒 УС</th>
                 <th rowspan="2" style="width: 40px;" title="Магнитный путевой угол (вводится)">МПУ</th>
                 <th rowspan="2" style="width: 40px; background: #f8fafc;" title="Магнитный курс (МК = МПУ - УС) рассчитывается автоматически">🔒 МК</th>
@@ -2188,6 +2188,28 @@
     const STORAGE_KEY = 'avia_shbj_data_v6';
     let autoNtsEnabled = true;
     let isWidescreen = true;
+    let angleDisplayMode = 'alpha'; // 'alpha' (0..90° острый угол к ближайшему направлению ветра) или 'uv' (0..360°)
+
+    function toggleAngleDisplayMode() {
+      angleDisplayMode = (angleDisplayMode === 'alpha') ? 'uv' : 'alpha';
+      updateAngleHeaderUI();
+      recalculateEntireFlightPlan();
+      debouncedSave();
+    }
+
+    function updateAngleHeaderUI() {
+      const th = document.getElementById('th_route_alpha');
+      if (th) {
+        if (angleDisplayMode === 'uv') {
+          th.innerHTML = '🔒 УВ';
+          th.title = 'Навигационный угол ветра УВ (0°–360°). Нажмите для переключения на острый угол α';
+        } else {
+          th.innerHTML = '🔒 α';
+          th.title = 'Острый угол ветра α (направление между МПУ и ближайшим направлением ветра, 0°–90°). Нажмите для переключения на УВ';
+        }
+      }
+    }
+
     let saveTimeout = null;
 
     // =========================================================
@@ -2452,6 +2474,7 @@
     // DOM Ready
     document.addEventListener('DOMContentLoaded', () => {
       loadSavedData();
+      updateAngleHeaderUI();
       updateUnitUI();
       setupKeyboardNavigation();
       setupInputListeners();
@@ -3008,8 +3031,9 @@
       const tooltip = `НТС через α: УВ=${res.uv}°, α=${res.alpha}°, Uбок=${res.uBok} ${spUnit}, Uэкв=${res.uEkv} ${spUnit}`;
 
       if (cellUv) {
-        cellUv.innerText = `${res.uv}°`;
-        cellUv.title = tooltip;
+        const angleVal = (angleDisplayMode === 'uv') ? `${res.uv}°` : `${res.alpha}°`;
+        cellUv.innerText = angleVal;
+        cellUv.title = `α = ${res.alpha}° (угол между МПУ и ближайшим направлением ветра, 0°–90°)\nУВ = ${res.uv}° (навигационный угол ветра, 0°–360°)\n${tooltip}`;
       }
       if (cellUs) {
         const signStr = res.us > 0 ? `+${res.us}°` : (res.us < 0 ? `${res.us}°` : `0°`);
@@ -3333,6 +3357,7 @@
         quickFuelAnz: document.getElementById('quickFuelAnz').value,
         quickTimeDep: document.getElementById('quickTimeDep')?.value || '4',
         quickTimeArr: document.getElementById('quickTimeArr')?.value || '6',
+        angleDisplayMode: angleDisplayMode,
         units: currentUnits
       };
 
@@ -3465,6 +3490,10 @@
           });
         }
 
+        if (data.angleDisplayMode) {
+          angleDisplayMode = data.angleDisplayMode;
+          updateAngleHeaderUI();
+        }
         if (data.units) {
           if (data.units.speed) currentUnits.speed = data.units.speed;
           if (data.units.alt) currentUnits.alt = data.units.alt;
