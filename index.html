@@ -1889,7 +1889,7 @@
                 <th rowspan="2" style="width: 40px;" title="Истинная скорость Vи (вводится)">V<sub>и</sub><br><span class="unit-sub" id="hdrRouteViUnit">км/ч</span></th>
                 <th rowspan="2" style="width: 40px; background: #f8fafc;" title="Путевая скорость (W) рассчитывается автоматически">🔒 W<br><span class="unit-sub" id="hdrRouteWUnit">км/ч</span></th>
                 <th rowspan="2" style="width: 40px;" title="Расстояние участка S (вводится)">S<br><span class="unit-sub" id="hdrRouteSUnit">км</span></th>
-                <th rowspan="2" style="width: 38px;" title="Время полета t = S / W * 60 (рассчитывается)">t</th>
+                <th rowspan="2" style="width: 40px;" title="Время полета этапа t в формате час.минуты (например 0.04, 0.19, 1.15)">t</th>
                 <th colspan="2" style="width: 84px;">Топливо</th>
                 <th rowspan="2" style="width: 46px;" title="Расчетное время пролета (Т расч)">Т расч</th>
                 <th rowspan="2" style="width: 46px;">Т факт</th>
@@ -2141,7 +2141,7 @@
 
       <div class="math-formula-box">
         <strong>4. Время полета этапа (t):</strong><br>
-        <strong>t = (S / W) × 60</strong> (минут)<br>
+        <strong>t = (S / W) × 60</strong> (переводится в официальный формат <strong>час.минуты</strong>: например, 4 мин ⟹ <strong>0.04</strong>, 19 мин ⟹ <strong>0.19</strong>, 1 ч 15 мин ⟹ <strong>1.15</strong>)<br>
         <strong>Т<sub>расч</sub> = Т<sub>вылета</sub> + ∑t</strong>
       </div>
 
@@ -2795,7 +2795,7 @@
         if (w <= 0) w = 1;
       }
 
-      // 7. Время полета (t = S / W * 60) с учетом единиц скорости и дистанции
+      // 7. Время полета этапа t в формате час.минуты (например 4 мин -> 0.04, 19 мин -> 0.19, 1ч 15мин -> 1.15)
       let tMins = 0;
       if (w > 0 && dist > 0) {
         let wEffective = w;
@@ -2809,10 +2809,15 @@
         tMins = (dist / wEffective) * 60;
       }
 
-      // 8. Топливо этапа Qр: tMins * (fuelFlowHour / 60)
+      const totalMins = Math.round(tMins);
+      const tH = Math.floor(totalMins / 60);
+      const tM = totalMins % 60;
+      const tFormatted = `${tH}.${tM.toString().padStart(2, '0')}`;
+
+      // 8. Топливо этапа Qр: totalMins * (fuelFlowHour / 60)
       let qr = 0;
-      if (fuelFlowHour > 0 && tMins > 0) {
-        qr = Math.round((tMins / 60) * fuelFlowHour);
+      if (fuelFlowHour > 0 && totalMins > 0) {
+        qr = Math.round((totalMins / 60) * fuelFlowHour);
       }
 
       return {
@@ -2821,7 +2826,8 @@
         us: usRounded,
         mk: mk,
         w: w,
-        t: Math.round(tMins * 10) / 10,
+        t: tFormatted,
+        tMinutes: totalMins,
         qr: qr,
         uBok: Math.round(uBok * 10) / 10,
         uEkv: Math.round(uEkv * 10) / 10
@@ -2897,11 +2903,11 @@
       if (cellT && s > 0) {
         cellT.innerText = res.t;
         const distUnit = currentUnits.dist === 'nm' ? 'NM' : 'км';
-        cellT.title = `t = (${s} ${distUnit} / ${res.w} ${spUnit}) · 60 = ${res.t} мин`;
+        cellT.title = `t = (${s} ${distUnit} / ${res.w} ${spUnit}) · 60 = ${res.tMinutes} мин (формат ч.мм: ${res.t})`;
       }
       if (cellQr && res.qr > 0) {
         cellQr.innerText = res.qr;
-        cellQr.title = `Qр = (${res.t} мин · ${document.getElementById('quickFuelMin').value} кг/мин) = ${res.qr} кг`;
+        cellQr.title = `Qр = (${res.tMinutes} мин · ${document.getElementById('quickFuelMin').value} кг/мин) = ${res.qr} кг`;
       }
     }
 
@@ -2919,6 +2925,26 @@
       updateCalculatedTotals();
     }
 
+        // Парсинг времени этапа в формате ч.мм (например 0.04 -> 4 мин, 0.19 -> 19 мин, 1.15 -> 75 мин)
+    function parseLegMinutes(txt) {
+      if (!txt) return 0;
+      txt = txt.trim().replace(',', '.');
+      if (txt.includes('.')) {
+        const parts = txt.split('.');
+        const h = parseInt(parts[0], 10) || 0;
+        const m = parseInt(parts[1], 10) || 0;
+        return (h * 60) + m;
+      }
+      if (txt.includes(':')) {
+        const parts = txt.split(':');
+        const h = parseInt(parts[0], 10) || 0;
+        const m = parseInt(parts[1], 10) || 0;
+        return (h * 60) + m;
+      }
+      const val = parseFloat(txt);
+      return isNaN(val) ? 0 : val;
+    }
+
     function recalculateTimingsAndFuel() {
       const depTimeStr = (document.getElementById('quickDepTime').value || '').trim();
       if (!depTimeStr) {
@@ -2933,14 +2959,7 @@
         const cellTr = tr.querySelector('.col-tr');
 
         if (cellT && cellTr) {
-          const txtT = cellT.innerText.replace(',', '.').trim();
-          let tVal = 0;
-          if (txtT.includes(':')) {
-            const parts = txtT.split(':');
-            tVal = (parseFloat(parts[0]) || 0) + ((parseFloat(parts[1]) || 0) / 60);
-          } else {
-            tVal = parseFloat(txtT) || 0;
-          }
+          const tVal = parseLegMinutes(cellT.innerText);
 
           if (tVal > 0) {
             currentMinutes += tVal;
@@ -2975,16 +2994,10 @@
       document.querySelectorAll('#routeTableBody .col-t').forEach(td => {
         const txt = td.innerText.trim();
         if (txt) {
-          if (txt.includes(':')) {
-            const parts = txt.split(':');
-            totalMinutes += (parseFloat(parts[0]) || 0) + ((parseFloat(parts[1]) || 0) / 60);
+          const mins = parseLegMinutes(txt);
+          if (mins > 0) {
+            totalMinutes += mins;
             hasT = true;
-          } else {
-            const val = parseFloat(txt.replace(',', '.'));
-            if (!isNaN(val)) {
-              totalMinutes += val;
-              hasT = true;
-            }
           }
         }
       });
@@ -3014,7 +3027,9 @@
       if (elT && hasT) {
         const hrs = Math.floor(totalMinutes / 60);
         const mins = Math.round(totalMinutes % 60);
-        elT.innerText = hrs > 0 ? `${hrs}ч ${mins}м` : `${mins}м`;
+        // Выводим общее время также в официальном формате ч.мм (например 0.48 или 1.15)
+        elT.innerText = `${hrs}.${mins.toString().padStart(2, '0')}`;
+        elT.title = `Всего по маршруту: ${hrs} ч ${mins} мин (${totalMinutes} мин)`;
 
         // Update footer flight time
         const footH = document.getElementById('f_time_h');
