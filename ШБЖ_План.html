@@ -640,10 +640,10 @@
        ========================================================= */
     .top-section {
       display: grid;
-      grid-template-columns: 260px 1fr 250px;
-      gap: 14px;
+      grid-template-columns: 240px 1fr 220px;
+      gap: 12px;
       align-items: start;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     /* Top Left: Wind Table */
@@ -661,23 +661,24 @@
 
     /* Top Center: Title & Flight Info */
     .doc-header-center {
-      text-align: center;
-      padding: 0 4px;
+      text-align: left;
+      padding: 0;
     }
 
     .doc-main-title {
-      font-size: 17px;
-      font-weight: bold;
-      letter-spacing: 0.8px;
+      font-size: 14.5px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
       text-transform: uppercase;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
+      text-align: left;
     }
 
     .header-lines {
       display: flex;
       flex-direction: column;
-      gap: 4px;
-      font-size: 12.5px;
+      gap: 3px;
+      font-size: 11px;
       text-align: left;
     }
 
@@ -979,7 +980,7 @@
       font-weight: 500;
     }
 
-    @media (max-width: 900px) {
+    @media screen and (max-width: 900px) {
       body {
         padding: 0;
         background-color: #121316 !important;
@@ -1082,7 +1083,7 @@
 
       .tbl-wind, .tbl-sun {
         width: 100%;
-        min-width: 280px;
+        min-width: 0;
       }
 
       .sub-section {
@@ -1146,7 +1147,21 @@
     @media print {
       @page {
         size: A4 landscape;
-        margin: 4mm 5mm;
+        margin: 3mm 4mm;
+      }
+
+      *, *::before, *::after {
+        box-shadow: none !important;
+        text-shadow: none !important;
+        overflow: visible !important;
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+      }
+
+      ::-webkit-scrollbar {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
       }
 
       html, body {
@@ -1156,7 +1171,7 @@
         margin: 0 !important;
         width: 100% !important;
         height: 100% !important;
-        overflow: visible !important;
+        overflow: hidden !important;
       }
 
       /* Hide all non-printable UI elements */
@@ -1181,6 +1196,7 @@
         margin: 0 !important;
         display: block !important;
         width: 100% !important;
+        overflow: visible !important;
       }
 
       .page-sheet {
@@ -1193,46 +1209,78 @@
         margin: 0 !important;
         background: #ffffff !important;
         color: #000000 !important;
+        overflow: visible !important;
       }
 
       .page-sheet, .page-sheet * {
         color: #000000 !important;
       }
 
+      .table-scroll-container {
+        overflow: visible !important;
+        overflow-x: visible !important;
+        overflow-y: visible !important;
+        border: none !important;
+        width: 100% !important;
+        scrollbar-width: none !important;
+      }
+
+      .tbl-sun, .tbl-wind, .tbl-route, .tbl-sub, .tbl-weather {
+        min-width: 0 !important;
+      }
+
       /* Grid structure for print */
       .top-section {
         display: grid !important;
         grid-template-columns: 240px 1fr 220px !important;
-        gap: 10px !important;
-        margin-bottom: 4px !important;
+        gap: 8px !important;
+        margin-bottom: 3px !important;
+      }
+
+      .doc-header-center {
+        order: 0 !important;
+        text-align: left !important;
+        padding: 0 !important;
+      }
+
+      .doc-main-title {
+        font-size: 13.5px !important;
+        margin-bottom: 2px !important;
+        text-align: left !important;
+      }
+
+      .header-lines {
+        font-size: 9.5px !important;
+        gap: 1.5px !important;
+        text-align: left !important;
       }
 
       .sub-section {
         display: grid !important;
         grid-template-columns: 1fr 220px !important;
-        gap: 10px !important;
-        margin-bottom: 4px !important;
+        gap: 8px !important;
+        margin-bottom: 3px !important;
       }
 
       .aerodrome-tables-wrapper {
         display: flex !important;
         flex-direction: row !important;
-        gap: 8px !important;
+        gap: 6px !important;
       }
 
       .main-body-section {
         display: grid !important;
         grid-template-columns: 1fr 220px !important;
-        gap: 10px !important;
-        margin-bottom: 4px !important;
+        gap: 8px !important;
+        margin-bottom: 3px !important;
       }
 
       .footer-section {
         display: grid !important;
         grid-template-columns: 1.2fr 1fr !important;
-        gap: 14px !important;
-        padding-top: 4px !important;
-        font-size: 10.5px !important;
+        gap: 12px !important;
+        padding-top: 3px !important;
+        font-size: 9.5px !important;
       }
 
       .tbl-route {
@@ -1242,11 +1290,11 @@
       }
 
       th, td {
-        font-size: 9.5px !important;
-        padding: 1px 2px !important;
+        font-size: 9px !important;
+        padding: 1px 1.5px !important;
         border: 1px solid #000000 !important;
         color: #000000 !important;
-        line-height: 1.15 !important;
+        line-height: 1.1 !important;
       }
 
       th {
@@ -1255,25 +1303,25 @@
       }
 
       .tbl-route td {
-        height: 17px !important;
+        height: 16px !important;
       }
 
       .tbl-route tr.route-summary-row td {
-        height: 19px !important;
+        height: 17px !important;
         font-weight: 700 !important;
         background: #f8fafc !important;
       }
 
       .tbl-route tr.route-fuel-summary-row td {
-        height: 18px !important;
-        font-size: 9.5px !important;
+        height: 16px !important;
+        font-size: 9px !important;
         background: transparent !important;
       }
 
       .unit-sub {
         color: #000000 !important;
         font-weight: normal !important;
-        font-size: 8px !important;
+        font-size: 7.5px !important;
       }
 
       [contenteditable="true"] {
@@ -1288,15 +1336,44 @@
         font-weight: 700 !important;
       }
 
-      /* Notes lined background */
+      /* Compact sidebar boxes for 1-page fit */
+      .right-sidebar {
+        padding: 3px !important;
+        gap: 4px !important;
+      }
+
+      .notes-box {
+        min-height: 42px !important;
+      }
+
       .notes-content {
+        min-height: 32px !important;
+        font-size: 9.5px !important;
+        line-height: 12px !important;
         background-image: repeating-linear-gradient(
           transparent,
-          transparent 13px,
-          #cbd5e1 13px,
-          #cbd5e1 14px
+          transparent 11px,
+          #cbd5e1 11px,
+          #cbd5e1 12px
         ) !important;
         color: #000000 !important;
+      }
+
+      .diagram-box {
+        padding: 2px !important;
+      }
+
+      .diagram-svg {
+        height: 50px !important;
+      }
+
+      .windrose-box {
+        padding: 2px !important;
+      }
+
+      .windrose-svg {
+        width: 62px !important;
+        height: 62px !important;
       }
 
       /* Hide ghost projected actual time during paper printing */
@@ -1498,6 +1575,65 @@
            TOP SECTION: WIND TABLE, HEADER, SUN TABLE
            ========================================================= -->
       <div class="top-section">
+        <!-- Top Left: Document Identification -->
+        <div class="doc-header-center">
+          <div class="doc-main-title">
+            ШТУРМАНСКИЙ БОРТОВОЙ ЖУРНАЛ № 
+            <span contenteditable="true" class="fill-line" id="fieldFlightNumber" style="min-width: 65px;"></span>
+          </div>
+
+          <div class="header-lines">
+            <div class="header-line-row">
+              <div class="header-field" style="width: 100%;">
+                Командир ВС&nbsp;
+                <span contenteditable="true" class="fill-line" id="fieldKvs" style="width: 100%;"></span>
+              </div>
+            </div>
+
+            <div class="header-line-row">
+              <div class="header-field" style="width: 100%;">
+                2-й пилот (штурман)&nbsp;
+                <span contenteditable="true" class="fill-line" id="fieldCopilot" style="width: 100%;"></span>
+              </div>
+            </div>
+
+            <div class="header-line-row">
+              <div class="header-field" style="width: 100%;">
+                Подразделение&nbsp;
+                <span contenteditable="true" class="fill-line" id="fieldUnit" style="width: 100%;"></span>
+              </div>
+            </div>
+
+            <div class="header-line-row">
+              <div class="header-field" style="width: 100%;">
+                Дата&nbsp;
+                <span contenteditable="true" class="fill-line" id="fieldDate" style="width: 100%;"></span>
+              </div>
+            </div>
+
+            <div class="header-line-row" style="gap: 8px;">
+              <div class="header-field">
+                Тип ВС&nbsp;<span contenteditable="true" class="fill-line" id="fieldAcType" style="min-width: 55px;"></span>
+              </div>
+              <div class="header-field">
+                №&nbsp;<span contenteditable="true" class="fill-line" id="fieldAcReg" style="min-width: 48px;"></span>
+              </div>
+            </div>
+
+            <div class="header-line-row" style="flex-direction: column; align-items: flex-start; gap: 2px;">
+              <div class="header-field">
+                Н эш. зад.&nbsp;<span contenteditable="true" class="fill-line" id="fieldFl" style="min-width: 50px;"></span>
+              </div>
+              <div class="header-field">
+                Р прив. мин.&nbsp;<span contenteditable="true" class="fill-line" id="fieldQnhMin" style="min-width: 50px;"></span>
+              </div>
+              <div class="header-field">
+                Н без. эш.&nbsp;<span contenteditable="true" class="fill-line" id="fieldHbezEsh" style="min-width: 50px;"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Top Left: Wind by checkpoints -->
         <div class="table-scroll-container">
           <table class="tbl-wind">
@@ -1536,56 +1672,6 @@
               </tr>
             </tbody>
           </table>
-        </div>
-
-        <!-- Top Center: Document Identification -->
-        <div class="doc-header-center">
-          <div class="doc-main-title">
-            ШТУРМАНСКИЙ БОРТОВОЙ ЖУРНАЛ № 
-            <span contenteditable="true" class="fill-line" id="fieldFlightNumber" style="min-width: 65px;"></span>
-          </div>
-
-          <div class="header-lines">
-            <div class="header-line-row">
-              <div class="header-field" style="flex: 1; min-width: 170px;">
-                Командир ВС&nbsp;
-                <span contenteditable="true" class="fill-line" id="fieldKvs" style="width: 100%;"></span>
-              </div>
-              <div class="header-field" style="flex: 1; min-width: 170px;">
-                2-й пилот (штурман)&nbsp;
-                <span contenteditable="true" class="fill-line" id="fieldCopilot" style="width: 100%;"></span>
-              </div>
-            </div>
-
-            <div class="header-line-row">
-              <div class="header-field" style="flex: 1.2; min-width: 180px;">
-                Подразделение&nbsp;
-                <span contenteditable="true" class="fill-line" id="fieldUnit" style="width: 100%;"></span>
-              </div>
-              <div class="header-field" style="flex: 0.8; min-width: 130px;">
-                Дата&nbsp;
-                <span contenteditable="true" class="fill-line" id="fieldDate" style="width: 100%;"></span>
-              </div>
-            </div>
-
-            <div class="header-line-row">
-              <div class="header-field">
-                Тип ВС&nbsp;<span contenteditable="true" class="fill-line" id="fieldAcType" style="min-width: 55px;"></span>
-              </div>
-              <div class="header-field">
-                №&nbsp;<span contenteditable="true" class="fill-line" id="fieldAcReg" style="min-width: 48px;"></span>
-              </div>
-              <div class="header-field">
-                Н эш. зад.&nbsp;<span contenteditable="true" class="fill-line" id="fieldFl" style="min-width: 50px;"></span>
-              </div>
-              <div class="header-field">
-                Р прив. мин.&nbsp;<span contenteditable="true" class="fill-line" id="fieldQnhMin" style="min-width: 50px;"></span>
-              </div>
-              <div class="header-field">
-                Н без. эш.&nbsp;<span contenteditable="true" class="fill-line" id="fieldHbezEsh" style="min-width: 50px;"></span>
-              </div>
-            </div>
-          </div>
         </div>
 
         <!-- Top Right: Sun Table -->
