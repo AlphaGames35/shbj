@@ -365,92 +365,115 @@
       pointer-events: auto;
     }
 
-    /* Drawer Side Panel */
+    /* Drawer Side Panel (Smooth EFB Sidebar) */
     .drawer-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(4px);
-      z-index: 1200;
+      background: rgba(0, 0, 0, 0.72);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      z-index: 2100;
+      opacity: 0;
+      transition: opacity 0.25s ease;
     }
-    .drawer-overlay.open {
+    .drawer-overlay.active, .drawer-overlay.open {
       display: block;
+      opacity: 1;
     }
 
     .drawer-panel {
       position: fixed;
       top: 0;
-      right: -360px;
-      width: 340px;
+      right: 0;
+      transform: translateX(105%);
+      width: 330px;
+      max-width: 88vw;
       height: 100vh;
+      height: 100dvh;
       background: #181a1e;
       border-left: 1px solid #282a30;
-      box-shadow: -8px 0 30px rgba(0, 0, 0, 0.5);
-      z-index: 1300;
+      box-shadow: -8px 0 35px rgba(0, 0, 0, 0.65);
+      z-index: 2200;
       display: flex;
       flex-direction: column;
-      transition: right 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       font-size: 13px;
+      color: #ffffff;
     }
-    .drawer-panel.open {
-      right: 0;
+    .drawer-panel.active, .drawer-panel.open {
+      transform: translateX(0);
     }
 
     .drawer-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 14px 16px;
+      padding: 14px 18px;
       background: #1f2126;
       border-bottom: 1px solid #282a30;
     }
     .drawer-header h3 {
       font-size: 14px;
-      font-weight: 700;
+      font-weight: 800;
       color: #ffffff;
+      letter-spacing: 0.5px;
     }
     .drawer-close-btn {
       background: #252830;
       border: 1px solid #383b44;
       color: #a1a1aa;
       font-size: 16px;
-      width: 28px;
-      height: 28px;
-      border-radius: 4px;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: all 0.12s ease;
     }
     .drawer-close-btn:hover {
       color: #ffffff;
       background: #32353e;
+      border-color: #52525b;
     }
 
-    .drawer-body {
+    .drawer-content, .drawer-body {
       padding: 16px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
       gap: 14px;
+      flex: 1;
     }
 
     .drawer-card {
       background: #202227;
       border: 1px solid #2e313a;
-      border-radius: 6px;
-      padding: 12px;
+      border-radius: 8px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
     }
     .drawer-card-title {
       font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      color: #ffffff;
+      color: #a1a1aa;
+      margin-bottom: 2px;
+    }
+
+    .drawer-btn-full {
+      width: 100%;
+      justify-content: flex-start;
+      padding: 9px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 6px;
+      text-align: left;
     }
 
     /* Status bar */
@@ -945,18 +968,30 @@
     }
 
     /* =========================================================
-       MOBILE & TABLET ADAPTIVE LAYOUT (@media max-width: 900px)
+       PREMIUM MOBILE & TABLET RESPONSIVE LAYOUT (@media max-width: 900px)
        ========================================================= */
+    .mobile-table-hint {
+      display: none;
+      font-size: 11px;
+      color: #64748b;
+      text-align: right;
+      padding: 2px 4px 6px 0;
+      font-weight: 500;
+    }
+
     @media (max-width: 900px) {
-      .units-master-bar { display: flex !important; top: 48px; padding: 6px 8px; }
       body {
-        padding: 0 0 65px 0;
-        background-color: #080d1a;
+        padding: 0;
+        background-color: #121316 !important;
       }
 
       .app-header-inner {
-        padding: 0 10px;
-        height: 48px;
+        padding: 0 12px;
+        height: 46px;
+      }
+
+      .brand-logo {
+        font-size: 14px;
       }
 
       .brand-badge {
@@ -967,62 +1002,141 @@
         display: none;
       }
 
-      .desktop-params-ribbon {
-        display: none !important;
+      .header-actions {
+        gap: 6px;
       }
 
-      .desktop-header-btn {
-        display: none !important;
+      .header-actions .btn {
+        padding: 5px 9px;
+        font-size: 11.5px;
       }
 
-      .mobile-bottom-bar {
-        display: block !important;
+      /* Sleek horizontal EFB ribbon for phone screens */
+      .control-toolbar {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+        justify-content: flex-start !important;
+        padding: 6px 10px !important;
+        gap: 8px !important;
+        scrollbar-width: none;
+        border-bottom: 1px solid #282a30;
+      }
+      .control-toolbar::-webkit-scrollbar {
+        display: none;
+      }
+
+      .ctrl-section {
+        flex-shrink: 0;
+        background: #202227;
+        border: 1px solid #2e313a;
+        border-radius: 6px;
+        padding: 3px 8px;
+        gap: 5px;
+      }
+
+      .ctrl-divider {
+        display: none !important;
       }
 
       .sheet-outer-wrapper {
-        padding: 6px 4px 65px 4px;
+        padding: 8px 4px 30px 4px;
+        width: 100%;
+        overflow-x: hidden;
       }
 
       .page-sheet {
-        padding: 10px 8px;
-        border-radius: 4px;
-        width: 100%;
+        padding: 12px 8px !important;
+        border-radius: 6px !important;
+        width: 100% !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+      }
+
+      .sheet-status-bar {
+        font-size: 10px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
       }
 
       .top-section {
-        grid-template-columns: 1fr;
-        gap: 10px;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
       }
 
       .doc-header-center {
         order: -1;
+        width: 100%;
         margin-bottom: 4px;
       }
 
+      .doc-main-title {
+        font-size: 15px !important;
+      }
+
+      .header-lines {
+        font-size: 11.5px;
+      }
+
+      .tbl-wind, .tbl-sun {
+        width: 100%;
+        min-width: 280px;
+      }
+
       .sub-section {
-        grid-template-columns: 1fr;
-        gap: 10px;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
       }
 
       .aerodrome-tables-wrapper {
-        flex-direction: column;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 8px !important;
       }
 
       .main-body-section {
-        grid-template-columns: 1fr;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+      }
+
+      .mobile-table-hint {
+        display: block !important;
+      }
+
+      .table-scroll-container {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border: 1px solid #e2e8f0;
+        border-radius: 4px;
+      }
+
+      .tbl-route {
+        min-width: 800px;
+      }
+
+      .tbl-route th, .tbl-route td {
+        font-size: 12px;
+        padding: 4px 2px;
       }
 
       .right-sidebar {
-        margin-top: 8px;
+        width: 100%;
+        margin-top: 4px;
       }
 
       .footer-section {
-        grid-template-columns: 1fr;
-        gap: 10px;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 10px !important;
       }
 
-      th, td {
-        font-size: 11.5px;
+      .footer-row {
+        font-size: 11px;
       }
     }
 
@@ -1753,6 +1867,9 @@
            ========================================================= -->
       <div class="main-body-section">
         <!-- Main Table wrapper for full-screen / mobile swipe -->
+        <div class="mobile-table-hint no-print">
+          <span>👈 Свайпайте таблицу влево-вправо 👉</span>
+        </div>
         <div class="table-scroll-container">
           <table class="tbl-route" id="routeTable">
             <thead>
@@ -2612,18 +2729,17 @@
       const overlay = document.getElementById('drawerOverlay');
       const panel = document.getElementById('drawerPanel');
       if (!overlay || !panel) return;
-      const isCurrentlyOpen = panel.classList.contains('active');
+      const isCurrentlyOpen = panel.classList.contains('active') || panel.classList.contains('open');
       const shouldOpen = open !== undefined ? open : !isCurrentlyOpen;
 
       if (shouldOpen) {
-        // Sync values to drawer right before opening
-        syncAllWindAndFuelInputs('desktop');
-        overlay.classList.add('active');
-        panel.classList.add('active');
+        try { syncAllWindAndFuelInputs('desktop'); } catch(e) {}
+        overlay.classList.add('active', 'open');
+        panel.classList.add('active', 'open');
         document.body.style.overflow = 'hidden';
       } else {
-        overlay.classList.remove('active');
-        panel.classList.remove('active');
+        overlay.classList.remove('active', 'open');
+        panel.classList.remove('active', 'open');
         document.body.style.overflow = '';
       }
     }
