@@ -1387,6 +1387,13 @@
       }
     }
   </style>
+  <!-- html2canvas for high-resolution photo/image export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script>
+    if (typeof html2canvas === 'undefined') {
+      document.write('<script src="html2canvas.min.js"><\/script>');
+    }
+  </script>
 </head>
 <body>
   <!-- Top Navigation Header -->
@@ -1425,8 +1432,11 @@
 
       <!-- Right: Main Actions -->
       <div class="header-actions">
-        <button class="btn btn-dark" onclick="window.print()" title="Печать бланка">
+        <button class="btn btn-dark" onclick="window.print()" title="Печать бланка на принтер или в PDF">
           🖨️ Печать
+        </button>
+        <button class="btn btn-dark" onclick="exportShbjAsImage('png')" title="Сохранить фото бланка в высоком разрешении (PNG)">
+          📷 Фото
         </button>
         <button class="btn btn-dark" onclick="saveToLocalStorage(true)" title="Сохранить бланк в браузере">
           💾 Сохранить
@@ -1524,8 +1534,14 @@
     <div class="drawer-content">
       <!-- Card 1: Документ & Печать -->
       <div class="drawer-card">
-        <div class="drawer-card-title">📄 Бланк и печать</div>
-        <button class="btn btn-white drawer-btn-full" onclick="window.print()">
+        <div class="drawer-card-title">📄 Бланк, фото и печать</div>
+        <button class="btn btn-white drawer-btn-full" onclick="exportShbjAsImage('png'); toggleDrawer(false);" title="Скачать фото бланка в галерею или загрузки (PNG)">
+          📷 Сохранить фото бланка (PNG)
+        </button>
+        <button class="btn btn-dark drawer-btn-full" onclick="exportShbjAsImage('jpg'); toggleDrawer(false);" title="Скачать фото бланка в формате JPEG">
+          🖼️ Сохранить фото бланка (JPEG)
+        </button>
+        <button class="btn btn-dark drawer-btn-full" onclick="window.print()">
           🖨️ Печать / Сохранить в PDF
         </button>
         <button class="btn btn-dark drawer-btn-full" onclick="saveToLocalStorage(true)">
@@ -3980,6 +3996,98 @@
       const modal = document.getElementById('mathModal');
       if (modal) modal.style.display = 'none';
     }
-  </script>
+  
+    // =========================================================
+    // EXPORT SHBJ SHEET AS HIGH-RESOLUTION PHOTO / IMAGE
+    // =========================================================
+    async function exportShbjAsImage(format = 'png') {
+      showToastNotification('Формирование фото ШБЖ...', '📷');
+
+      const sheet = document.getElementById('shbjDocument');
+      if (!sheet) return;
+
+      if (typeof html2canvas === 'undefined') {
+        alert('Библиотека для сохранения фото еще загружается или не найдена. Пожалуйста, подождите несколько секунд или проверьте соединение.');
+        return;
+      }
+
+      // Hide ghost predicted actual times temporarily so they do not show in final photo
+      const ghostCells = document.querySelectorAll('td.col-tf[data-ghost]');
+      ghostCells.forEach(c => c.classList.add('hide-ghost-for-export'));
+
+      try {
+        const isMobile = window.innerWidth <= 900;
+        const prevWidth = sheet.style.width;
+        const prevMinWidth = sheet.style.minWidth;
+        const prevMaxWidth = sheet.style.maxWidth;
+
+        if (isMobile) {
+          sheet.style.width = '1120px';
+          sheet.style.minWidth = '1120px';
+          sheet.style.maxWidth = '1120px';
+        }
+
+        const canvas = await html2canvas(sheet, {
+          scale: 2, // Ultra-sharp 2x resolution
+          useCORS: true,
+          backgroundColor: '#ffffff',
+          logging: false,
+          windowWidth: 1200,
+          ignoreElements: (el) => el.classList.contains('no-print') || el.classList.contains('vi-floating-prompt')
+        });
+
+        if (isMobile) {
+          sheet.style.width = prevWidth;
+          sheet.style.minWidth = prevMinWidth;
+          sheet.style.maxWidth = prevMaxWidth;
+        }
+
+        ghostCells.forEach(c => c.classList.remove('hide-ghost-for-export'));
+
+        const flightNum = (document.getElementById('fieldFlightNumber')?.innerText || '').trim() || '1';
+        const dateStr = (document.getElementById('fieldDate')?.innerText || '').trim() || new Date().toLocaleDateString('ru-RU').replace(/\./g, '-');
+        const ext = (format === 'jpg' || format === 'jpeg') ? 'jpg' : 'png';
+        const mime = ext === 'jpg' ? 'image/jpeg' : 'image/png';
+        const fileName = `SHBJ_N${flightNum}_${dateStr}.${ext}`;
+
+        if (canvas.toBlob) {
+          canvas.toBlob((blob) => {
+            if (!blob) {
+              fallbackDownloadDataUrl(canvas, fileName, mime);
+              return;
+            }
+            const blobUrl = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = blobUrl;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+              document.body.removeChild(a);
+              URL.revokeObjectURL(blobUrl);
+            }, 2000);
+            showToastNotification(`✓ Фото сохранено: ${fileName}`, '📷');
+          }, mime, 0.95);
+        } else {
+          fallbackDownloadDataUrl(canvas, fileName, mime);
+        }
+      } catch (err) {
+        ghostCells.forEach(c => c.classList.remove('hide-ghost-for-export'));
+        console.error('Error exporting image:', err);
+        alert('Ошибка при сохранении фото: ' + err.message);
+      }
+    }
+
+    function fallbackDownloadDataUrl(canvas, fileName, mime) {
+      const dataUrl = canvas.toDataURL(mime, 0.95);
+      const a = document.createElement('a');
+      a.href = dataUrl;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => document.body.removeChild(a), 1500);
+      showToastNotification(`✓ Фото сохранено: ${fileName}`, '📷');
+    }
+</script>
 </body>
 </html>
