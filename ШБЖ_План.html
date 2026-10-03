@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✈️</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E✈️%3C/text%3E%3C/svg%3E">
   <title>Штурманский бортовой журнал (ШБЖ) с расчетом НТС</title>
   <style>
     /* =========================================================
@@ -1414,6 +1414,7 @@
     <div class="ctrl-section" title="Топливный расчет и АНЗ">
       <span class="ctrl-label">Расход/ч:</span>
       <input type="text" id="quickFuelHour" class="calc-input" value="" placeholder="450" style="width: 44px;" oninput="onFuelHourInput()">
+      <input type="hidden" id="quickFuelMin" value="">
       <span class="ctrl-label">АНЗ:</span>
       <input type="text" id="quickFuelAnz" class="calc-input" value="" placeholder="180" style="width: 44px;" oninput="onFuelAnzInput()">
       <span class="ctrl-label">Заправка:</span>
@@ -1484,9 +1485,6 @@
       <div class="sheet-status-bar no-print">
         <span id="saveStatus">🔒 Hб.пр, α, УС, МК, W рассчитываются автоматически</span>
         <span>Формат времени: ч.мм • СЛУ ГА Сасово</span>
-      </div>
-
-      
       </div>
 
       <!-- =========================================================
@@ -3102,9 +3100,9 @@
         return; // incomplete data
       }
 
-      const metWindDir = parseFloat(document.getElementById('quickWindDir').value) || 270;
-      const windSpeed = parseFloat(document.getElementById('quickWindSpeed').value) || 0;
-      const fuelFlow = parseFloat(document.getElementById('quickFuelHour').value) || 450;
+      const metWindDir = parseFloat(document.getElementById('quickWindDir')?.value.replace(',', '.') || '270') || 270;
+      const windSpeed = parseFloat(document.getElementById('quickWindSpeed')?.value.replace(',', '.') || '0') || 0;
+      const fuelFlow = parseFloat(document.getElementById('quickFuelHour')?.value.replace(',', '.') || '450') || 450;
 
       const res = calculateLegParameters(mpu, vi, s, metWindDir, windSpeed, fuelFlow);
       if (!res) return;
@@ -3137,7 +3135,8 @@
       }
       if (cellQr && res.qr > 0) {
         cellQr.innerText = res.qr;
-        cellQr.title = `Qр = (${res.tMinutes} мин · ${document.getElementById('quickFuelMin').value} кг/мин) = ${res.qr} кг`;
+        const qmVal = document.getElementById('quickFuelMin')?.value || (fuelFlow ? (fuelFlow / 60).toFixed(2) : '');
+        cellQr.title = `Qр = (${res.tMinutes} мин · ${qmVal} кг/мин) = ${res.qr} кг`;
       }
     }
 
@@ -3697,8 +3696,6 @@
         }
 
         try { recalculateEntireFlightPlan(); } catch(e) { console.warn('recalc err', e); }
-        try { recalculateAllSafeAltitudes(); } catch(e) { console.warn('safe alt err', e); }
-        try { recalculateAllActualProjections(); } catch(e) { console.warn('proj err', e); }
 
         const status = document.getElementById('saveStatus');
         if (status) status.textContent = '✓ Загружено из памяти';
