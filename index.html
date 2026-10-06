@@ -1386,6 +1386,67 @@
         print-color-adjust: exact !important;
       }
     }
+  
+    /* =========================================================
+       COMPACT MODE (СОКРАЩЕННЫЙ РЕЖИМ — ТОЛЬКО ВЕТЕР И МАРШРУТ)
+       ========================================================= */
+    .mode-compact .doc-header-center,
+    .mode-compact .tbl-sun-container,
+    .mode-compact .sub-section,
+    .mode-compact .right-sidebar,
+    .mode-compact .footer-section {
+      display: none !important;
+    }
+
+    .mode-compact.page-sheet,
+    .mode-compact .page-sheet {
+      justify-content: flex-start !important;
+      gap: 14px !important;
+      min-height: auto !important;
+    }
+
+    .mode-compact .top-section {
+      display: flex !important;
+      justify-content: flex-start !important;
+      margin-bottom: 6px !important;
+    }
+
+    .mode-compact .tbl-wind-container {
+      width: 440px !important;
+      max-width: 100% !important;
+      flex-shrink: 0;
+    }
+
+    .mode-compact .main-body-section {
+      display: block !important;
+      grid-template-columns: 1fr !important;
+      margin-bottom: 8px !important;
+    }
+
+    .mode-compact .tbl-route {
+      width: 100% !important;
+      min-width: 0 !important;
+    }
+
+    /* Print styles in compact mode */
+    @media print {
+      .mode-compact .top-section {
+        display: flex !important;
+        justify-content: flex-start !important;
+        margin-bottom: 6px !important;
+      }
+      .mode-compact .tbl-wind-container {
+        width: 360px !important;
+      }
+      .mode-compact .main-body-section {
+        display: block !important;
+        grid-template-columns: 1fr !important;
+      }
+      .mode-compact .tbl-route {
+        width: 100% !important;
+      }
+    }
+
   </style>
   <!-- html2canvas for high-resolution photo/image export -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -1452,6 +1513,17 @@
        UNIFIED CONTROL TOOLBAR (ЕДИНАЯ ПАНЕЛЬ ПАРАМЕТРОВ И ЕДИНИЦ)
        ========================================================= -->
   <div class="control-toolbar no-print">
+        <!-- Group 0: Mode (Full vs Compact) -->
+    <div class="ctrl-section" title="Режим отображения: Полный бланк или Сокращенный (только ветер и маршрут)">
+      <span class="ctrl-label">Режим:</span>
+      <div class="unit-pill-group">
+        <button type="button" class="unit-pill-btn active" id="btnBarModeFull" onclick="setSheetViewMode('full')">Полный</button>
+        <button type="button" class="unit-pill-btn" id="btnBarModeCompact" onclick="setSheetViewMode('compact')">⚡ Сокращенный</button>
+      </div>
+    </div>
+
+    <div class="ctrl-divider"></div>
+
     <!-- Group 1: Units -->
     <div class="ctrl-section" title="Выбор единиц измерения">
       <span class="ctrl-label">Единицы:</span>
@@ -1532,7 +1604,23 @@
       <button class="drawer-close-btn" onclick="toggleDrawer(false)">✕</button>
     </div>
     <div class="drawer-content">
-      <!-- Card 1: Документ & Печать -->
+            <!-- Card 0: Режим отображения (Полный / Сокращенный) -->
+      <div class="drawer-card">
+        <div class="drawer-card-title">⚡ Режим отображения ШБЖ</div>
+        <div style="display: flex; gap: 8px;">
+          <button type="button" class="btn btn-white drawer-btn-full" id="btnDrawerModeFull" onclick="setSheetViewMode('full'); toggleDrawer(false);" style="flex: 1; justify-content: center; text-align: center; font-size: 12px; padding: 10px 8px;">
+            📄 Полный ШБЖ
+          </button>
+          <button type="button" class="btn btn-dark drawer-btn-full" id="btnDrawerModeCompact" onclick="setSheetViewMode('compact'); toggleDrawer(false);" style="flex: 1; justify-content: center; text-align: center; font-size: 12px; padding: 10px 8px;">
+            ⚡ Сокращенный
+          </button>
+        </div>
+        <div style="font-size: 11px; color: #94a3b8; line-height: 1.35; margin-top: 2px;">
+          <strong>Сокращенный режим:</strong> оставляет только таблицу ветра и расчет маршрута на весь экран для быстрой подготовки.
+        </div>
+      </div>
+
+<!-- Card 1: Документ & Печать -->
       <div class="drawer-card">
         <div class="drawer-card-title">📄 Бланк, фото и печать</div>
         <button class="btn btn-white drawer-btn-full" onclick="exportShbjAsImage('png'); toggleDrawer(false);" title="Скачать фото бланка в галерею или загрузки (PNG)">
@@ -1592,7 +1680,7 @@
            ========================================================= -->
       <div class="top-section">
         <!-- Top Left: Wind by checkpoints -->
-        <div class="table-scroll-container">
+        <div class="table-scroll-container tbl-wind-container">
           <table class="tbl-wind">
             <thead>
               <tr>
@@ -1682,7 +1770,7 @@
         </div>
 
         <!-- Top Right: Sun Table -->
-        <div class="table-scroll-container">
+        <div class="table-scroll-container tbl-sun-container">
           <table class="tbl-sun">
             <thead>
               <tr>
@@ -2417,6 +2505,7 @@
     // DOM Ready
     document.addEventListener('DOMContentLoaded', () => {
       loadSavedData();
+      setSheetViewMode(currentViewMode, false);
       updateAngleHeaderUI();
       updateUnitUI();
       setupKeyboardNavigation();
@@ -3632,7 +3721,8 @@
         quickTimeArr: getVal('quickTimeArr') || '6',
         quickTas: getVal('quickTas') || '180',
         angleDisplayMode: angleDisplayMode,
-        units: currentUnits
+        units: currentUnits,
+        viewMode: currentViewMode
       };
 
       document.querySelectorAll('[id]').forEach(el => {
@@ -3691,6 +3781,13 @@
         // Safe angleDisplayMode
         if (data.angleDisplayMode && typeof setAngleDisplayMode === 'function') {
           try { setAngleDisplayMode(data.angleDisplayMode); } catch(e) {}
+        }
+
+        // Safe viewMode restoration
+        if (data.viewMode) {
+          setSheetViewMode(data.viewMode, false);
+        } else if (data.isCompactMode !== undefined) {
+          setSheetViewMode(data.isCompactMode ? 'compact' : 'full', false);
         }
 
         if (data.isWidescreen !== undefined) {
@@ -3997,7 +4094,52 @@
       if (modal) modal.style.display = 'none';
     }
   
+    
     // =========================================================
+    // SHEET VIEW MODE (FULL vs COMPACT / QUICK CALC)
+    // =========================================================
+    let currentViewMode = 'full'; // 'full' or 'compact'
+
+    function setSheetViewMode(mode, save = true) {
+      if (mode !== 'full' && mode !== 'compact') mode = 'full';
+      currentViewMode = mode;
+
+      const doc = document.getElementById('shbjDocument');
+      const isCompact = (mode === 'compact');
+
+      if (doc) {
+        doc.classList.toggle('mode-compact', isCompact);
+      }
+      document.body.classList.toggle('mode-compact', isCompact);
+
+      // Drawer buttons
+      const btnFull = document.getElementById('btnDrawerModeFull');
+      const btnCompact = document.getElementById('btnDrawerModeCompact');
+      if (btnFull) {
+        btnFull.className = isCompact ? 'btn btn-dark drawer-btn-full' : 'btn btn-white drawer-btn-full';
+        btnFull.style.flex = '1';
+        btnFull.style.justifyContent = 'center';
+      }
+      if (btnCompact) {
+        btnCompact.className = isCompact ? 'btn btn-white drawer-btn-full' : 'btn btn-dark drawer-btn-full';
+        btnCompact.style.flex = '1';
+        btnCompact.style.justifyContent = 'center';
+      }
+
+      // Toolbar buttons
+      const barFull = document.getElementById('btnBarModeFull');
+      const barCompact = document.getElementById('btnBarModeCompact');
+      if (barFull) barFull.classList.toggle('active', !isCompact);
+      if (barCompact) barCompact.classList.toggle('active', isCompact);
+
+      showToastNotification(isCompact ? '⚡ Включен сокращенный режим расчета (ветер + маршрут)' : '📄 Включен полный режим бланка ШБЖ', '📋');
+
+      if (save) {
+        debouncedSave();
+      }
+    }
+
+// =========================================================
     // EXPORT SHBJ SHEET AS HIGH-RESOLUTION PHOTO / IMAGE
     // =========================================================
     async function exportShbjAsImage(format = 'png') {
